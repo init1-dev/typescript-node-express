@@ -1,15 +1,111 @@
+<!--
+    API Documentation HTML Template  - 1.0.1
+    Copyright © 2016 Florian Nicolas
+    Licensed under the MIT license.
+    https://github.com/ticlekiwi/API-Documentation-HTML-Template
+!-->
 <!DOCTYPE html>
-<html lang="es">
+<html class="no-js" lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <title>API - Documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="ticlekiwi">
+
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
-    <title>node-express-API</title>
+
+    <link rel="stylesheet" href="css/hightlightjs-dark.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300&family=Source+Code+Pro:wght@300&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="css/styles.css" media="all">
+    <script>hljs.initHighlightingOnLoad();</script>
 </head>
+
 <body>
-    <main>
-        <h1>Hotel Miranda node + express API</h1>
-        <div class="description">
+<div class="left-menu">
+    <div class="content-logo">
+        <div class="logo">
+            <img alt="platform by Emily van den Heever from the Noun Project" title="platform by Emily van den Heever from the Noun Project" src="images/logo.png" height="32" />
+            <span>HOTEL MIRANDA API</span>
+        </div>
+        <button class="burger-menu-icon" id="button-menu-mobile">
+            <svg width="34" height="34" viewBox="0 0 100 100"><path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058"></path><path class="line line2" d="M 20,50 H 80"></path><path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942"></path></svg>
+        </button>
+    </div>
+    <div class="mobile-menu-closer"></div>
+    <div class="content-menu">
+        <div class="content-infos">
+            <div class="info"><b>Version:</b> 1.0</div>
+            <div class="info"><b>Technologies:</b> Node + Express</div>
+            <div class="info"><b>Last Updated:</b> 02/04/2024</div>
+            <div class="info"><b>Developer:</b> init1.dev</div>
+        </div>
+        <ul>
+            <li class="scroll-to-link active" data-target="content-get-started">
+                <a>GET STARTED</a>
+            </li>
+            <li class="scroll-to-link" data-target="content-get-characters">
+                <a>ENDPOINTS</a>
+            </li>
+            <li class="scroll-to-link" data-target="content-errors">
+                <a>ERRORS</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="content-page">
+    <div class="content-code"></div>
+    <div class="content">
+        <div class="overflow-hidden content-section" id="content-get-started">
+            <h1>Get started</h1>
+            <pre>
+                API Endpoint
+
+                http://localhost:3000
+
+                <code class="bash">
+                    # endpoint example :
+                    
+                    http://localhost:3000/bookings/1
+
+                    {
+                        "id": 1,
+                        "full_name": "Jacobo Disbrey",
+                        "email": "kmaccafferty0@joomla.org",
+                        "phone": "173-125-4724",
+                        "image": "https://url.com/booking.jpg",
+                        "order_date": "4/1/2023",
+                        "check_in": "7/5/2023",
+                        "check_out": "8/7/2023",
+                        "special_request": "special request text",
+                        "number": 51,
+                        "price": 477.7,
+                        "type": "Double Bed",
+                        "status": "In Progress",
+                        "amenities": [
+                            "Shop near",
+                            "Kitchen",
+                            "Shower",
+                            "Towels",
+                            "Smart Security",
+                            "Air conditioner",
+                            "Single bed",
+                            "Expert Team",
+                            "Breakfast",
+                            "24/7 Online Support",
+                            "Grocery",
+                            "Cleaning"
+                        ],
+                        "room_status": "Booked",
+                        "foto": "https://url.com/image.jpg",
+                        "description": "Etiam faucibus cursus urna"
+                    }
+                </code>
+            </pre>
             <p>
                 In our <strong>Node application</strong>, there are four main routes: <strong>Bookings</strong>, <strong>Rooms</strong>, <strong>Employees</strong>, and <strong>Messages</strong>.
             </p>
@@ -23,51 +119,322 @@
                 These routes and endpoints facilitate seamless interaction with the application, allowing users to retrieve, view, and manage data efficiently.
             </p>
         </div>
-        <ul class="list">
-            <li class="list-item">
-                <h4>Rooms</h4>
-                <div class="container">
-                    <a href="/rooms">GET ALL</a>
-                    <span>|</span>
-                    <a href="/rooms/1">GET ONE</a>
-                    <span>|</span>
-                    <a href="/rooms/50">INVALID</a>
-                </div>
-            </li>
+        <div class="overflow-hidden content-section" id="content-get-characters">
+            <h2>ENDPOINTS</h2>
+            <pre>
+                <code class="bash">
+                    # Here is some endpoint examples
 
-            <li class="list-item">
-                <h4>Bookings</h4>
-                <div class="container">
-                    <a href="/bookings">GET ALL</a>
-                    <span>|</span>
-                    <a href="/bookings/1">GET ONE</a>
-                    <span>|</span>
-                    <a href="/bookings/50">INVALID</a>
-                </div>
-            </li>
+                    BOOKINGS
 
-            <li class="list-item">
-                <h4>Employees</h4>
-                <div class="container">
-                    <a href="/employees">GET ALL</a>
-                    <span>|</span>
-                    <a href="/employees/1">GET ONE</a>
-                    <span>|</span>
-                    <a href="/employees/50">INVALID</a>
-                </div>
-            </li>
+                    method: GET,
+                    description: "Gets all bookings",
+                    url: "http://localhost:3000/bookings"
 
-            <li class="list-item">
-                <h4>Messages</h4>
-                <div class="container">
-                    <a href="/messages">GET ALL</a>
-                    <span>|</span>
-                    <a href="/messages/1">GET ONE</a>
-                    <span>|</span>
-                    <a href="/messages/50">INVALID</a>
-                </div>
-            </li>
-        </ul>
-    </main>
+                    method: GET,
+                    description: "Gets one specific booking",
+                    url: "http://localhost:3000/bookings/1"
+
+                    method: POST,
+                    description: "Creates a new booking",
+                    url: "http://localhost:3000/bookings",
+                    body: {
+                        "full_name": "Jacobo Disbrey",
+                        "email": "kmaccafferty0@joomla.org",
+                        "phone": "173-125-4724",
+                        "image": "https://url.com/booking.jpg",
+                        "order_date": "4/1/2023",
+                        "check_in": "7/5/2023",
+                        "check_out": "8/7/2023",
+                        "special_request": "special request text",
+                        "number": 51,
+                        "price": 477.7,
+                        "type": "Double Bed",
+                        "status": "In Progress",
+                        "amenities": [
+                            "Shop near",
+                            "Kitchen",
+                            "Shower",
+                            "Towels",
+                            "Smart Security",
+                            "Air conditioner",
+                            "Single bed",
+                            "Expert Team",
+                            "Breakfast",
+                            "24/7 Online Support",
+                            "Grocery",
+                            "Cleaning"
+                        ],
+                        "room_status": "Booked",
+                        "foto": "https://url.com/image.jpg",
+                        "description": "Etiam faucibus cursus urna"
+                    }
+
+                    method: PUT,
+                    description: "Updates one specific booking"
+                    url: "http://localhost:3000/bookings/1",
+                    body: {
+                        body: {
+                            <span style="background-color: #262827">"full_name": "Jacobo Segundo Disbrey",</span>
+                            "email": "kmaccafferty0@joomla.org",
+                            "phone": "173-125-4724",
+                            "image": "https://url.com/booking.jpg",
+                            "order_date": "4/1/2023",
+                            "check_in": "7/5/2023",
+                            "check_out": "8/7/2023",
+                            "special_request": "special request text",
+                            <span style="background-color: #262827">"number": 67,</span>
+                            <span style="background-color: #262827">"price": 523.4,</span>
+                            "type": "Double Bed",
+                            "status": "In Progress",
+                            "amenities": [
+                                "Shop near",
+                                "Kitchen",
+                                "Shower",
+                                "Towels",
+                                "Smart Security",
+                                "Air conditioner",
+                                "Single bed",
+                                "Expert Team",
+                                "Breakfast",
+                                "24/7 Online Support",
+                                "Grocery",
+                                "Cleaning"
+                            ],
+                            "room_status": "Booked",
+                            "foto": "https://url.com/image.jpg",
+                            "description": "Etiam faucibus cursus urna"
+                        }
+                    }
+
+                    method: DELETE,
+                    description: "Deletes one specific booking"
+                    url: "http://localhost:3000/bookings/1"
+                </code>
+            </pre>
+            <p>
+                Welcome to the documentation for our API endpoints! This comprehensive guide provides an overview of the various endpoints available to interact with our system. Each endpoint serves a specific purpose, allowing you to perform various actions and retrieve relevant data programmatically.
+            </p>
+            <p>
+                Endpoints are URLs (Uniform Resource Locators) that define specific interactions within an API. They act as entry points for accessing different functionalities and resources provided by the API. Through these endpoints, you can seamlessly integrate our services into your applications, automate processes, and enhance user experiences.<br>
+            </p>
+            <p>
+                This documentation will walk you through each endpoint, detailing its functionality, parameters, request methods, and response formats. Whether you're a developer seeking to integrate our API into your application, or a system administrator looking to understand the capabilities of our services, this documentation will serve as your comprehensive guide.
+            </p>
+            <p>
+                <code class="higlighted break-word">http://localhost:3000/bookings/1</code>
+            </p>
+            <br>
+            <h4 class="query">METHODS</h4>
+            <table class="central-overflow-x endpoints">
+                <thead>
+                    <tr>
+                        <th>Path</th>
+                        <th>Url</th>
+                        <th>Methods</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>bookings</td>
+                        <td>/bookings</td>
+                        <td>
+                            <strong>GET</strong> | <strong>POST</strong> | <strong>PUT</strong> | <strong>DELETE</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>rooms</td>
+                        <td>/rooms</td>
+                        <td>
+                            <strong>GET</strong> | <strong>POST</strong> | <strong>PUT</strong> | <strong>DELETE</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>employees</td>
+                        <td>/employees</td>
+                        <td>
+                            <strong>GET</strong> | <strong>POST</strong> | <strong>PUT</strong> | <strong>DELETE</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>messages</td>
+                        <td>/messages</td>
+                        <td>
+                            <strong>GET</strong> | <strong>POST</strong> | <strong>PUT</strong> | <strong>DELETE</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 class="examples">ENDPOINT EXAMPLES</h4>
+            <table class="central-overflow-x endpoints">
+                <thead>
+                    <tr>
+                        <th>Path</th>
+                        <th>Url</th>
+                        <th>Methods</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>bookings</td>
+                        <td>/bookings</td>
+                        <td>
+                            <strong>
+                                <a href="/bookings">GET ALL</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/bookings/1">GET ONE</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/bookings/50">INVALID</a>
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>rooms</td>
+                        <td>/rooms</td>
+                        <td>
+                            <strong>
+                                <a href="/rooms">GET ALL</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/rooms/1">GET ONE</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/rooms/50">INVALID</a>
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>employees</td>
+                        <td>/employees</td>
+                        <td>
+                            <strong>
+                                <a href="/employees">GET ALL</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/employees/1">GET ONE</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/employees/50">INVALID</a>
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>messages</td>
+                        <td>/messages</td>
+                        <td>
+                            <strong>
+                                <a href="/messages">GET ALL</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/messages/1">GET ONE</a>
+                            </strong> 
+                            | 
+                            <strong>
+                                <a href="/messages/50">INVALID</a>
+                            </strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="overflow-hidden content-section" id="content-errors">
+            <h2>Errors</h2>
+            <p>
+                This section provides a comprehensive list of common error codes that the API may return along with brief descriptions of each. Error codes play a crucial role in communicating issues between the API server and clients, aiding in troubleshooting and resolving problems efficiently. Understanding these error codes and their meanings can greatly enhance the development and debugging process when interacting with the API.
+            </p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Meaning</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>400</strong></td>
+                    <td>
+                        Bad Request: The server cannot process the request due to a client error (e.g., malformed request syntax, invalid parameters).
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>401</strong></td>
+                    <td>
+                        Unauthorized: The request lacks valid authentication credentials or the authentication credentials are invalid.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>403</strong></td>
+                    <td>
+                        Forbidden: The server understood the request but refuses to authorize it. Usually returned when authentication is provided, but the user doesn't have sufficient permissions.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>404</strong></td>
+                    <td>
+                        Not Found: The requested resource could not be found on the server.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>405</strong></td>
+                    <td>
+                        Method Not Allowed: The HTTP method used in the request is not supported for the requested resource.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>409</strong></td>
+                    <td>
+                        Conflict: Indicates that the request could not be completed due to a conflict with the current state of the target resource.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>422</strong></td>
+                    <td>
+                        Unprocessable Entity: The server understands the content type of the request entity, but it cannot process the contained instructions.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>500</strong></td>
+                    <td>
+                        Internal Server Error: A generic error message indicating that something went wrong on the server's end.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>502</strong></td>
+                    <td>
+                        Bad Gateway: The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>503</strong></td>
+                    <td>
+                        Service Unavailable: The server is currently unable to handle the request due to temporary overloading or maintenance of the server.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>504</strong></td>
+                    <td>
+                        Gateway Timeout: The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="content-code"></div>
+</div>
+<!-- Github Corner Ribbon - to remove (Ribbon created with : http://tholman.com/github-corners/ )-->
+<a href="https://github.com/init1-dev/typescript-node-express" class="github-corner" aria-label="View source on Github" title="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="z-index:99999; fill:#70B7FD; color:#fff; position: fixed; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}@media only screen and (max-width:680px){ .github-corner > svg { right: auto!important; left: 0!important; transform: rotate(270deg)!important;}}</style>
+<!-- END Github Corner Ribbon - to remove -->
+<script src="js/script.js"></script>
 </body>
 </html>
