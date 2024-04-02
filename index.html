@@ -281,15 +281,15 @@
                         <td>/bookings</td>
                         <td>
                             <strong>
-                                <button type="button" id="/bookings">GET ALL</button>
+                                <button type="button" data-route="/bookings">GET ALL</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/bookings/1">GET ONE</button>
+                                <button type="button" data-route="/bookings/1">GET ONE</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/bookings/50">INVALID</button>
+                                <button type="button" data-route="/bookings/50">INVALID</button>
                             </strong>
                         </td>
                     </tr>
@@ -298,15 +298,15 @@
                         <td>/rooms</td>
                         <td>
                             <strong>
-                                <button type="button" id="/rooms">GET ALL</button>
+                                <button type="button" data-route="/rooms">GET ALL</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/rooms/1">GET ONE</button>
+                                <button type="button" data-route="/rooms/1">GET ONE</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/rooms/50">INVALID</button>
+                                <button type="button" data-route="/rooms/50">INVALID</button>
                             </strong>
                         </td>
                     </tr>
@@ -315,15 +315,15 @@
                         <td>/employees</td>
                         <td>
                             <strong>
-                                <button type="button" id="/employees">GET ALL</button>
+                                <button type="button" data-route="/employees">GET ALL</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/employees/1">GET ONE</button>
+                                <button type="button" data-route="/employees/1">GET ONE</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/employees/50">INVALID</button>
+                                <button type="button" data-route="/employees/50">INVALID</button>
                             </strong>
                         </td>
                     </tr>
@@ -332,15 +332,15 @@
                         <td>/messages</td>
                         <td>
                             <strong>
-                                <button type="button" id="/messages">GET ALL</button>
+                                <button type="button" data-route="/messages">GET ALL</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/messages/1">GET ONE</button>
+                                <button type="button" data-route="/messages/1">GET ONE</button>
                             </strong> 
                             | 
                             <strong>
-                                <button type="button" id="/messages/50">INVALID</button>
+                                <button type="button" data-route="/messages/50">INVALID</button>
                             </strong>
                         </td>
                     </tr>
@@ -458,8 +458,8 @@
         buttons.forEach(button => {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
-                let id = event.target.id;
-                fetchUrl(id);
+                let route = button.getAttribute("data-route");
+                fetchUrl(route);
             })
         });
     })
