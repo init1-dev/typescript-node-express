@@ -1,11 +1,8 @@
-export type ParsedResponse = {
-    status: number;
-    message: string;
-}
+import { Response } from 'express';
 
-export const parseResponse = (message: string, status = 404): ParsedResponse => {
-    return {
-        status: status,
-        message: message
-    }
+export const parseResponse = (message: any, res: Response, status = 404): void => {
+    res.status(status).json({
+        status,
+        message
+    });
 }

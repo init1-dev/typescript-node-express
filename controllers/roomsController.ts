@@ -5,23 +5,23 @@ import { authMiddleware } from '../middleware/auth';
 export const roomsController = express.Router();
 
 roomsController.get('/', async(_req: Request, res: Response, _next: NextFunction) => {
-    res.json(getAllRooms());
+    res.json(getAllRooms(res));
 })
 
 roomsController.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(getRoom(Number(req.params.id)));
+    res.json(getRoom(Number(req.params.id), res));
 })
 
 roomsController.use(authMiddleware);
 
 roomsController.post('/', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(newRoom(req.body));
+    res.json(newRoom(req.body, res));
 })
 
 roomsController.put('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(editRoom(Number(req.params.id), req.body));
+    res.json(editRoom(Number(req.params.id), req.body, res));
 })
 
 roomsController.delete('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(deleteRoom(Number(req.params.id)));
+    res.json(deleteRoom(Number(req.params.id), res));
 })

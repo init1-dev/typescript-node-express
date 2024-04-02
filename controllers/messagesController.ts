@@ -5,23 +5,23 @@ import { authMiddleware } from '../middleware/auth';
 export const messagesController = express.Router();
 
 messagesController.get('/', async(_req: Request, res: Response, _next: NextFunction) => {
-    res.json(getAllMessages());
+    res.json(getAllMessages(res));
 })
 
 messagesController.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(getMessage(Number(req.params.id)));
+    res.json(getMessage(Number(req.params.id), res));
 })
 
 messagesController.use(authMiddleware);
 
 messagesController.post('/', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(newMessage(req.body));
+    res.json(newMessage(req.body, res));
 })
 
 messagesController.put('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(editMessage(Number(req.params.id), req.body));
+    res.json(editMessage(Number(req.params.id), req.body, res));
 })
 
 messagesController.delete('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(deleteMessage(Number(req.params.id)));
+    res.json(deleteMessage(Number(req.params.id), res));
 })

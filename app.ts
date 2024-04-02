@@ -6,7 +6,7 @@ import { roomsController } from './controllers/roomsController';
 import { bookingsController } from './controllers/bookingsController';
 import { employeesController } from './controllers/employeesController';
 import { messagesController } from './controllers/messagesController';
-import { generateAccessToken } from './middleware/auth';
+import { loginController } from './controllers/loginController';
 
 export const app = express();
 
@@ -24,10 +24,7 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 
 app.use('/', rootController);
 
-app.post('/api/createNewUser', (req, res) => {
-    const token = generateAccessToken(req.body.username);
-    res.json(token);
-})
+app.use('/login', loginController);
 
 app.use('/bookings', bookingsController);
 app.use('/rooms', roomsController);
