@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { Secret } from "jsonwebtoken";
+import { parseResponse } from "../Helpers/parseResponse";
 
 const TEN_YEARS = 31536000;
 
@@ -20,12 +21,12 @@ export const authMiddleware = ( req: AuthenticatedRequest, res: Response, next: 
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
-        return res.sendStatus(401);
+        return res.json(parseResponse("Unauthorized", 401));
     }
 
     jwt.verify(token, SECRET_KEY, (err, user) => {
         if (err) {
-            return res.sendStatus(403);
+            return res.json(parseResponse("Forbidden", 403));
         }
         req.user = user;
         next();
