@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { deleteMessage, editMessage, getAllMessages, getMessage, newMessage } from '../services/messagesService';
+import { authMiddleware } from '../middleware/auth';
 
 export const messagesController = express.Router();
 
@@ -10,6 +11,8 @@ messagesController.get('/', async(_req: Request, res: Response, _next: NextFunct
 messagesController.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
     res.json(getMessage(Number(req.params.id)));
 })
+
+messagesController.use(authMiddleware);
 
 messagesController.post('/', async(req: Request, res: Response, _next: NextFunction) => {
     res.json(newMessage(req.body));

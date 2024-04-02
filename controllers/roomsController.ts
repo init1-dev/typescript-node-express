@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { deleteRoom, editRoom, getAllRooms, getRoom, newRoom } from '../services/roomsService';
+import { authMiddleware } from '../middleware/auth';
 
 export const roomsController = express.Router();
 
@@ -10,6 +11,8 @@ roomsController.get('/', async(_req: Request, res: Response, _next: NextFunction
 roomsController.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
     res.json(getRoom(Number(req.params.id)));
 })
+
+roomsController.use(authMiddleware);
 
 roomsController.post('/', async(req: Request, res: Response, _next: NextFunction) => {
     res.json(newRoom(req.body));
