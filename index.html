@@ -9,30 +9,63 @@
 <body>
     <main>
         <h1>Hotel Miranda node + express API</h1>
-        <p>Available routes:</p>
-        <ul>
-            <li>
-                <a href="/rooms">All Rooms</a>
-                <span>→</span>
-                <a href="/rooms/1">Single Room</a>
+        <div class="description">
+            <p>
+                In our <strong>Node application</strong>, there are four main routes: <strong>Bookings</strong>, <strong>Rooms</strong>, <strong>Employees</strong>, and <strong>Messages</strong>.
+            </p>
+            <p>
+                Each route provides access to specific data and functionalities related to its corresponding entity and is designed to handle requests for its respective entity, providing comprehensive access to data stored within the application.
+            </p>
+            <p>
+                The <strong>GET ALL</strong> endpoint fetches all elements, while the <strong>GET ONE</strong> endpoint retrieves a specific element identified by its unique identifier. In case a request is made for a non-existent element, the <strong>INVALID</strong> endpoint gracefully handles the error by returning an appropriate message.
+            </p>
+            <p>
+                These routes and endpoints facilitate seamless interaction with the application, allowing users to retrieve, view, and manage data efficiently.
+            </p>
+        </div>
+        <ul class="list">
+            <li class="list-item">
+                <h4>Rooms</h4>
+                <div class="container">
+                    <a href="/rooms">GET ALL</a>
+                    <span>|</span>
+                    <a href="/rooms/1">GET ONE</a>
+                    <span>|</span>
+                    <a href="/rooms/50">INVALID</a>
+                </div>
             </li>
 
-            <li>
-                <a href="/bookings">All Bookings</a>
-                <span>→</span>
-                <a href="/bookings/1">Single Booking</a>
+            <li class="list-item">
+                <h4>Bookings</h4>
+                <div class="container">
+                    <a href="/bookings">GET ALL</a>
+                    <span>|</span>
+                    <a href="/bookings/1">GET ONE</a>
+                    <span>|</span>
+                    <a href="/bookings/50">INVALID</a>
+                </div>
             </li>
 
-            <li>
-                <a href="/employees">All Employees</a>
-                <span>→</span>
-                <a href="/employees">Single Employee</a>
+            <li class="list-item">
+                <h4>Employees</h4>
+                <div class="container">
+                    <a href="/employees">GET ALL</a>
+                    <span>|</span>
+                    <a href="/employees/1">GET ONE</a>
+                    <span>|</span>
+                    <a href="/employees/50">INVALID</a>
+                </div>
             </li>
 
-            <li>
-                <a href="/messages">All Messages</a>
-                <span>→</span>
-                <a href="/messages">Single Message</a>
+            <li class="list-item">
+                <h4>Messages</h4>
+                <div class="container">
+                    <a href="/messages">GET ALL</a>
+                    <span>|</span>
+                    <a href="/messages/1">GET ONE</a>
+                    <span>|</span>
+                    <a href="/messages/50">INVALID</a>
+                </div>
             </li>
         </ul>
     </main>
