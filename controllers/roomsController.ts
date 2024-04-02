@@ -12,16 +12,14 @@ roomsController.get('/:id', async(req: Request, res: Response, _next: NextFuncti
     res.json(getRoom(Number(req.params.id), res));
 })
 
-roomsController.use(authMiddleware);
-
-roomsController.post('/', async(req: Request, res: Response, _next: NextFunction) => {
+roomsController.post('/', authMiddleware, async(req: Request, res: Response, _next: NextFunction) => {
     res.json(newRoom(req.body, res));
 })
 
-roomsController.put('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+roomsController.put('/:id', authMiddleware, async(req: Request, res: Response, _next: NextFunction) => {
     res.json(editRoom(Number(req.params.id), req.body, res));
 })
 
-roomsController.delete('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+roomsController.delete('/:id', authMiddleware, async(req: Request, res: Response, _next: NextFunction) => {
     res.json(deleteRoom(Number(req.params.id), res));
 })
