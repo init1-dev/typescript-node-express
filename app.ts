@@ -7,6 +7,7 @@ import { bookingsController } from './controllers/bookingsController';
 import { employeesController } from './controllers/employeesController';
 import { messagesController } from './controllers/messagesController';
 import { loginController } from './controllers/loginController';
+import { authMiddleware } from './middleware/auth';
 
 export const app = express();
 
@@ -26,7 +27,7 @@ app.use('/', rootController);
 
 app.use('/login', loginController);
 
-app.use('/bookings', bookingsController);
-app.use('/rooms', roomsController);
-app.use('/employees', employeesController);
-app.use('/messages', messagesController);
+app.use('/bookings', authMiddleware, bookingsController);
+app.use('/rooms', authMiddleware, roomsController);
+app.use('/employees', authMiddleware, employeesController);
+app.use('/messages', authMiddleware, messagesController);
