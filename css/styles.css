@@ -1,0 +1,39 @@
+ul, li, a {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+ul {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    list-style: none;
+}
+
+ul li a {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: aquamarine;
+    color: black;
+    text-decoration: none;
+    box-shadow: rgb(0 0 0 / 40%) 1px 1px 2px, rgb(0 0 0 / 30%) 0px 7px 13px -3px, rgb(0 0 0 / 20%) 0px -3px 0px inset;
+    transition: color, background-color 0.2s ease;
+}
+
+ul li a:hover {
+    background-color: cadetblue;
+    color: white;
+}
+
+ul li a:active {
+    transform: translateX(10px);
+}
