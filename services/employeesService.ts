@@ -1,7 +1,7 @@
 import { Employee } from '../interfaces/Employees';
-import { employeesDataFile } from '../Helpers/dataFiles';
-import { readDataFromFile, writeFile } from '../Helpers/fileOperations';
-import { ParsedResponse, parseResponse } from '../Helpers/parseResponse';
+import { employeesDataFile } from '../util/dataFiles';
+import { readDataFromFile, writeFile } from '../util/fileOperations';
+import { ParsedResponse, parseResponse } from '../util/parseResponse';
 
 const employeesData = readDataFromFile(employeesDataFile) as Employee[];
 

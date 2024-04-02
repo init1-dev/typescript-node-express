@@ -1,7 +1,7 @@
 
-import { roomsDataFile } from '../Helpers/dataFiles';
-import { readDataFromFile, writeFile } from '../Helpers/fileOperations';
-import { ParsedResponse, parseResponse } from '../Helpers/parseResponse';
+import { roomsDataFile } from '../util/dataFiles';
+import { readDataFromFile, writeFile } from '../util/fileOperations';
+import { ParsedResponse, parseResponse } from '../util/parseResponse';
 import { Room } from '../interfaces/Rooms';
 
 const roomsData = readDataFromFile(roomsDataFile) as Room[];

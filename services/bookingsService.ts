@@ -1,7 +1,7 @@
 import { Booking } from '../interfaces/Bookings';
-import { bookingsDataFile } from '../Helpers/dataFiles';
-import { readDataFromFile, writeFile } from '../Helpers/fileOperations';
-import { ParsedResponse, parseResponse } from '../Helpers/parseResponse';
+import { bookingsDataFile } from '../util/dataFiles';
+import { readDataFromFile, writeFile } from '../util/fileOperations';
+import { ParsedResponse, parseResponse } from '../util/parseResponse';
 
 const bookingsData = readDataFromFile(bookingsDataFile) as Booking[];
 

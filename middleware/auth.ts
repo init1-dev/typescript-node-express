@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { Secret } from "jsonwebtoken";
-import { parseResponse } from "../Helpers/parseResponse";
+import { parseResponse } from "../util/parseResponse";
 
 const TEN_YEARS = 31536000;
 

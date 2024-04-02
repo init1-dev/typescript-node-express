@@ -1,7 +1,7 @@
 import { Message } from '../interfaces/Messages';
-import { messagesDataFile } from '../Helpers/dataFiles';
-import { readDataFromFile, writeFile } from '../Helpers/fileOperations';
-import { ParsedResponse, parseResponse } from '../Helpers/parseResponse';
+import { messagesDataFile } from '../util/dataFiles';
+import { readDataFromFile, writeFile } from '../util/fileOperations';
+import { ParsedResponse, parseResponse } from '../util/parseResponse';
 
 const messagesData = readDataFromFile(messagesDataFile) as Message[];
 
