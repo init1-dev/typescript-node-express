@@ -14,7 +14,7 @@ export const getAllRooms = (): Room[] | ParsedResponse => {
 }
 
 export const getRoom = (id: number): Room | ParsedResponse => {
-    const room = roomsData.find(room => room.id === id) || {} as Room;
+    const room = roomsData.find(room => room.id === id);
     if(room === undefined) {
         return parseResponse('Room not found');
     }

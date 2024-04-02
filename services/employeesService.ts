@@ -13,7 +13,7 @@ export const getAllEmployees = (): Employee[] | ParsedResponse => {
 }
 
 export const getEmployee = (id: number): Employee | ParsedResponse => {
-    const employee = employeesData.find(employee => employee.id === id) || {} as Employee;
+    const employee = employeesData.find(employee => employee.id === id);
     if(employee === undefined) {
         return parseResponse('Employee not found');
     }

@@ -13,8 +13,6 @@ interface AuthenticatedRequest extends Request {
 
 const SECRET_KEY: Secret = process.env.TOKEN_SECRET || "";
 
-
-
 export const authMiddleware = ( req: AuthenticatedRequest, res: Response, next: NextFunction ) => {
     const authHeader = req.headers["authorization"];
     

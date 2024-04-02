@@ -13,7 +13,7 @@ export const getAllMessages = (): Message[] | ParsedResponse => {
 }
 
 export const getMessage = (id: number): Message | ParsedResponse => {
-    const message = messagesData.find(message => message.id === id) || {} as Message;
+    const message = messagesData.find(message => message.id === id);
     if(message === undefined) {
         return parseResponse('Message not found');
     }

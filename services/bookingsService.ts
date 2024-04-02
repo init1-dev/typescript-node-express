@@ -13,7 +13,7 @@ export const getAllBookings = (): Booking[] | ParsedResponse => {
 }
 
 export const getBooking = (id: number): Booking | ParsedResponse => {
-    const booking = bookingsData.find(booking => booking.id === id) || {} as Booking;
+    const booking = bookingsData.find(booking => booking.id === id);
     if(booking === undefined) {
         return parseResponse('Booking not found');
     }
