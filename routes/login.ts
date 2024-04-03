@@ -2,9 +2,9 @@ import express from "express";
 import { parseResponse } from "../util/parseResponse";
 import { login, generateAccessToken } from '../services/loginService';
 
-export const loginController = express.Router();
+export const loginRoutes = express.Router();
 
-loginController.post('/', async(req, res) => {
+loginRoutes.post('/', async(req, res) => {
     const { username, password } = req.body;
 
     try {
@@ -28,7 +28,7 @@ loginController.post('/', async(req, res) => {
     return parseResponse("Invalid username/password", res, 401);
 })
 
-loginController.post('/createNewUser', (req, res) => {
+loginRoutes.post('/createNewUser', (req, res) => {
     const { username = 'init1.dev' } = req.body;
     const token = generateAccessToken(username);
     

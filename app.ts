@@ -1,12 +1,12 @@
 import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 
-import { rootController } from './controllers/rootController';
-import { roomsController } from './controllers/roomsController';
-import { bookingsController } from './controllers/bookingsController';
-import { employeesController } from './controllers/employeesController';
-import { messagesController } from './controllers/messagesController';
-import { loginController } from './controllers/loginController';
+import { rootRoutes } from './routes/root';
+import { roomsRoutes } from './routes/rooms';
+import { bookingsRoutes } from './routes/bookings';
+import { employeesRoutes } from './routes/employees';
+import { messagesRoutes } from './routes/messages';
+import { loginRoutes } from './routes/login';
 import { authMiddleware } from './middleware/auth';
 
 export const app = express();
@@ -23,11 +23,11 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
     next();
 });
 
-app.use('/', rootController);
+app.use('/', rootRoutes);
 
-app.use('/login', loginController);
+app.use('/login', loginRoutes);
 
-app.use('/bookings', authMiddleware, bookingsController);
-app.use('/rooms', authMiddleware, roomsController);
-app.use('/employees', authMiddleware, employeesController);
-app.use('/messages', authMiddleware, messagesController);
+app.use('/bookings', authMiddleware, bookingsRoutes);
+app.use('/rooms', authMiddleware, roomsRoutes);
+app.use('/employees', authMiddleware, employeesRoutes);
+app.use('/messages', authMiddleware, messagesRoutes);

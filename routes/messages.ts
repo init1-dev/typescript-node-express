@@ -3,24 +3,24 @@ import { deleteMessage, editMessage, getAllMessages, getMessage, newMessage } fr
 import { RequestWithUser } from '../middleware/auth';
 import { deployAction } from '../util/deployAction';
 
-export const messagesController = express.Router();
+export const messagesRoutes = express.Router();
 
-messagesController.get('/', async(_req: RequestWithUser, res: Response, _next: NextFunction) => {
+messagesRoutes.get('/', async(_req: RequestWithUser, res: Response, _next: NextFunction) => {
     deployAction(() => getAllMessages(res), res);
 })
 
-messagesController.get('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
+messagesRoutes.get('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
     deployAction(() => getMessage(Number(req.params.id), res), res);
 })
 
-messagesController.post('/', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
+messagesRoutes.post('/', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
     deployAction(() => newMessage(req.body, res), res, true, req);
 })
 
-messagesController.put('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
+messagesRoutes.put('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
     deployAction(() => editMessage(Number(req.params.id), req.body, res), res, true, req);
 })
 
-messagesController.delete('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
+messagesRoutes.delete('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
     deployAction(() => deleteMessage(Number(req.params.id), res), res, true, req);
 })
