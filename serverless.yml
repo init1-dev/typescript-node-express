@@ -11,7 +11,6 @@ package:
     - "results.html"
     - "css/**"
     - "js/**"
-    - "images/**"
 provider:
   name: aws
   region: eu-west-3

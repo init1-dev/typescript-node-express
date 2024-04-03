@@ -1,4 +1,4 @@
-export const bookingsDataFile = './Data/bookings.json';
-export const roomsDataFile = './Data/rooms.json';
-export const employeesDataFile = './Data/employees.json';
-export const messagesDataFile = './Data/messages.json';
+export const bookingsDataFile = './data/bookings.json';
+export const roomsDataFile = './data/rooms.json';
+export const employeesDataFile = './data/employees.json';
+export const messagesDataFile = './data/messages.json';

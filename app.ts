@@ -14,9 +14,9 @@ export const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/css', express.static(path.resolve(process.cwd(), 'css')));
+app.use('/js', express.static(path.resolve(process.cwd(), 'js')));
+app.use('/images', express.static(path.resolve(process.cwd(), 'images')));
 
 app.use((req: Request, _res: Response, next: NextFunction) => {
     console.log('REQUEST LOGGER', req.method, req.url);
