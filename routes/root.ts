@@ -5,7 +5,7 @@ export const rootRoutes = express.Router();
 
 rootRoutes.get('/', async(_req: Request, res: Response) => {
     try {   
-        res.sendFile(path.join(__dirname, '../index.html'));
+        res.sendFile(path.resolve(process.cwd(), 'index.html'));
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json(error);
@@ -14,7 +14,7 @@ rootRoutes.get('/', async(_req: Request, res: Response) => {
 
 rootRoutes.get('/results', async(_req: Request, res: Response) => {
     try {   
-        res.sendFile(path.join(__dirname, '../results.html'));
+        res.sendFile(path.resolve(process.cwd(), 'results.html'));
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json(error);

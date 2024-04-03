@@ -31,3 +31,11 @@ app.use('/bookings', authMiddleware, bookingsRoutes);
 app.use('/rooms', authMiddleware, roomsRoutes);
 app.use('/employees', authMiddleware, employeesRoutes);
 app.use('/messages', authMiddleware, messagesRoutes);
+
+app.use((_req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    res.status(404).send();
+});
+
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    res.status(err.status || 500).send();
+});
