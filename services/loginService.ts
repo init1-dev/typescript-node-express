@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { SECRET_KEY } from "../util/getSecretKey";
+import { SECRET_TOKEN } from "../util/getKey";
 
 const ANIO_IN_MS = 365.25 * 24 * 60 * 60 * 1000;
 const TEN_YEARS = ANIO_IN_MS * 10;
@@ -16,12 +16,13 @@ export const login = async(username: string, password: string) => {
 }
 
 export const generateAccessToken = (username: string) => {
-    return jwt.sign({username}, SECRET_KEY, { expiresIn: ANIO_IN_MS });
+    return jwt.sign({username}, SECRET_TOKEN, { expiresIn: ANIO_IN_MS });
 }
 
 export const verifyAccessToken = (token: string): boolean => {
     let verify = true;
-    jwt.verify(token, SECRET_KEY, (err) => {
+
+    jwt.verify(token, SECRET_TOKEN, (err) => {        
         if (err) {
             verify = false;
         }
@@ -29,6 +30,6 @@ export const verifyAccessToken = (token: string): boolean => {
     return verify;
 }
 
-export const generatePublicToken = (username = null) => {
-    return jwt.sign({username}, null, { expiresIn: TEN_YEARS, algorithm: "none" });
+export const generatePublicToken = () => {
+    return jwt.sign({}, null, { expiresIn: TEN_YEARS, algorithm: "none" });
 }

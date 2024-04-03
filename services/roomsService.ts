@@ -10,7 +10,7 @@ export const getAllRooms = (res: Response): Room[] | void => {
     if(roomsData.length === 0) {
         return parseResponse('Rooms not found', res);
     }
-    return roomsData;
+    return parseResponse(roomsData, res, 200);
 }
 
 export const getRoom = (id: number, res: Response): Room | void => {
@@ -18,7 +18,7 @@ export const getRoom = (id: number, res: Response): Room | void => {
     if(room === undefined) {
         return parseResponse('Room not found', res);
     }
-    return room;
+    return parseResponse(room, res, 200);
 }
 
 export const newRoom = (data: Room, res: Response): void => {

@@ -10,7 +10,7 @@ export const getAllMessages = (res: Response): Message[] | void => {
     if(messagesData.length === 0) {
         return parseResponse('Messages not found', res);
     }
-    return messagesData;
+    return parseResponse(messagesData, res, 200);
 }
 
 export const getMessage = (id: number, res: Response): Message | void => {
@@ -18,7 +18,7 @@ export const getMessage = (id: number, res: Response): Message | void => {
     if(message === undefined) {
         return parseResponse('Message not found', res);
     }
-    return message;
+    return parseResponse(message, res, 200);
 }
 
 export const newMessage = (data: Message, res: Response): void => {

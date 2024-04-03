@@ -10,7 +10,7 @@ export const getAllBookings = (res: Response): Booking[] | void => {
     if(bookingsData.length === 0) {
         return parseResponse('Bookings not found', res);
     }
-    return bookingsData;
+    return parseResponse(bookingsData, res, 200);
 }
 
 export const getBooking = (id: number, res: Response): Booking | void => {
@@ -18,7 +18,7 @@ export const getBooking = (id: number, res: Response): Booking | void => {
     if(booking === undefined) {
         return parseResponse('Booking not found', res);
     }
-    return booking;
+    return parseResponse(booking, res, 200);
 }
 
 export const newBooking = (data: Booking, res: Response): void => {

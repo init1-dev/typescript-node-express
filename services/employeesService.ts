@@ -10,7 +10,7 @@ export const getAllEmployees = (res: Response): Employee[] | void => {
     if(employeesData.length === 0) {
         return parseResponse('Employees not found', res);
     }
-    return employeesData;
+    return parseResponse(employeesData, res, 200);
 }
 
 export const getEmployee = (id: number, res: Response): Employee | void => {
@@ -18,7 +18,7 @@ export const getEmployee = (id: number, res: Response): Employee | void => {
     if(employee === undefined) {
         return parseResponse('Employee not found', res);
     }
-    return employee;
+    return parseResponse(employee, res, 200);
 }
 
 export const newEmployee = (data: Employee, res: Response): void => {

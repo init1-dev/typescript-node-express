@@ -1,24 +1,26 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { deleteBooking, editBooking, getAllBookings, getBooking, newBooking } from '../services/bookingsService';
+import { RequestWithUser } from '../middleware/auth';
+import { deployAction } from '../util/deployAction';
 
 export const bookingsController = express.Router();
 
 bookingsController.get('/', async(_req: Request, res: Response, _next: NextFunction) => {
-    res.json(getAllBookings(res));
+    deployAction(() => getAllBookings(res), res);
 })
 
 bookingsController.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(getBooking(Number(req.params.id), res));
+    deployAction(() => getBooking(Number(req.params.id), res), res);
 })
 
-bookingsController.post('/', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(newBooking(req.body, res));
+bookingsController.post('/', async( req: RequestWithUser,  res: Response,  _next: NextFunction ) => {
+    deployAction(() => newBooking(req.body, res), res, true, req);
 })
 
-bookingsController.put('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(editBooking(Number(req.params.id), req.body, res));
+bookingsController.put('/:id', async( req: RequestWithUser,  res: Response,  _next: NextFunction ) => {
+    deployAction(() => editBooking(Number(req.params.id), req.body, res), res, true, req);
 })
 
-bookingsController.delete('/:id', async(req: Request, res: Response, _next: NextFunction) => {
-    res.json(deleteBooking(Number(req.params.id), res));
+bookingsController.delete('/:id', async( req: RequestWithUser,  res: Response,  _next: NextFunction ) => {
+    deployAction(() => deleteBooking(Number(req.params.id), res), res, true, req);
 })
