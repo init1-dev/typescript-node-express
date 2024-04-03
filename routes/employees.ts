@@ -6,21 +6,46 @@ import { deployAction } from '../util/deployAction';
 export const employeesRoutes = express.Router();
 
 employeesRoutes.get('/', async(_req: RequestWithUser, res: Response, _next: NextFunction) => {
-    deployAction(() => getAllEmployees(res), res);
+    try {   
+        deployAction(() => getAllEmployees(res), res);
+    } catch (error) {
+        console.error('An error ocurred', error);
+        res.status(500).json(error);
+    }
 })
 
 employeesRoutes.get('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    deployAction(() => getEmployee(Number(req.params.id), res), res);
+    try {   
+        deployAction(() => getEmployee(Number(req.params.id), res), res);
+    } catch (error) {
+        console.error('An error ocurred', error);
+        res.status(500).json(error);
+    }
 })
 
 employeesRoutes.post('/', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    deployAction(() => newEmployee(req.body, res), res, true, req);
+    try {   
+        deployAction(() => newEmployee(req.body, res), res, true, req);
+    } catch (error) {
+        console.error('An error ocurred', error);
+        res.status(500).json(error);
+    }
 })
 
 employeesRoutes.put('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    deployAction(() => editEmployee(Number(req.params.id), req.body, res), res, true, req);
+    try {   
+        deployAction(() => editEmployee(Number(req.params.id), req.body, res), res, true, req);
+    } catch (error) {
+        console.error('An error ocurred', error);
+        res.status(500).json(error);
+    }
 })
 
 employeesRoutes.delete('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    deployAction(() => deleteEmployee(Number(req.params.id), res), res, true, req);
+    try {   
+        deployAction(() => deleteEmployee(Number(req.params.id), res), res, true, req);
+    } catch (error) {
+        console.error('An error ocurred', error);
+        res.status(500).json(error);
+    }
 })
