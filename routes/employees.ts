@@ -21,7 +21,7 @@ employeesRoutes.get('/:id', async(req: Request, res: Response, _next: NextFuncti
     try {
         const responseData = getEmployee(Number(req.params.id));
         if(responseData === undefined) {
-            return parseResponse('Booking not found', res);
+            return parseResponse('Employee not found', res);
         }
         parseResponse(responseData as object, res, 200);
     } catch (error) {

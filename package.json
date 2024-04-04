@@ -32,6 +32,9 @@
   "jest": {
     "testEnvironment": "node",
     "preset": "ts-jest",
+    "testPathIgnorePatterns": [
+      "<rootDir>/dist/"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
