@@ -10,7 +10,7 @@ roomsRoutes.get('/', async(_req: RequestWithUser, res: Response, _next: NextFunc
         deployAction(() => getAllRooms(res), res);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -19,7 +19,7 @@ roomsRoutes.get('/:id', async(req: RequestWithUser, res: Response, _next: NextFu
         deployAction(() => getRoom(Number(req.params.id), res), res);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -28,7 +28,7 @@ roomsRoutes.post('/', async(req: RequestWithUser, res: Response, _next: NextFunc
         deployAction(() => newRoom(req.body, res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -37,7 +37,7 @@ roomsRoutes.put('/:id', async(req: RequestWithUser, res: Response, _next: NextFu
         deployAction(() => editRoom(Number(req.params.id), req.body, res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -46,6 +46,6 @@ roomsRoutes.delete('/:id', async(req: RequestWithUser, res: Response, _next: Nex
         deployAction(() => deleteRoom(Number(req.params.id), res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })

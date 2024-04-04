@@ -10,7 +10,7 @@ bookingsRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction)
         deployAction(() => getAllBookings(res), res);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -19,7 +19,7 @@ bookingsRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunctio
         deployAction(() => getBooking(Number(req.params.id), res), res);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -28,7 +28,7 @@ bookingsRoutes.post('/', async( req: RequestWithUser,  res: Response,  _next: Ne
         deployAction(() => newBooking(req.body, res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -37,7 +37,7 @@ bookingsRoutes.put('/:id', async( req: RequestWithUser,  res: Response,  _next: 
         deployAction(() => editBooking(Number(req.params.id), req.body, res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -46,6 +46,6 @@ bookingsRoutes.delete('/:id', async( req: RequestWithUser,  res: Response,  _nex
         deployAction(() => deleteBooking(Number(req.params.id), res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })

@@ -10,7 +10,7 @@ employeesRoutes.get('/', async(_req: RequestWithUser, res: Response, _next: Next
         deployAction(() => getAllEmployees(res), res);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -19,7 +19,7 @@ employeesRoutes.get('/:id', async(req: RequestWithUser, res: Response, _next: Ne
         deployAction(() => getEmployee(Number(req.params.id), res), res);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -28,7 +28,7 @@ employeesRoutes.post('/', async(req: RequestWithUser, res: Response, _next: Next
         deployAction(() => newEmployee(req.body, res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -37,7 +37,7 @@ employeesRoutes.put('/:id', async(req: RequestWithUser, res: Response, _next: Ne
         deployAction(() => editEmployee(Number(req.params.id), req.body, res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
 
@@ -46,6 +46,6 @@ employeesRoutes.delete('/:id', async(req: RequestWithUser, res: Response, _next:
         deployAction(() => deleteEmployee(Number(req.params.id), res), res, true, req);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json(error);
+        res.status(500).json({error});
     }
 })
