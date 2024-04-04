@@ -1,13 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { deleteBooking, editBooking, getAllBookings, getBooking, newBooking } from '../services/bookingsService';
-import { RequestWithUser } from '../middleware/auth';
-import { deployAction } from '../util/deployAction';
+import { parseResponse } from '../util/parseResponse';
 
 export const bookingsRoutes = express.Router();
 
 bookingsRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction) => {
     try {
-        deployAction(() => getAllBookings(res), res);
+        const responseData = getAllBookings();
+        if(responseData.length === 0) {
+            parseResponse('Bookings not found', res);
+        }
+        parseResponse(responseData, res, 200);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
@@ -16,34 +19,41 @@ bookingsRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction)
 
 bookingsRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
     try {
-        deployAction(() => getBooking(Number(req.params.id), res), res);
+        const responseData = getBooking(Number(req.params.id));
+        if(responseData === undefined) {
+            parseResponse('Booking not found', res);
+        }
+        parseResponse(responseData as object, res, 200);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
     }
 })
 
-bookingsRoutes.post('/', async( req: RequestWithUser,  res: Response,  _next: NextFunction ) => {
+bookingsRoutes.post('/', async( req: Request,  res: Response,  _next: NextFunction ) => {
     try {   
-        deployAction(() => newBooking(req.body, res), res, true, req);
+        const responseData = newBooking(req.body);
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
     }
 })
 
-bookingsRoutes.put('/:id', async( req: RequestWithUser,  res: Response,  _next: NextFunction ) => {
+bookingsRoutes.put('/:id', async( req: Request,  res: Response,  _next: NextFunction ) => {
     try {   
-        deployAction(() => editBooking(Number(req.params.id), req.body, res), res, true, req);
+        const responseData = editBooking(Number(req.params.id), req.body)
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
     }
 })
 
-bookingsRoutes.delete('/:id', async( req: RequestWithUser,  res: Response,  _next: NextFunction ) => {
+bookingsRoutes.delete('/:id', async( req: Request,  res: Response,  _next: NextFunction ) => {
     try {   
-        deployAction(() => deleteBooking(Number(req.params.id), res), res, true, req);
+        const responseData = deleteBooking(Number(req.params.id));
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});

@@ -19,17 +19,6 @@ export const generateAccessToken = (username: string) => {
     return jwt.sign({username}, SECRET_TOKEN, { expiresIn: ANIO_IN_MS });
 }
 
-export const verifyAccessToken = (token: string): boolean => {
-    let verify = true;
-
-    jwt.verify(token, SECRET_TOKEN, (err) => {        
-        if (err) {
-            verify = false;
-        }
-    });
-    return verify;
-}
-
 export const generatePublicToken = () => {
     return jwt.sign({}, null, { expiresIn: TEN_YEARS, algorithm: "none" });
 }

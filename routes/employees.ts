@@ -1,51 +1,61 @@
-import express, { NextFunction, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { deleteEmployee, editEmployee, getAllEmployees, getEmployee, newEmployee } from '../services/employeesService';
-import { RequestWithUser } from '../middleware/auth';
-import { deployAction } from '../util/deployAction';
+import { parseResponse } from '../util/parseResponse';
 
 export const employeesRoutes = express.Router();
 
-employeesRoutes.get('/', async(_req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => getAllEmployees(res), res);
+employeesRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = getAllEmployees();
+        if(responseData.length === 0) {
+            parseResponse('Employees not found', res);
+        }
+        parseResponse(responseData, res, 200);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json({error});
+        res.status(500).json(error);
     }
 })
 
-employeesRoutes.get('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => getEmployee(Number(req.params.id), res), res);
+employeesRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = getEmployee(Number(req.params.id));
+        if(responseData === undefined) {
+            parseResponse('Booking not found', res);
+        }
+        parseResponse(responseData as object, res, 200);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json({error});
+        res.status(500).json(error);
     }
 })
 
-employeesRoutes.post('/', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => newEmployee(req.body, res), res, true, req);
+employeesRoutes.post('/', async(req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = newEmployee(req.body);
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json({error});
+        res.status(500).json(error);
     }
 })
 
-employeesRoutes.put('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => editEmployee(Number(req.params.id), req.body, res), res, true, req);
+employeesRoutes.put('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = editEmployee(Number(req.params.id), req.body);
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json({error});
+        res.status(500).json(error);
     }
 })
 
-employeesRoutes.delete('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => deleteEmployee(Number(req.params.id), res), res, true, req);
+employeesRoutes.delete('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = deleteEmployee(Number(req.params.id));
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
-        res.status(500).json({error});
+        res.status(500).json(error);
     }
 })

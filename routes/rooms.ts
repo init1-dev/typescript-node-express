@@ -1,49 +1,59 @@
-import express, { NextFunction, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { deleteRoom, editRoom, getAllRooms, getRoom, newRoom } from '../services/roomsService';
-import { RequestWithUser } from '../middleware/auth';
-import { deployAction } from '../util/deployAction';
+import { parseResponse } from '../util/parseResponse';
 
 export const roomsRoutes = express.Router();
 
-roomsRoutes.get('/', async(_req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => getAllRooms(res), res);
+roomsRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = getAllRooms();
+        if(responseData.length === 0) {
+            parseResponse('Rooms not found', res);
+        }
+        parseResponse(responseData, res, 200);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
     }
 })
 
-roomsRoutes.get('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => getRoom(Number(req.params.id), res), res);
+roomsRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+    try {  
+        const responseData = getRoom(Number(req.params.id));
+        if(responseData === undefined) {
+            parseResponse('Room not found', res);
+        }
+        parseResponse(responseData as object, res, 200);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
     }
 })
 
-roomsRoutes.post('/', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => newRoom(req.body, res), res, true, req);
+roomsRoutes.post('/', async(req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = newRoom(req.body);
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
     }
 })
 
-roomsRoutes.put('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => editRoom(Number(req.params.id), req.body, res), res, true, req);
+roomsRoutes.put('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = editRoom(Number(req.params.id), req.body);
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});
     }
 })
 
-roomsRoutes.delete('/:id', async(req: RequestWithUser, res: Response, _next: NextFunction) => {
-    try {   
-        deployAction(() => deleteRoom(Number(req.params.id), res), res, true, req);
+roomsRoutes.delete('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+    try {
+        const responseData = deleteRoom(Number(req.params.id));
+        parseResponse(responseData.message, res, responseData.status);
     } catch (error) {
         console.error('An error ocurred', error);
         res.status(500).json({error});

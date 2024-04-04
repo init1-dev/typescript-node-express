@@ -8,16 +8,16 @@ loginRoutes.post('/', async(req, res) => {
     const { username, password } = req.body;
 
     try {
-        let loginActin = null;
+        let loginAction = null;
         
         if(username === 'init1.dev' && password === '12345'){
-            loginActin = await login(username, password);
+            loginAction = await login(username, password);
         };
     
-        if(loginActin) {
+        if(loginAction) {
             return parseResponse({
-                user: loginActin.user,
-                token: loginActin.token
+                user: loginAction.user,
+                token: loginAction.token
             }, res, 200);
         };
 

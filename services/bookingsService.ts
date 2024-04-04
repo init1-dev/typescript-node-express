@@ -1,52 +1,62 @@
 import { Booking } from '../interfaces/Bookings';
+import { ResponseStatus } from '../interfaces/responseStatus';
 import { bookingsDataFile } from '../util/dataFiles';
 import { readDataFromFile, writeFile } from '../util/fileOperations';
-import { parseResponse } from '../util/parseResponse';
-import { Response } from 'express';
 
 const bookingsData = readDataFromFile(bookingsDataFile) as Booking[];
 
-export const getAllBookings = (res: Response): Booking[] | void => {
-    if(bookingsData.length === 0) {
-        return parseResponse('Bookings not found', res);
-    }
-    return parseResponse(bookingsData, res, 200);
+export const getAllBookings = (): Booking[] => {
+    return bookingsData;
 }
 
-export const getBooking = (id: number, res: Response): Booking | void => {
-    const booking = bookingsData.find(booking => booking.id === id);
-    if(booking === undefined) {
-        return parseResponse('Booking not found', res);
-    }
-    return parseResponse(booking, res, 200);
+export const getBooking = (id: number): Booking | undefined => {
+    return bookingsData.find(booking => booking.id === id);
 }
 
-export const newBooking = (data: Booking, res: Response): void => {
+export const newBooking = (data: Booking): ResponseStatus => {
     const bookingToAdd = bookingsData.findIndex(booking => booking.id === data?.id);
     if(data !== undefined && bookingToAdd === -1) {
         bookingsData.push(data);
         writeFile(bookingsDataFile, bookingsData);
-        return parseResponse(`Booking #${data.id} added successfully`, res, 200);
+        return {
+            status: 200,
+            message: `Booking #${data.id} added successfully`
+        }
     }
-    return parseResponse(`Error creating booking`, res);
+    return {
+        status: 404,
+        message: `Error creating booking`
+    }
 }
 
-export const editBooking = (id: number, data: Booking, res: Response): void => {
+export const editBooking = (id: number, data: Booking): ResponseStatus => {
     const bookingtoEdit = bookingsData.findIndex(booking => booking.id === id);
     if(data !== undefined && bookingtoEdit !== -1){
         bookingsData.splice(bookingtoEdit, 1, data);
         writeFile(bookingsDataFile, bookingsData);
-        return parseResponse(`Booking #${id} edited successfully`, res, 200);
+        return {
+            status: 404,
+            message: `Booking #${id} edited successfully`
+        }
     } 
-    return parseResponse(`Error editing booking #${id}`, res);
+    return {
+        status: 200,
+        message: `Error editing booking #${id}`
+    }
 }
 
-export const deleteBooking = (id: number, res: Response): void => {
+export const deleteBooking = (id: number): ResponseStatus => {
     const bookingToDelete = bookingsData.findIndex(booking => booking.id === id);
     if(bookingToDelete !== -1){
         bookingsData.splice(bookingToDelete, 1);
         writeFile(bookingsDataFile, bookingsData);
-        return parseResponse(`Booking #${id} deleted successfully`, res, 200);
+        return {
+            status: 404,
+            message: `Booking #${id} deleted successfully`
+        }
     }
-    return parseResponse(`Error deleting booking #${id}`, res);
+    return {
+        status: 200,
+        message: `Error deleting booking #${id}`
+    }
 }
