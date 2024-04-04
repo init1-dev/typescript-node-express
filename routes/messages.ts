@@ -8,7 +8,7 @@ messagesRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction)
     try {
         const responseData = getAllMessages();
         if(responseData.length === 0) {
-            parseResponse('Messages not found', res);
+            return parseResponse('Messages not found', res);
         }
         parseResponse(responseData, res, 200);
     } catch (error) {
@@ -21,7 +21,7 @@ messagesRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunctio
     try {
         const responseData = getMessage(Number(req.params.id));
         if(responseData === undefined) {
-            parseResponse('Message not found', res);
+            return parseResponse('Message not found', res);
         }
         parseResponse(responseData as object, res, 200);
     } catch (error) {

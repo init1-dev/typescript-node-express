@@ -8,7 +8,7 @@ bookingsRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction)
     try {
         const responseData = getAllBookings();
         if(responseData.length === 0) {
-            parseResponse('Bookings not found', res);
+            return parseResponse('Bookings not found', res);
         }
         parseResponse(responseData, res, 200);
     } catch (error) {
@@ -21,7 +21,7 @@ bookingsRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunctio
     try {
         const responseData = getBooking(Number(req.params.id));
         if(responseData === undefined) {
-            parseResponse('Booking not found', res);
+            return parseResponse('Booking not found', res);
         }
         parseResponse(responseData as object, res, 200);
     } catch (error) {

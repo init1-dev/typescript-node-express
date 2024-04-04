@@ -8,7 +8,7 @@ roomsRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction) =>
     try {
         const responseData = getAllRooms();
         if(responseData.length === 0) {
-            parseResponse('Rooms not found', res);
+            return parseResponse('Rooms not found', res);
         }
         parseResponse(responseData, res, 200);
     } catch (error) {
@@ -21,7 +21,7 @@ roomsRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunction) 
     try {  
         const responseData = getRoom(Number(req.params.id));
         if(responseData === undefined) {
-            parseResponse('Room not found', res);
+            return parseResponse('Room not found', res);
         }
         parseResponse(responseData as object, res, 200);
     } catch (error) {

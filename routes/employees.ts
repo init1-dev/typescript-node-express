@@ -8,7 +8,7 @@ employeesRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction
     try {
         const responseData = getAllEmployees();
         if(responseData.length === 0) {
-            parseResponse('Employees not found', res);
+            return parseResponse('Employees not found', res);
         }
         parseResponse(responseData, res, 200);
     } catch (error) {
@@ -21,7 +21,7 @@ employeesRoutes.get('/:id', async(req: Request, res: Response, _next: NextFuncti
     try {
         const responseData = getEmployee(Number(req.params.id));
         if(responseData === undefined) {
-            parseResponse('Booking not found', res);
+            return parseResponse('Booking not found', res);
         }
         parseResponse(responseData as object, res, 200);
     } catch (error) {
