@@ -16,9 +16,5 @@ export const login = async(username: string, password: string) => {
 }
 
 export const generateAccessToken = (username: string) => {
-    return jwt.sign({username}, SECRET_TOKEN, { expiresIn: ANIO_IN_MS });
-}
-
-export const generatePublicToken = () => {
-    return jwt.sign({}, null, { expiresIn: TEN_YEARS, algorithm: "none" });
+    return jwt.sign({username}, SECRET_TOKEN, { expiresIn: TEN_YEARS });
 }

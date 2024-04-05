@@ -33,7 +33,7 @@
             "type": "apiKey",
             "name": "Authorization",
             "in": "header",
-            "description": "Enter the token with the Bearer:  prefix, example:<br><strong>Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXQxLmRldiIsImlhdCI6MTcxMjIyNzY1MSwiZXhwIjozMzI2OTgyNzY1MX0.dgHyJVZ_xRIYGnEL4nJjFps8MXgA26nXiI58Nq70XtU</strong><br><br>"
+            "description": "Enter the token with the Bearer:  prefix, example:<br><strong>Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXQxLmRldiIsImlhdCI6MTcxMjMzNjE0OCwiZXhwIjozMzI2OTkzNjE0OH0.Zt39eALUudtNSxLHRGHXEFZbfs4a2uW8VMfgUuepvxU</strong><br><br>"
         }
     },
     "security": [

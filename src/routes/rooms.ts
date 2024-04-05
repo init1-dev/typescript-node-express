@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { deleteRoom, editRoom, getAllRooms, getRoom, newRoom } from '../services/roomsService';
 import { parseResponse } from '../util/parseResponse';
+import { AppError } from '../classes/AppError';
 
 export const roomsRoutes = express.Router();
 
@@ -16,6 +17,9 @@ roomsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => 
 roomsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {  
         const responseData = getRoom(Number(req.params.id));
+        if(!responseData){
+            throw new AppError(404, "Not found");
+        }
         parseResponse(responseData as object, res, 200);
     } catch (error) {
         next(error);

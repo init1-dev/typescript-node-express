@@ -13,33 +13,33 @@ export const getBooking = (id: number): Booking | undefined => {
 }
 
 export const newBooking = (data: Booking): Booking => {
-    const item = getAllBookings();
-    const itemToAdd = item.findIndex(booking => booking.id === data?.id);
+    const items = getAllBookings();
+    const itemToAdd = items.findIndex(booking => booking.id === data?.id);
     if(data !== undefined && itemToAdd === -1) {
-        item.push(data);
-        writeFile(bookingsDataFile, item);
+        items.push(data);
+        writeFile(bookingsDataFile, items);
         return data;
     }
     throw new AppError(404, 'Error creating booking');
 }
 
 export const editBooking = (id: number, data: Booking): Booking => {
-    const item = getAllBookings();
-    const itemToEdit = item.findIndex(booking => booking.id === id);
+    const items = getAllBookings();
+    const itemToEdit = items.findIndex(booking => booking.id === id);
     if(data !== undefined && itemToEdit !== -1){
-        item.splice(itemToEdit, 1, data);
-        writeFile(bookingsDataFile, item);
-        return item[itemToEdit];
+        items.splice(itemToEdit, 1, data);
+        writeFile(bookingsDataFile, items);
+        return items[itemToEdit];
     } 
     throw new AppError(404, `Error editing booking #${id}`);
 }
 
 export const deleteBooking = (id: number): string => {
-    const item = getAllBookings();
-    const itemToDelete = item.findIndex(booking => booking.id === id);
+    const items = getAllBookings();
+    const itemToDelete = items.findIndex(booking => booking.id === id);
     if(itemToDelete !== -1){
-        item.splice(itemToDelete, 1);
-        writeFile(bookingsDataFile, item);
+        items.splice(itemToDelete, 1);
+        writeFile(bookingsDataFile, items);
         return "success";
     }
     throw new AppError(404, `Error deleting booking #${id}`);

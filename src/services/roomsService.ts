@@ -13,33 +13,33 @@ export const getRoom = (id: number): Room | undefined => {
 }
 
 export const newRoom = (data: Room): Room => {
-    const item = getAllRooms();
-    const itemToAdd = item.findIndex(room => room.id === data?.id);
+    const items = getAllRooms();
+    const itemToAdd = items.findIndex(room => room.id === data?.id);
     if(data !== undefined && itemToAdd === -1) {
-        item.push(data);
-        writeFile(roomsDataFile, item);
+        items.push(data);
+        writeFile(roomsDataFile, items);
         return data;
     }
     throw new AppError(404, 'Error creating room');
 }
 
 export const editRoom = (id: number, data: Room): Room => {
-    const item = getAllRooms();
-    const itemToEdit = item.findIndex(room => room.id === id);
+    const items = getAllRooms();
+    const itemToEdit = items.findIndex(room => room.id === id);
     if(data !== undefined && itemToEdit !== -1){
-        item.splice(itemToEdit, 1, data);
-        writeFile(roomsDataFile, item);
-        return item[itemToEdit];
+        items.splice(itemToEdit, 1, data);
+        writeFile(roomsDataFile, items);
+        return items[itemToEdit];
     }
     throw new AppError(404, `Error editing room #${id}`);
 }
 
 export const deleteRoom = (id: number): string => {
-    const item = getAllRooms();
-    const itemToDelete = item.findIndex(room => room.id === id);
+    const items = getAllRooms();
+    const itemToDelete = items.findIndex(room => room.id === id);
     if(itemToDelete !== -1){
-        item.splice(itemToDelete, 1);
-        writeFile(roomsDataFile, item);
+        items.splice(itemToDelete, 1);
+        writeFile(roomsDataFile, items);
         return "success"
     }
     throw new AppError(404, `Error deleting room #${id}`);

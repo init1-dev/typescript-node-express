@@ -1,7 +1,11 @@
 import request from 'supertest';
 import { app } from '../app';
+import { generateAccessToken } from '../services/loginService';
 
-const token: string = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXQxLmRldiIsImlhdCI6MTcxMjIzMTYzNywiZXhwIjozMzI2OTgzMTYzN30.sqUafoa1qzT68E_LKYw-AWWINnFSfLPCouzUy_VVy_g";
+const token = generateAccessToken("init1");
+const AUTH_KEY = `Bearer ${token}`;
+console.log(AUTH_KEY);
+
 
 describe('Employees', () => {
 
@@ -9,7 +13,7 @@ describe('Employees', () => {
         
         const response = await request(app)
             .get("/employees/1")
-            .set({authorization: token})
+            .set({authorization: AUTH_KEY})
             
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
@@ -47,12 +51,12 @@ describe('Employees', () => {
         
         const response = await request(app)
             .get("/employees/50")
-            .set({authorization: token})
+            .set({authorization: AUTH_KEY})
             
         expect(response.statusCode).toEqual(404);
         expect(response.body).toMatchObject({
             "status": 404,
-            "message": "Employee not found"
+            "message": "Not found"
         })
     })
 
@@ -100,7 +104,7 @@ describe('Employees', () => {
                 "status": false,
                 "password": "12345"
             })
-            .set({authorization: token})
+            .set({authorization: AUTH_KEY})
             
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
@@ -140,7 +144,7 @@ describe('Employees', () => {
                 "status": false,
                 "password": "12345"
             })
-            .set({authorization: token})
+            .set({authorization: AUTH_KEY})
             
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
@@ -178,7 +182,7 @@ describe('Employees', () => {
         
         const response = await request(app)
             .delete("/employees/70")
-            .set({authorization: token})
+            .set({authorization: AUTH_KEY})
             
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({

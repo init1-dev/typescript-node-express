@@ -13,33 +13,33 @@ export const getMessage = (id: number): Message | undefined => {
 }
 
 export const newMessage = (data: Message): Message => {
-    const item = getAllMessages();
-    const itemToAdd = item.findIndex(message => message.id === data?.id);
+    const items = getAllMessages();
+    const itemToAdd = items.findIndex(message => message.id === data?.id);
     if(data !== undefined && itemToAdd === -1) {
-        item.push(data);
-        writeFile(messagesDataFile, item);
+        items.push(data);
+        writeFile(messagesDataFile, items);
         return data;
     }
     throw new AppError(404, 'Error creating message');
 }
 
 export const editMessage = (id: number, data: Message): Message => {
-    const item = getAllMessages();
-    const itemToEdit = item.findIndex(message => message.id === id);
+    const items = getAllMessages();
+    const itemToEdit = items.findIndex(message => message.id === id);
     if(data !== undefined && itemToEdit !== -1){
-        item.splice(itemToEdit, 1, data);
-        writeFile(messagesDataFile, item);
-        return item[itemToEdit];
+        items.splice(itemToEdit, 1, data);
+        writeFile(messagesDataFile, items);
+        return items[itemToEdit];
     }
     throw new AppError(404, `Error editing message #${id}`);
 }
 
 export const deleteMessage = (id: number): string => {
-    const item = getAllMessages();
-    const itemToDelete = item.findIndex(message => message.id === id);
+    const items = getAllMessages();
+    const itemToDelete = items.findIndex(message => message.id === id);
     if(itemToDelete !== -1){
-        item.splice(itemToDelete, 1);
-        writeFile(messagesDataFile, item);
+        items.splice(itemToDelete, 1);
+        writeFile(messagesDataFile, items);
         return "success";
     }
     throw new AppError(404, `Error deleting message #${id}`);

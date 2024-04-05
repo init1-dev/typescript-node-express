@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { deleteEmployee, editEmployee, getAllEmployees, getEmployee, newEmployee } from '../services/employeesService';
 import { parseResponse } from '../util/parseResponse';
+import { AppError } from '../classes/AppError';
 
 export const employeesRoutes = express.Router();
 
@@ -16,6 +17,9 @@ employeesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction)
 employeesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = getEmployee(Number(req.params.id));
+        if(!responseData){
+            throw new AppError(404, "Not found");
+        }
         parseResponse(responseData as object, res, 200);
     } catch (error) {
         next(error);

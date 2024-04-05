@@ -14,7 +14,7 @@ export const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static('public'));
+app.use(express.static('src/public'));
 
 app.use((req: Request, _res: Response, next: NextFunction) => {
     console.log('REQUEST LOGGER', req.method, req.url);

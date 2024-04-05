@@ -13,33 +13,33 @@ export const getEmployee = (id: number): Employee | undefined => {
 }
 
 export const newEmployee = (data: Employee): Employee => {
-    const item = getAllEmployees();
-    const itemToAdd = item.findIndex(employee => employee.id === data?.id);
+    const items = getAllEmployees();
+    const itemToAdd = items.findIndex(employee => employee.id === data?.id);
     if(data !== undefined && itemToAdd === -1) {
-        item.push(data);
-        writeFile(employeesDataFile, item);
+        items.push(data);
+        writeFile(employeesDataFile, items);
         return data;
     }
     throw new AppError(404, 'Error creating employee');
 }
 
 export const editEmployee = (id: number, data: Employee): Employee => {
-    const item = getAllEmployees();
-    const itemToEdit = item.findIndex(employee => employee.id === id);
+    const items = getAllEmployees();
+    const itemToEdit = items.findIndex(employee => employee.id === id);
     if(data !== undefined && itemToEdit !== -1){
-        item.splice(itemToEdit, 1, data);
-        writeFile(employeesDataFile, item);
-        return item[itemToEdit];
+        items.splice(itemToEdit, 1, data);
+        writeFile(employeesDataFile, items);
+        return items[itemToEdit];
     }
     throw new AppError(404, `Error editing employee #${id}`);
 }
 
 export const deleteEmployee = (id: number): string => {
-    const item = getAllEmployees();
-    const itemToDelete = item.findIndex(employee => employee.id === id);
+    const items = getAllEmployees();
+    const itemToDelete = items.findIndex(employee => employee.id === id);
     if(itemToDelete !== -1){
-        item.splice(itemToDelete, 1);
-        writeFile(employeesDataFile, item);
+        items.splice(itemToDelete, 1);
+        writeFile(employeesDataFile, items);
         return "success";
     }
     throw new AppError(404, `Error deleting employee #${id}`);
