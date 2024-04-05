@@ -228,7 +228,7 @@
                         "required": true,
                         "type": "integer",
                         "format": "int64",
-                        "example": 100
+                        "example": 30
                     }
                 ],
                 "responses": {
@@ -648,7 +648,7 @@
                         "required": true,
                         "type": "integer",
                         "format": "int64",
-                        "example": 100
+                        "example": 30
                     }
                 ],
                 "responses": {
@@ -1068,7 +1068,7 @@
                         "required": true,
                         "type": "integer",
                         "format": "int64",
-                        "example": 100
+                        "example": 30
                     }
                 ],
                 "responses": {
@@ -1494,7 +1494,7 @@
                         "required": true,
                         "type": "integer",
                         "format": "int64",
-                        "example": 100
+                        "example": 30
                     }
                 ],
                 "responses": {

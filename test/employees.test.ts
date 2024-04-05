@@ -105,7 +105,20 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
-            "message": "Employee #64 added successfully"
+            "payload": {
+                "id": 64,
+                "photo": "https://avatars.githubusercontent.com/u/79700122?v=4",
+                "name": "Init",
+                "lastname": "Dev",
+                "fullname": "init.dev",
+                "employee_id": "3bc45dfe-8286",
+                "email": "init1.dev@gmail.com",
+                "start_date": "1/22/2024",
+                "description": "CEO",
+                "phone": "173-125-4724",
+                "status": false,
+                "password": "12345"
+            }
         })
     })
 
@@ -132,7 +145,20 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
-            "message": "Employee #64 edited successfully"
+            "payload": {
+                "id": 70,
+                "photo": "https://avatars.githubusercontent.com/u/79700122?v=4",
+                "name": "Init",
+                "lastname": "Dev",
+                "fullname": "init.dev",
+                "employee_id": "3bc45dfe-8286",
+                "email": "init1.dev@gmail.com",
+                "start_date": "1/22/2024",
+                "description": "CEO",
+                "phone": "173-125-4724",
+                "status": false,
+                "password": "12345"
+            }
         })
     })
 
@@ -157,7 +183,7 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
-            "message": "Employee #70 deleted successfully"
+            "message": "success"
         })
     })
 

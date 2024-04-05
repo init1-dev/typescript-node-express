@@ -4,58 +4,47 @@ import { parseResponse } from '../util/parseResponse';
 
 export const roomsRoutes = express.Router();
 
-roomsRoutes.get('/', async(_req: Request, res: Response, _next: NextFunction) => {
+roomsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = getAllRooms();
-        if(responseData.length === 0) {
-            return parseResponse('Rooms not found', res);
-        }
         parseResponse(responseData, res, 200);
     } catch (error) {
-        console.error('An error ocurred', error);
-        res.status(500).json({error});
+        next(error);
     }
 })
 
-roomsRoutes.get('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+roomsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {  
         const responseData = getRoom(Number(req.params.id));
-        if(responseData === undefined) {
-            return parseResponse('Room not found', res);
-        }
         parseResponse(responseData as object, res, 200);
     } catch (error) {
-        console.error('An error ocurred', error);
-        res.status(500).json({error});
+        next(error);
     }
 })
 
-roomsRoutes.post('/', async(req: Request, res: Response, _next: NextFunction) => {
+roomsRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = newRoom(req.body);
-        parseResponse(responseData.message, res, responseData.status);
+        parseResponse(responseData, res, 200);
     } catch (error) {
-        console.error('An error ocurred', error);
-        res.status(500).json({error});
+        next(error);
     }
 })
 
-roomsRoutes.put('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+roomsRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = editRoom(Number(req.params.id), req.body);
-        parseResponse(responseData.message, res, responseData.status);
+        parseResponse(responseData, res, 200);
     } catch (error) {
-        console.error('An error ocurred', error);
-        res.status(500).json({error});
+        next(error);
     }
 })
 
-roomsRoutes.delete('/:id', async(req: Request, res: Response, _next: NextFunction) => {
+roomsRoutes.delete('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = deleteRoom(Number(req.params.id));
-        parseResponse(responseData.message, res, responseData.status);
+        parseResponse(responseData, res, 200);
     } catch (error) {
-        console.error('An error ocurred', error);
-        res.status(500).json({error});
+        next(error);
     }
 })

@@ -1,62 +1,46 @@
 import { roomsDataFile } from '../util/dataFiles';
 import { readDataFromFile, writeFile } from '../util/fileOperations';
 import { Room } from '../interfaces/Rooms';
-import { ResponseStatus } from '../interfaces/responseStatus';
-
-const roomsData = readDataFromFile(roomsDataFile) as Room[];
+import { AppError } from '../classes/AppError';
 
 export const getAllRooms = (): Room[] => {
-    return roomsData;
+    const rooms = readDataFromFile(roomsDataFile) as Room[];
+    return rooms;
 }
 
 export const getRoom = (id: number): Room | undefined => {
-    return roomsData.find(room => room.id === id);
+    return getAllRooms().find(room => room.id === id);
 }
 
-export const newRoom = (data: Room): ResponseStatus => {
-    const roomToAdd = roomsData.findIndex(room => room.id === data?.id);
-    if(data !== undefined && roomToAdd === -1) {
-        roomsData.push(data);
-        writeFile(roomsDataFile, roomsData);
-        return {
-            status: 200,
-            message: `Room #${data.id} added successfully`
-        }
+export const newRoom = (data: Room): Room => {
+    const item = getAllRooms();
+    const itemToAdd = item.findIndex(room => room.id === data?.id);
+    if(data !== undefined && itemToAdd === -1) {
+        item.push(data);
+        writeFile(roomsDataFile, item);
+        return data;
     }
-    return {
-        status: 404,
-        message: `Error creating room`
-    }
+    throw new AppError(404, 'Error creating room');
 }
 
-export const editRoom = (id: number, data: Room): ResponseStatus => {
-    const roomtoEdit = roomsData.findIndex(room => room.id === id);
-    if(data !== undefined && roomtoEdit !== -1){
-        roomsData.splice(roomtoEdit, 1, data);
-        writeFile(roomsDataFile, roomsData);
-        return {
-            status: 200,
-            message: `Room #${id} edited successfully`
-        }
+export const editRoom = (id: number, data: Room): Room => {
+    const item = getAllRooms();
+    const itemToEdit = item.findIndex(room => room.id === id);
+    if(data !== undefined && itemToEdit !== -1){
+        item.splice(itemToEdit, 1, data);
+        writeFile(roomsDataFile, item);
+        return item[itemToEdit];
     }
-    return {
-        status: 404,
-        message: `Error editing room ${id}`
-    }
+    throw new AppError(404, `Error editing room #${id}`);
 }
 
-export const deleteRoom = (id: number): ResponseStatus => {
-    const roomToDelete = roomsData.findIndex(room => room.id === id);
-    if(roomToDelete !== -1){
-        roomsData.splice(roomToDelete, 1);
-        writeFile(roomsDataFile, roomsData);
-        return {
-            status: 200,
-            message: `Room #${id} deleted successfully`
-        }
+export const deleteRoom = (id: number): string => {
+    const item = getAllRooms();
+    const itemToDelete = item.findIndex(room => room.id === id);
+    if(itemToDelete !== -1){
+        item.splice(itemToDelete, 1);
+        writeFile(roomsDataFile, item);
+        return "success"
     }
-    return {
-        status: 404,
-        message: `Error deleting room ${id}`
-    }
+    throw new AppError(404, `Error deleting room #${id}`);
 }

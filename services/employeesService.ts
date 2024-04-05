@@ -1,62 +1,46 @@
+import { AppError } from '../classes/AppError';
 import { Employee } from '../interfaces/Employees';
-import { ResponseStatus } from '../interfaces/responseStatus';
 import { employeesDataFile } from '../util/dataFiles';
 import { readDataFromFile, writeFile } from '../util/fileOperations';
 
-const employeesData = readDataFromFile(employeesDataFile) as Employee[];
-
 export const getAllEmployees = (): Employee[] => {
+    const employeesData = readDataFromFile(employeesDataFile) as Employee[];
     return employeesData;
 }
 
 export const getEmployee = (id: number): Employee | undefined => {
-    return employeesData.find(employee => employee.id === id);
+    return getAllEmployees().find(employee => employee.id === id);
 }
 
-export const newEmployee = (data: Employee): ResponseStatus => {
-    const employeeToAdd = employeesData.findIndex(employee => employee.id === data?.id);
-    if(data !== undefined && employeeToAdd === -1) {
-        employeesData.push(data);
-        writeFile(employeesDataFile, employeesData);
-        return {
-            status: 200,
-            message: `Employee #${data.id} added successfully`
-        }
+export const newEmployee = (data: Employee): Employee => {
+    const item = getAllEmployees();
+    const itemToAdd = item.findIndex(employee => employee.id === data?.id);
+    if(data !== undefined && itemToAdd === -1) {
+        item.push(data);
+        writeFile(employeesDataFile, item);
+        return data;
     }
-    return {
-        status: 404,
-        message: `Error creating employee`
-    }
+    throw new AppError(404, 'Error creating employee');
 }
 
-export const editEmployee = (id: number, data: Employee): ResponseStatus => {
-    const employeetoEdit = employeesData.findIndex(employee => employee.id === id);
-    if(data !== undefined && employeetoEdit !== -1){
-        employeesData.splice(employeetoEdit, 1, data);
-        writeFile(employeesDataFile, employeesData);
-        return {
-            status: 200,
-            message: `Employee #${id} edited successfully`
-        }
+export const editEmployee = (id: number, data: Employee): Employee => {
+    const item = getAllEmployees();
+    const itemToEdit = item.findIndex(employee => employee.id === id);
+    if(data !== undefined && itemToEdit !== -1){
+        item.splice(itemToEdit, 1, data);
+        writeFile(employeesDataFile, item);
+        return item[itemToEdit];
     }
-    return {
-        status: 404,
-        message: `Error editing employee ${id}`
-    }
+    throw new AppError(404, `Error editing employee #${id}`);
 }
 
-export const deleteEmployee = (id: number): ResponseStatus => {
-    const employeeToDelete = employeesData.findIndex(employee => employee.id === id);
-    if(employeeToDelete !== -1){
-        employeesData.splice(employeeToDelete, 1);
-        writeFile(employeesDataFile, employeesData);
-        return {
-            status: 200,
-            message: `Employee #${id} deleted successfully`
-        }
+export const deleteEmployee = (id: number): string => {
+    const item = getAllEmployees();
+    const itemToDelete = item.findIndex(employee => employee.id === id);
+    if(itemToDelete !== -1){
+        item.splice(itemToDelete, 1);
+        writeFile(employeesDataFile, item);
+        return "success";
     }
-    return {
-        status: 404,
-        message: `Error deleting employee ${id}`
-    }
+    throw new AppError(404, `Error deleting employee #${id}`);
 }

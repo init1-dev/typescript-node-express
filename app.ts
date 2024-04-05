@@ -7,6 +7,7 @@ import { employeesRoutes } from './routes/employees';
 import { messagesRoutes } from './routes/messages';
 import { loginRoutes } from './routes/login';
 import { authMiddleware } from './middleware/auth';
+import { parseResponse } from './util/parseResponse';
 
 export const app = express();
 
@@ -30,12 +31,12 @@ app.use('/employees', authMiddleware, employeesRoutes);
 app.use('/messages', authMiddleware, messagesRoutes);
 
 app.use((_req: express.Request, res: express.Response, _next: express.NextFunction) => {
-    res.status(404).json({
-        status: 404,
-        message: "Invalid path, please refer to the documentation to see available routes."
-    });
+    parseResponse("Invalid path, please refer to the documentation to see available routes.", res);
 });
 
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-    res.status(err.status || 500).send();
+    res.status(err.status || 500).send({
+        status: err.status,
+        message: err.message
+    });
 });
