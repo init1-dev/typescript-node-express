@@ -6,8 +6,8 @@ package:
     - "package.json"
     - "node_modules/**"
     - "dist/**"
-    - "data/**"
-    - "public/**"
+    - "src/data/**"
+    - "src/public/**"
 provider:
   name: aws
   region: eu-west-3

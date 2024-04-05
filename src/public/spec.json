@@ -5,8 +5,16 @@
         "version": "1.0",
         "title": "MIRANDA BACKEND (Node/Express)"
     },
-    "host": "4oi46otzmb.execute-api.eu-west-3.amazonaws.com/dev/",
-    "basePath": "/",
+    "servers": [
+        {
+            "url": "https://4oi46otzmb.execute-api.eu-west-3.amazonaws.com/dev/",
+            "description": "Deploy server"
+        },
+        {
+            "url": "http://localhost:3000",
+            "description": "Local server"
+        }
+    ],
     "tags": [
         {
             "name": "booking",
@@ -25,15 +33,12 @@
             "description": "Everything about Messages"
         }
     ],
-    "schemes": [
-        "https"
-    ],
     "securityDefinitions": {
         "BearerAuth": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header",
-            "description": "Enter the token with the Bearer:  prefix, example:<br><strong>Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXQxLmRldiIsImlhdCI6MTcxMjMzNjE0OCwiZXhwIjozMzI2OTkzNjE0OH0.Zt39eALUudtNSxLHRGHXEFZbfs4a2uW8VMfgUuepvxU</strong><br><br>"
+            "description": "Enter the token with the Bearer:  prefix, example:<br><strong>Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXQxLmRldiIsImlhdCI6MTcxMjMzNzAxNiwiZXhwIjozMTcyODgzMzcwMTZ9.ixi3vyOZck7xenveXI27P-MEtgQlbdaRSJv4Gqsbmzw</strong><br><br>"
         }
     },
     "security": [
@@ -1732,7 +1737,7 @@
     "definitions": {
         "token": {
             "type": "string",
-            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXQxLmRldiIsImlhdCI6MTcxMjIyNzY1MSwiZXhwIjozMzI2OTgyNzY1MX0.dgHyJVZ_xRIYGnEL4nJjFps8MXgA26nXiI58Nq70XtU"
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXQxLmRldiIsImlhdCI6MTcxMjMzNzAxNiwiZXhwIjozMTcyODgzMzcwMTZ9.ixi3vyOZck7xenveXI27P-MEtgQlbdaRSJv4Gqsbmzw"
         },
         "Bookings": {
             "type": "object",
