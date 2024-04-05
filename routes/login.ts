@@ -5,9 +5,8 @@ import { login, generateAccessToken } from '../services/loginService';
 export const loginRoutes = express.Router();
 
 loginRoutes.post('/', async(req, res) => {
-    const { username, password } = req.body;
-
     try {
+        const { username, password } = req.body;
         let loginAction = null;
         
         if(username === 'init1.dev' && password === '12345'){
@@ -29,11 +28,15 @@ loginRoutes.post('/', async(req, res) => {
 })
 
 loginRoutes.post('/createNewUser', (req, res) => {
-    const { username = 'init1.dev' } = req.body;
-    const token = generateAccessToken(username);
-    
-    res.json({
-        user: username,
-        token: token
-    });
+    try {
+        const { username = 'init1.dev' } = req.body;
+        const token = generateAccessToken(username);
+        
+        res.json({
+            user: username,
+            token: token
+        });
+    } catch (error) {
+        parseResponse("Internal Server Error", res, 500);
+    }
 })

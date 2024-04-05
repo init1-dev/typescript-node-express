@@ -18,10 +18,3 @@ export const writeFile = (fileName: string, data: Booking[] | Room[] | Employee[
     const dataToWrite = JSON.stringify(data);
     fs.writeFileSync(fileName, dataToWrite);
 }
-
-export const parseErrorResponse = (status: 404, message: string): ErrorResponse => {
-    return {
-        status: status,
-        message: message
-    }
-}
