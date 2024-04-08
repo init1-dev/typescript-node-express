@@ -7,7 +7,7 @@ export const bookingsRoutes = express.Router();
 
 bookingsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = getAllBookings();
+        const responseData = await getAllBookings();
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -16,7 +16,9 @@ bookingsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) 
 
 bookingsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = getBooking(Number(req.params.id));
+        const responseData = await getBooking(req.params.id);
+        console.log(responseData);
+        
         if(!responseData){
             throw new AppError(404, "Not found");
         }
@@ -28,7 +30,7 @@ bookingsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction
 
 bookingsRoutes.post('/', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
-        const responseData = newBooking(req.body);
+        const responseData = await newBooking(req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -37,8 +39,10 @@ bookingsRoutes.post('/', async( req: Request,  res: Response,  next: NextFunctio
 
 bookingsRoutes.put('/:id', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
-        const responseData = editBooking(Number(req.params.id), req.body)
-        parseResponse(responseData, res, 200);
+        const responseData = await editBooking(req.params.id, req.body)
+        if(responseData !== null){
+            parseResponse(responseData, res, 200);
+        }
     } catch (error) {
         next(error);
     }
@@ -46,7 +50,7 @@ bookingsRoutes.put('/:id', async( req: Request,  res: Response,  next: NextFunct
 
 bookingsRoutes.delete('/:id', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
-        const responseData = deleteBooking(Number(req.params.id));
+        const responseData = await deleteBooking(req.params.id);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);

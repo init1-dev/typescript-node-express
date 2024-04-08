@@ -1,6 +1,5 @@
 [
     {
-        "id": 1,
         "name": "Suite Double Delux Plus",
         "photo": "/room.jpg",
         "room_type": "Double Superior",
@@ -27,7 +26,6 @@
         "status": "Available"
     },
     {
-        "id": 2,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Suite",
@@ -55,7 +53,6 @@
         "status": "Booked"
     },
     {
-        "id": 3,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Single Bed",
@@ -80,7 +77,6 @@
         "status": "Booked"
     },
     {
-        "id": 4,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Single Bed",
@@ -98,7 +94,6 @@
         "status": "Available"
     },
     {
-        "id": 5,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -123,7 +118,6 @@
         "status": "Booked"
     },
     {
-        "id": 6,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Superior",
@@ -141,7 +135,6 @@
         "status": "Available"
     },
     {
-        "id": 7,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -161,7 +154,6 @@
         "status": "Booked"
     },
     {
-        "id": 8,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -180,7 +172,6 @@
         "status": "Available"
     },
     {
-        "id": 9,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Suite",
@@ -207,7 +198,6 @@
         "status": "Booked"
     },
     {
-        "id": 10,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Suite",
@@ -235,7 +225,6 @@
         "status": "Available"
     },
     {
-        "id": 11,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -262,7 +251,6 @@
         "status": "Booked"
     },
     {
-        "id": 12,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Superior",
@@ -280,7 +268,6 @@
         "status": "Available"
     },
     {
-        "id": 13,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Suite",
@@ -304,7 +291,6 @@
         "status": "Available"
     },
     {
-        "id": 14,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Suite",
@@ -327,7 +313,6 @@
         "status": "Booked"
     },
     {
-        "id": 15,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Superior",
@@ -347,7 +332,6 @@
         "status": "Available"
     },
     {
-        "id": 16,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Single Bed",
@@ -370,7 +354,6 @@
         "status": "Booked"
     },
     {
-        "id": 17,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Single Bed",
@@ -394,7 +377,6 @@
         "status": "Booked"
     },
     {
-        "id": 18,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Superior",
@@ -411,7 +393,6 @@
         "status": "Booked"
     },
     {
-        "id": 19,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Single Bed",
@@ -436,7 +417,6 @@
         "status": "Booked"
     },
     {
-        "id": 20,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -453,7 +433,6 @@
         "status": "Available"
     },
     {
-        "id": 21,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Single Bed",
@@ -482,7 +461,6 @@
         "status": "Booked"
     },
     {
-        "id": 22,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Single Bed",
@@ -509,7 +487,6 @@
         "status": "Booked"
     },
     {
-        "id": 23,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Superior",
@@ -526,7 +503,6 @@
         "status": "Available"
     },
     {
-        "id": 24,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -547,7 +523,6 @@
         "status": "Available"
     },
     {
-        "id": 25,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -570,7 +545,6 @@
         "status": "Booked"
     },
     {
-        "id": 26,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -588,7 +562,6 @@
         "status": "Booked"
     },
     {
-        "id": 27,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -607,7 +580,6 @@
         "status": "Booked"
     },
     {
-        "id": 28,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Superior",
@@ -627,7 +599,6 @@
         "status": "Available"
     },
     {
-        "id": 29,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Suite",
@@ -645,7 +616,6 @@
         "status": "Available"
     },
     {
-        "id": 30,
         "name": "Room name",
         "photo": "/room.jpg",
         "room_type": "Double Bed",
@@ -671,7 +641,6 @@
         "status": "Available"
     },
     {
-        "id": 35,
         "name": "Suite Double Delux Plus",
         "photo": "/room.jpg",
         "room_type": "Double Superior",

@@ -7,7 +7,7 @@ export const employeesRoutes = express.Router();
 
 employeesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = getAllEmployees();
+        const responseData = await getAllEmployees();
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -16,7 +16,7 @@ employeesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction)
 
 employeesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = getEmployee(Number(req.params.id));
+        const responseData = await getEmployee(req.params.id);
         if(!responseData){
             throw new AppError(404, "Not found");
         }
@@ -28,7 +28,7 @@ employeesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunctio
 
 employeesRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = newEmployee(req.body);
+        const responseData = await newEmployee(req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -37,8 +37,10 @@ employeesRoutes.post('/', async(req: Request, res: Response, next: NextFunction)
 
 employeesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = editEmployee(Number(req.params.id), req.body);
-        parseResponse(responseData, res, 200);
+        const responseData = await editEmployee(req.params.id, req.body);
+        if(responseData !== null){
+            parseResponse(responseData, res, 200);
+        }
     } catch (error) {
         next(error);
     }
@@ -46,7 +48,7 @@ employeesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunctio
 
 employeesRoutes.delete('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = deleteEmployee(Number(req.params.id));
+        const responseData = await deleteEmployee(req.params.id);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);

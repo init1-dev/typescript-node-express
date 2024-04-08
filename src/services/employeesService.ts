@@ -1,45 +1,35 @@
 import { AppError } from '../classes/AppError';
-import { Employee } from '../interfaces/Employees';
-import { employeesDataFile } from '../util/dataFiles';
-import { readDataFromFile, writeFile } from '../util/fileOperations';
+import { Employee, EmployeesModel } from '../interfaces/Employees';
 
-export const getAllEmployees = (): Employee[] => {
-    const employeesData = readDataFromFile(employeesDataFile) as Employee[];
-    return employeesData;
+export const getAllEmployees = async(): Promise<Employee[]> => {
+    const employees = await EmployeesModel.find();
+    return employees;
 }
 
-export const getEmployee = (id: number): Employee | undefined => {
-    return getAllEmployees().find(employee => employee.id === id);
+export const getEmployee = async(id: any): Promise<Employee | null> => {
+    const employee = await EmployeesModel.findById(id);
+    return employee;
 }
 
-export const newEmployee = (data: Employee): Employee => {
-    const items = getAllEmployees();
-    const itemToAdd = items.findIndex(employee => employee.id === data?.id);
-    if(data !== undefined && itemToAdd === -1) {
-        items.push(data);
-        writeFile(employeesDataFile, items);
-        return data;
+export const newEmployee = async(data: Employee): Promise<Employee> => {
+    if(data !== undefined) {
+        const employee = await EmployeesModel.create(data);
+        return employee;
     }
     throw new AppError(404, 'Error creating employee');
 }
 
-export const editEmployee = (id: number, data: Employee): Employee => {
-    const items = getAllEmployees();
-    const itemToEdit = items.findIndex(employee => employee.id === id);
-    if(data !== undefined && itemToEdit !== -1){
-        items.splice(itemToEdit, 1, data);
-        writeFile(employeesDataFile, items);
-        return items[itemToEdit];
+export const editEmployee = async(id: any, data: Employee): Promise<Employee | null> => {
+    if(data !== undefined){
+        const employee = await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
+        return employee;
     }
     throw new AppError(404, `Error editing employee #${id}`);
 }
 
-export const deleteEmployee = (id: number): string => {
-    const items = getAllEmployees();
-    const itemToDelete = items.findIndex(employee => employee.id === id);
-    if(itemToDelete !== -1){
-        items.splice(itemToDelete, 1);
-        writeFile(employeesDataFile, items);
+export const deleteEmployee = async(id: any): Promise<string> => {
+    const employee = await EmployeesModel.findByIdAndDelete(id);
+    if(employee){
         return "success";
     }
     throw new AppError(404, `Error deleting employee #${id}`);

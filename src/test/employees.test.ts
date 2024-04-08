@@ -4,7 +4,6 @@ import { generateAccessToken } from '../services/loginService';
 
 const token = generateAccessToken("init1");
 const AUTH_KEY = `Bearer ${token}`;
-console.log(AUTH_KEY);
 
 
 describe('Employees', () => {
@@ -18,7 +17,7 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
-            "payload": {
+            "data": {
                 "id": 1,
                 "photo": "https://avatars.githubusercontent.com/u/79700122?v=4",
                 "name": "Init",
@@ -109,7 +108,7 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
-            "payload": {
+            "data": {
                 "id": 64,
                 "photo": "https://avatars.githubusercontent.com/u/79700122?v=4",
                 "name": "Init",
@@ -149,7 +148,7 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
-            "payload": {
+            "data": {
                 "id": 70,
                 "photo": "https://avatars.githubusercontent.com/u/79700122?v=4",
                 "name": "Init",

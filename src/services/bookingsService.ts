@@ -1,46 +1,37 @@
 import { AppError } from '../classes/AppError';
-import { Booking } from '../interfaces/Bookings';
-import { bookingsDataFile } from '../util/dataFiles';
-import { readDataFromFile, writeFile } from '../util/fileOperations';
+import { Booking, BookingModel } from '../interfaces/Bookings';
 
-export const getAllBookings = (): Booking[] => {
-    const bookingsData = readDataFromFile(bookingsDataFile) as Booking[];
-    return bookingsData;
+export const getAllBookings = async(): Promise<Booking[]> => {
+    const bookings = await BookingModel.find().populate('roomInfo');
+    return bookings;
 }
 
-export const getBooking = (id: number): Booking | undefined => {
-    return getAllBookings().find(booking => booking.id === id);
+export const getBooking = async(id: any): Promise<Booking | null> => {
+    const booking = await BookingModel.findById(id).populate('roomInfo');
+    return booking;
 }
 
-export const newBooking = (data: Booking): Booking => {
-    const items = getAllBookings();
-    const itemToAdd = items.findIndex(booking => booking.id === data?.id);
-    if(data !== undefined && itemToAdd === -1) {
-        items.push(data);
-        writeFile(bookingsDataFile, items);
-        return data;
+export const newBooking = async(data: Booking): Promise<Booking> => {
+    if(data !== undefined) {
+        const booking = (await BookingModel.create(data)).populate('roomInfo');
+        return booking;
     }
     throw new AppError(404, 'Error creating booking');
 }
 
-export const editBooking = (id: number, data: Booking): Booking => {
-    const items = getAllBookings();
-    const itemToEdit = items.findIndex(booking => booking.id === id);
-    if(data !== undefined && itemToEdit !== -1){
-        items.splice(itemToEdit, 1, data);
-        writeFile(bookingsDataFile, items);
-        return items[itemToEdit];
+export const editBooking = async(id: any, data: Booking): Promise<Booking | null> => {
+    if(data !== undefined){
+        const booking = await BookingModel.findByIdAndUpdate(id, data, { new: true }).populate('roomInfo');
+        return booking;
     } 
     throw new AppError(404, `Error editing booking #${id}`);
 }
 
-export const deleteBooking = (id: number): string => {
-    const items = getAllBookings();
-    const itemToDelete = items.findIndex(booking => booking.id === id);
-    if(itemToDelete !== -1){
-        items.splice(itemToDelete, 1);
-        writeFile(bookingsDataFile, items);
-        return "success";
+export const deleteBooking = async(id: any): Promise<string> => {
+    const booking = await BookingModel.findByIdAndDelete(id);
+    console.log(booking);
+    if(booking){
+        return 'success';
     }
     throw new AppError(404, `Error deleting booking #${id}`);
 }

@@ -231,9 +231,8 @@
                         "in": "path",
                         "description": "ID of Booking to return",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 30
+                        "type": "string",
+                        "example": "6613df0fb0c669dd95228ecc"
                     }
                 ],
                 "responses": {
@@ -315,9 +314,8 @@
                         "in": "path",
                         "description": "ID of Booking that needs to be updated",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 100
+                        "type": "string",
+                        "example": "6613df0fb0c669dd95228ecc"
                     },
                     {
                         "in": "body",
@@ -406,9 +404,8 @@
                         "in": "path",
                         "description": "Booking id to delete",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 100
+                        "type": "string",
+                        "example": "6613cb58b0c669dd95228eab"
                     }
                 ],
                 "responses": {
@@ -1742,20 +1739,25 @@
         "Bookings": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64",
-                    "example": 100
-                },
                 "full_name": {
                     "type": "string",
                     "format": "string",
                     "example": "Jefferson Fernandez"
                 },
-                "order_date": {
-                    "type": "integer",
+                "email": {
+                    "type": "string",
+                    "format": "string",
+                    "example": "algo@gmail.com"
+                },
+                "phone": {
+                    "type": "number",
                     "format": "int64",
-                    "example": 1445577888
+                    "example": 222333555
+                },
+                "image": {
+                    "type": "string",
+                    "format": "string",
+                    "example": "algun enlace de foto"
                 },
                 "check_in": {
                     "type": "integer",
@@ -1772,49 +1774,20 @@
                     "format": "string",
                     "example": "LOREM_IPSUM"
                 },
-                "number": {
+                "roomId": {
                     "type": "integer",
                     "format": "int64",
-                    "example": 133
+                    "example": 5
                 },
-                "type": {
-                    "type": "string",
-                    "format": "string",
-                    "example": "Single Bed"
+                "price": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 389.5
                 },
                 "status": {
                     "type": "string",
                     "format": "string",
-                    "example": "Check In"
-                },
-                "amenities": {
-                    "type": "array",
-                    "example": "[Expert Team]"
-                },
-                "room_status": {
-                    "type": "string",
-                    "format": "string",
-                    "example": "Booked"
-                },
-                "foto": {
-                    "type": "string",
-                    "format": "string",
-                    "example": "algun enlace de foto"
-                },
-                "description": {
-                    "type": "string",
-                    "format": "string",
-                    "example": "LOREM_IPSUM"
-                },
-                "phone": {
-                    "type": "number",
-                    "format": "int64",
-                    "example": 222333555
-                },
-                "email": {
-                    "type": "string",
-                    "format": "string",
-                    "example": "algo@gmail.com"
+                    "example": "In Progress"
                 }
             }
         },

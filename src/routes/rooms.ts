@@ -7,7 +7,7 @@ export const roomsRoutes = express.Router();
 
 roomsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = getAllRooms();
+        const responseData = await getAllRooms();
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -16,7 +16,7 @@ roomsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => 
 
 roomsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {  
-        const responseData = getRoom(Number(req.params.id));
+        const responseData = await getRoom(req.params.id);
         if(!responseData){
             throw new AppError(404, "Not found");
         }
@@ -28,7 +28,7 @@ roomsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) =
 
 roomsRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = newRoom(req.body);
+        const responseData = await newRoom(req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -37,8 +37,10 @@ roomsRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => 
 
 roomsRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = editRoom(Number(req.params.id), req.body);
-        parseResponse(responseData, res, 200);
+        const responseData = await editRoom(req.params.id, req.body);
+        if(responseData !== null){
+            parseResponse(responseData, res, 200);
+        }
     } catch (error) {
         next(error);
     }
@@ -46,7 +48,7 @@ roomsRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) =
 
 roomsRoutes.delete('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = deleteRoom(Number(req.params.id));
+        const responseData = await deleteRoom(req.params.id);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);

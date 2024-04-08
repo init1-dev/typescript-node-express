@@ -1,45 +1,35 @@
 import { AppError } from '../classes/AppError';
-import { Message } from '../interfaces/Messages';
-import { messagesDataFile } from '../util/dataFiles';
-import { readDataFromFile, writeFile } from '../util/fileOperations';
+import { Message, MessagesModel } from '../interfaces/Messages';
 
-export const getAllMessages = (): Message[] => {
-    const messagesData = readDataFromFile(messagesDataFile) as Message[];
-    return messagesData;
+export const getAllMessages = async(): Promise<Message[]> => {
+    const messages = await MessagesModel.find();
+    return messages;
 }
 
-export const getMessage = (id: number): Message | undefined => {
-    return getAllMessages().find(message => message.id === id);
+export const getMessage = async(id: any): Promise<Message | null> => {
+    const message = MessagesModel.findById(id);
+    return message;
 }
 
-export const newMessage = (data: Message): Message => {
-    const items = getAllMessages();
-    const itemToAdd = items.findIndex(message => message.id === data?.id);
-    if(data !== undefined && itemToAdd === -1) {
-        items.push(data);
-        writeFile(messagesDataFile, items);
-        return data;
+export const newMessage = async(data: Message): Promise<Message> => {
+    if(data !== undefined) {
+        const message = await MessagesModel.create(data);
+        return message;
     }
     throw new AppError(404, 'Error creating message');
 }
 
-export const editMessage = (id: number, data: Message): Message => {
-    const items = getAllMessages();
-    const itemToEdit = items.findIndex(message => message.id === id);
-    if(data !== undefined && itemToEdit !== -1){
-        items.splice(itemToEdit, 1, data);
-        writeFile(messagesDataFile, items);
-        return items[itemToEdit];
+export const editMessage = async(id: any, data: Message): Promise<Message | null> => {
+    if(data !== undefined){
+        const message = await MessagesModel.findByIdAndUpdate(id, data, { new: true });
+        return message;
     }
     throw new AppError(404, `Error editing message #${id}`);
 }
 
-export const deleteMessage = (id: number): string => {
-    const items = getAllMessages();
-    const itemToDelete = items.findIndex(message => message.id === id);
-    if(itemToDelete !== -1){
-        items.splice(itemToDelete, 1);
-        writeFile(messagesDataFile, items);
+export const deleteMessage = async(id: any): Promise<string> => {
+    const message = await MessagesModel.findByIdAndDelete(id);
+    if(message){
         return "success";
     }
     throw new AppError(404, `Error deleting message #${id}`);

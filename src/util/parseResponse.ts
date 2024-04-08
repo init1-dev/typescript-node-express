@@ -4,7 +4,7 @@ export const parseResponse = (action: object | string, res: Response, status = 4
     if(typeof(action) === "object"){
         return res.status(status).json({
             status,
-            payload: action
+            data: action
         });
     }
     
