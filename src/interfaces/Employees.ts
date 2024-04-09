@@ -3,15 +3,13 @@ import mongoose, { Types } from "mongoose";
 export interface Employee {
     _id: Types.ObjectId;
     photo: string;
-    name: string;
-    lastname: string;
     fullname: string;
     email: string;
     start_date: string;
     employee_type: string;
     description: string;
     phone: string;
-    status: boolean;
+    status: String;
     password: string;
 }
 
@@ -21,15 +19,13 @@ export const employeeStatus_list = ['Active', 'Inactive'];
 export const EmployeesModel = mongoose.model<Employee>('employees', new mongoose.Schema(
     {
         photo: {type: String, required: true},
-        name: {type: String, required: true},
-        lastname: {type: String, required: true},
         fullname: {type: String, required: true},
         email: {type: String, required: true},
         start_date: {type: String, required: true},
         employee_type: {type: String, required: true, enum: employee_types},
         description: {type: String, required: true},
         phone: {type: String, required: true},
-        status: {type: Boolean, required: true, enum: employeeStatus_list},
+        status: {type: String, required: true, enum: employeeStatus_list},
         password: {type: String, required: true}
     },
     {
