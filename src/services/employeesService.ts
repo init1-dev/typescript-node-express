@@ -1,5 +1,6 @@
 import { AppError } from '../classes/AppError';
 import { Employee, EmployeesModel } from '../interfaces/Employees';
+import { generateAccessToken } from '../util/generateAccessToken';
 
 export const getAllEmployees = async(): Promise<Employee[]> => {
     const employees = await EmployeesModel.find();
@@ -33,4 +34,15 @@ export const deleteEmployee = async(id: any): Promise<string> => {
         return "success";
     }
     throw new AppError(404, `Error deleting employee #${id}`);
+}
+
+export const employeeLogin = async(username: string, password: string) => {
+    if(username === 'init1.dev' && password === '12345'){
+        const token = generateAccessToken(username);
+        return {
+            user: username,
+            token: token
+        };
+    }
+    return null;
 }

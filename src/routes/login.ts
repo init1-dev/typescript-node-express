@@ -1,6 +1,7 @@
 import express from "express";
 import { parseResponse } from "../util/parseResponse";
-import { login, generateAccessToken } from '../services/loginService';
+import { generateAccessToken } from "../util/generateAccessToken";
+import { employeeLogin } from "../services/employeesService";
 
 export const loginRoutes = express.Router();
 
@@ -10,7 +11,7 @@ loginRoutes.post('/', async(req, res) => {
         let loginAction = null;
         
         if(username === 'init1.dev' && password === '12345'){
-            loginAction = await login(username, password);
+            loginAction = await employeeLogin(username, password);
         };
     
         if(loginAction) {

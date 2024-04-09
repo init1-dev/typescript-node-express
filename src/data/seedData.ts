@@ -4,17 +4,18 @@ import { insertBookingsData } from "./bookingsSeed";
 import { insertRoomsData } from "./roomsSeed";
 import { mongooseConnect } from "../util/mongoose/mongooseConnect";
 import { dropAndCreateCollection } from "../util/mongoose/dropAndCreateCollectin";
-import { insertEmployeesData } from "./employeesSeed";
-import { insertMessagesData } from "./messagesSeed";
+// import { insertEmployeesData } from "./employeesSeed";
+// import { insertMessagesData } from "./messagesSeed";
+
+const appCollections = ['rooms', 'bookings', 'employees', 'messages'];
 
 const seedData = async() => {
     const currentConnection = await mongooseConnect();
 
     try {
-        await dropAndCreateCollection('rooms', currentConnection);
-        await dropAndCreateCollection('bookings', currentConnection);
-        await dropAndCreateCollection('employees', currentConnection);
-        await dropAndCreateCollection('messages', currentConnection);
+        for (const element of appCollections) {
+            await dropAndCreateCollection(element, currentConnection);
+        };
 
         const roomsData: Types.ObjectId[] | undefined = await insertRoomsData();
 
@@ -22,16 +23,16 @@ const seedData = async() => {
             await insertBookingsData(roomsData);
         }
         
-        await insertEmployeesData();
-        await insertMessagesData();
-
-        currentConnection?.close();
+        // await insertEmployeesData();
+        // await insertMessagesData();
 
         console.log("Seed completed");
         console.log("Connection closed");
         
     } catch (error) {
         console.error('Error during insertion:', error);
+    } finally {
+        currentConnection?.close();
     }
 }
 
