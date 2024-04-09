@@ -17,8 +17,6 @@ bookingsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) 
 bookingsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await getBooking(req.params.id);
-        console.log(responseData);
-        
         if(!responseData){
             throw new AppError(404, "Not found");
         }

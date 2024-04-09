@@ -29,7 +29,6 @@ export const editBooking = async(id: any, data: Booking): Promise<Booking | null
 
 export const deleteBooking = async(id: any): Promise<string> => {
     const booking = await BookingModel.findByIdAndDelete(id);
-    console.log(booking);
     if(booking){
         return 'success';
     }
