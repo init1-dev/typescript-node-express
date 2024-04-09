@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 
 export const insertEmployeesData = async() => {
     try {
+        console.log("Inserting employees data..");
         for (let i = 0; i < 30; i++) {
             const userPassword = faker.internet.password();
             const hashedPassword = await bcrypt.hash(userPassword, 10);
@@ -20,9 +21,9 @@ export const insertEmployeesData = async() => {
                 status: faker.helpers.arrayElement(employeeStatus_list),
                 password: hashedPassword
             })
-            console.log(userPassword);
             await newData.save();
         }
+        console.log("Employees data inserted successfully\n");
     } catch (error) {
         console.error('Error during insertion:', error);
     }

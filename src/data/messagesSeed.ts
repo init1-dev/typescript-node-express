@@ -4,6 +4,7 @@ import { MessagesModel } from '../interfaces/Messages';
 
 export const insertMessagesData = async() => {
     try {
+        console.log("Inserting messages data..");
         for (let i = 0; i < 30; i++) {
             const newData = new MessagesModel({
                 full_name: faker.person.fullName(),
@@ -18,6 +19,7 @@ export const insertMessagesData = async() => {
             })
             await newData.save();
         }
+        console.log("Messages data inserted successfully\n");
     } catch (error) {
         console.error('Error during insertion:', error);
     }

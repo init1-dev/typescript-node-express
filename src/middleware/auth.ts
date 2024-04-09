@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { parseResponse } from "../util/parseResponse";
-import { SECRET_TOKEN } from "../util/getKey";
+import { SECRET_TOKEN } from "../util/getKeys";
 import jwt from "jsonwebtoken";
 
 export const authMiddleware = ( req: Request, res: Response, next: NextFunction ) => {

@@ -26,7 +26,7 @@ const seedData = async() => {
         await insertEmployeesData();
         await insertMessagesData();
 
-        console.log("Seed completed");
+        console.log("\nSeed completed");
         console.log("Connection closed");
         
     } catch (error) {

@@ -21,6 +21,7 @@ const getRandomId = (idList: Types.ObjectId[] | undefined) => {
 
 export const insertBookingsData = async(roomsIds: Types.ObjectId[] | undefined) => {
     try {
+        console.log("Inserting bookings data..");
         for (let i = 0; i < 50; i++) {
             const checkInDate = generateCheckInDate();
             const checkOutDate = generateCheckOutDate(checkInDate);
@@ -39,6 +40,7 @@ export const insertBookingsData = async(roomsIds: Types.ObjectId[] | undefined) 
             })
             await newData.save();
         }
+        console.log("Bookings data inserted successfully\n");
     } catch (error) {
         console.error('Error during insertion:', error);
     }
