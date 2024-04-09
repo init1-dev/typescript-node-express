@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { app } from '../app';
-import { generateAccessToken } from '../services/loginService';
+import { generateAccessToken } from '../util/generateAccessToken';
 
 const token = generateAccessToken("init1");
 const AUTH_KEY = `Bearer ${token}`;
