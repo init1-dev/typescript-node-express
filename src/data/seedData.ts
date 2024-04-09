@@ -4,8 +4,8 @@ import { insertBookingsData } from "./bookingsSeed";
 import { insertRoomsData } from "./roomsSeed";
 import { mongooseConnect } from "../util/mongoose/mongooseConnect";
 import { dropAndCreateCollection } from "../util/mongoose/dropAndCreateCollectin";
-// import { insertEmployeesData } from "./employeesSeed";
-// import { insertMessagesData } from "./messagesSeed";
+import { insertEmployeesData } from "./employeesSeed";
+import { insertMessagesData } from "./messagesSeed";
 
 const appCollections = ['rooms', 'bookings', 'employees', 'messages'];
 
@@ -23,8 +23,8 @@ const seedData = async() => {
             await insertBookingsData(roomsData);
         }
         
-        // await insertEmployeesData();
-        // await insertMessagesData();
+        await insertEmployeesData();
+        await insertMessagesData();
 
         console.log("Seed completed");
         console.log("Connection closed");

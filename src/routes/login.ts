@@ -1,6 +1,5 @@
 import express from "express";
 import { parseResponse } from "../util/parseResponse";
-import { generateAccessToken } from "../util/generateAccessToken";
 import { employeeLogin } from "../services/employeesService";
 
 export const loginRoutes = express.Router();
@@ -10,9 +9,9 @@ loginRoutes.post('/', async(req, res) => {
         const { username, password } = req.body;
         let loginAction = null;
         
-        if(username === 'init1.dev' && password === '12345'){
-            loginAction = await employeeLogin(username, password);
-        };
+        loginAction = await employeeLogin(username, password);
+        // if(username === 'init1.dev' && password === '12345'){
+        // };
     
         if(loginAction) {
             return parseResponse({
@@ -26,18 +25,4 @@ loginRoutes.post('/', async(req, res) => {
     }
 
     return parseResponse("Invalid username/password", res, 401);
-})
-
-loginRoutes.post('/createNewUser', (req, res) => {
-    try {
-        const { username = 'init1.dev' } = req.body;
-        const token = generateAccessToken(username);
-        
-        res.json({
-            user: username,
-            token: token
-        });
-    } catch (error) {
-        parseResponse("Internal Server Error", res, 500);
-    }
 })

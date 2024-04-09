@@ -2,6 +2,7 @@ import { AppError } from '../classes/AppError';
 import { Employee, EmployeesModel } from '../interfaces/Employees';
 import { Login } from '../interfaces/Login';
 import { generateAccessToken } from '../util/generateAccessToken';
+import bcrypt from 'bcryptjs';
 
 export const getAllEmployees = async(): Promise<Employee[]> => {
     const employees = await EmployeesModel.find();
@@ -15,7 +16,10 @@ export const getEmployee = async(id: any): Promise<Employee | null> => {
 
 export const newEmployee = async(data: Employee): Promise<Employee> => {
     if(data !== undefined) {
-        const employee = await EmployeesModel.create(data);
+        const employeePassword = data.password;
+        const hashedPassword = await bcrypt.hash(employeePassword, 10);
+
+        const employee = await EmployeesModel.create({...data, password: hashedPassword});
         return employee;
     }
     throw new AppError(404, 'Error creating employee');
@@ -38,12 +42,19 @@ export const deleteEmployee = async(id: any): Promise<string> => {
 }
 
 export const employeeLogin = async(username: string, password: string): Promise<Login | null> => {
-    if(username === 'init1.dev' && password === '12345'){
-        const token = generateAccessToken(username);
-        return {
-            user: username,
-            token: token
-        };
+    const isUserExist = await EmployeesModel.findOne({email: username});
+
+    if(isUserExist) {
+        const isPasswordMatch = await bcrypt.compare(password, isUserExist.password);
+
+        if(isPasswordMatch){
+            const token = generateAccessToken(username);
+            return {
+                user: username,
+                token: token
+            };
+        }
     }
+
     return null;
 }
