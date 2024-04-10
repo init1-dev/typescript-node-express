@@ -1,4 +1,4 @@
-import { Room, RoomsModel } from '../interfaces/Rooms';
+import { Room, RoomsModel } from '../models/Rooms';
 import { AppError } from '../classes/AppError';
 
 export const getAllRooms = async(): Promise<Room[]> => {

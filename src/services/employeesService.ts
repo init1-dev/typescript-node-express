@@ -1,5 +1,5 @@
 import { AppError } from '../classes/AppError';
-import { Employee, EmployeesModel } from '../interfaces/Employees';
+import { Employee, EmployeesModel } from '../models/Employees';
 import { Login } from '../interfaces/Login';
 import { generateAccessToken } from '../util/generateAccessToken';
 import bcrypt from 'bcryptjs';

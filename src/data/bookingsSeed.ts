@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Types } from "mongoose";
-import { BookingModel, BookingStatus_list } from "../interfaces/Bookings";
+import { BookingModel, BookingStatus_list } from "../models/Bookings";
 
 const PRICE_TO_CENTS = 100;
 

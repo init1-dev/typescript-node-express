@@ -1,5 +1,5 @@
 import { AppError } from '../classes/AppError';
-import { Message, MessagesModel } from '../interfaces/Messages';
+import { Message, MessagesModel } from '../models/Messages';
 
 export const getAllMessages = async(): Promise<Message[]> => {
     const messages = await MessagesModel.find();

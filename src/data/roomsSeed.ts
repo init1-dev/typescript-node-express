@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { RoomsModel, amenities_list, roomStatus_list, room_types } from "../interfaces/Rooms";
+import { RoomsModel, amenities_list, roomStatus_list, room_types } from "../models/Rooms";
 
 const PRICE_TO_CENTS = 100;
 

@@ -1,5 +1,5 @@
 import { AppError } from '../classes/AppError';
-import { Booking, BookingModel } from '../interfaces/Bookings';
+import { Booking, BookingModel } from '../models/Bookings';
 
 export const getAllBookings = async(): Promise<Booking[]> => {
     const bookings = await BookingModel.find().populate('roomInfo');

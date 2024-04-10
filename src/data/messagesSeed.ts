@@ -1,6 +1,6 @@
 // import { faker } from '@faker-js/faker';
 import { faker } from '@faker-js/faker';
-import { MessagesModel } from '../interfaces/Messages';
+import { MessagesModel } from '../models/Messages';
 
 export const insertMessagesData = async() => {
     try {
