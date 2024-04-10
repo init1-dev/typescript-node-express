@@ -10,7 +10,7 @@ export interface Booking {
     check_in: string;
     check_out: string;
     special_request: string;
-    price: number;
+    discount: number;
     status: string;
     roomInfo?: Room;
 }
@@ -26,7 +26,7 @@ export const BookingModel = mongoose.model<Booking>('bookings', new mongoose.Sch
         check_in: {type: String, required: true},
         check_out: {type: String, required: true},
         special_request: {type: String, required: true},
-        price: {type: Number, required: true},
+        discount: {type: Number, required: true},
         status: {type: String, required: true, enum: BookingStatus_list},
         roomInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'rooms'}
     },

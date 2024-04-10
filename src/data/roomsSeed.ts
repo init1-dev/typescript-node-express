@@ -19,7 +19,7 @@ export const insertRoomsData = async() => {
                 offer: faker.datatype.boolean({probability: 0.5}),
                 cancellation: faker.lorem.paragraphs(2),
                 amenities: faker.helpers.arrayElements(amenities_list, {min: 1, max: amenities_list.length}),
-                discount: faker.number.int({min: 0, max: 100}),
+                discount: Math.round(faker.number.float() * 20) * 5,
                 status: faker.helpers.arrayElement(roomStatus_list)
             })
             const itemAdded = await newData.save();

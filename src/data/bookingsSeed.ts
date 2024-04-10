@@ -2,8 +2,6 @@ import { faker } from '@faker-js/faker';
 import { Types } from "mongoose";
 import { BookingModel, BookingStatus_list } from "../models/Bookings";
 
-const PRICE_TO_CENTS = 100;
-
 const generateCheckInDate = (): Date => {
     return faker.date.recent({refDate: new Date(), days: 30});
 }
@@ -34,7 +32,7 @@ export const insertBookingsData = async(roomsIds: Types.ObjectId[] | undefined) 
                 check_in: checkInDate,
                 check_out: checkOutDate,
                 special_request: faker.datatype.boolean({probability: 0.5}),
-                price: faker.commerce.price({min: (100 * PRICE_TO_CENTS), max: (500 * PRICE_TO_CENTS)}),
+                discount: Math.round(faker.number.float() * 20) * 5,
                 status: faker.helpers.arrayElement(BookingStatus_list),
                 roomInfo: getRandomId(roomsIds)
             })
