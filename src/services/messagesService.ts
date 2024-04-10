@@ -2,35 +2,46 @@ import { AppError } from '../classes/AppError';
 import { Message, MessagesModel } from '../models/Messages';
 
 export const getAllMessages = async(): Promise<Message[]> => {
-    const messages = await MessagesModel.find();
-    return messages;
+    try {
+        const messages = await MessagesModel.find();
+        return messages;
+    } catch (error) {
+        throw new AppError(404, 'Not found');
+    }
 }
 
 export const getMessage = async(id: any): Promise<Message | null> => {
-    const message = MessagesModel.findById(id);
-    return message;
+    try {
+        const message = MessagesModel.findById(id);
+        return message;
+    } catch (error) {
+        throw new AppError(404, 'Not found');
+    }
 }
 
 export const newMessage = async(data: Message): Promise<Message> => {
-    if(data !== undefined) {
+    try {
         const message = await MessagesModel.create(data);
         return message;
+    } catch (error) {
+        throw new AppError(404, 'Error creating message');
     }
-    throw new AppError(404, 'Error creating message');
 }
 
 export const editMessage = async(id: any, data: Message): Promise<Message | null> => {
-    if(data !== undefined){
+    try {
         const message = await MessagesModel.findByIdAndUpdate(id, data, { new: true });
         return message;
+    } catch (error) {
+        throw new AppError(404, `Error editing message #${id}`);
     }
-    throw new AppError(404, `Error editing message #${id}`);
 }
 
 export const deleteMessage = async(id: any): Promise<string> => {
-    const message = await MessagesModel.findByIdAndDelete(id);
-    if(message){
+    try {
+        await MessagesModel.findByIdAndDelete(id);
         return "success";
+    } catch (error) {
+        throw new AppError(404, `Error deleting message #${id}`);
     }
-    throw new AppError(404, `Error deleting message #${id}`);
 }

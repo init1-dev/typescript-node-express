@@ -1,8 +1,7 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { Room } from "./Rooms";
 
 export interface Booking {
-    _id: Types.ObjectId;
     full_name: string;
     email: string;
     phone: string;

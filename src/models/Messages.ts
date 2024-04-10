@@ -1,7 +1,6 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 export interface Message {
-    _id: Types.ObjectId;
     full_name: string;
     email: string;
     phone: string;

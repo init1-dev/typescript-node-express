@@ -1,7 +1,6 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 export interface Room {
-    _id: Types.ObjectId;
     name: string;
     photo: string;
     room_type: string;
