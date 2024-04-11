@@ -32,11 +32,17 @@ export const newEmployee = async(data: Employee): Promise<Employee> => {
 }
 
 export const editEmployee = async(id: any, data: Employee): Promise<Employee | null> => {
+    const employee = await EmployeesModel.findById(id);
+
+    if(employee === null) {
+        throw new AppError(404, "Not found");
+    }
+    
     try {
-        const employee = await EmployeesModel.findById(id);
-        const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
+        const isPasswordMatch = await bcrypt.compare(data.password, employee?.password || "");
         
-        if(employee?.password !== hashedPasswordToChange) {
+        if(!isPasswordMatch) {
+            const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
             return await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
         } else {
             return await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
