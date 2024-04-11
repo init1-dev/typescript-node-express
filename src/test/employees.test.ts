@@ -12,11 +12,11 @@ describe('Employees', () => {
 
     const data = {
         "_id": "6616bc6d2b7ffffdc7f4c4c3",
-        "photo": "https://avatars.githubusercontent.com/u/83037971",
-        "fullname": "Stacy Johns",
-        "email": "Devante.Effertz22@yahoo.com",
+        "photo": "https://avatars.githubusercontent.com/u/79700122?v=4",
+        "fullname": "init2",
+        "email": "init1.dev@gmail.com",
         "start_date": "Thu Mar 14 2024 10:07:21 GMT+0100 (hora estándar de Europa central)",
-        "employee_type": "Rooms",
+        "employee_type": "CEO",
         "description": "Vester triumphus tamisium cedo solvo. Sursum nisi cattus sulum statua calculus summopere. Aequitas suadeo despecto volup.",
         "phone": "774-284-3140 x02184",
         "status": "Active",
@@ -26,25 +26,25 @@ describe('Employees', () => {
     it('should return single employee', async() => {
         
         const response = await request(app)
-            .get("/employees/66156617e182ddf9ee894b55")
+            .get("/employees/66169740bb170df90fe6842f")
             .set({authorization: AUTH_KEY})
             
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
             "data": {
-                "_id": "66156617e182ddf9ee894b55",
-                "photo": "https://avatars.githubusercontent.com/u/83037971",
-                "fullname": "Stacy Johns",
-                "email": "Devante.Effertz22@yahoo.com",
-                "start_date": "Thu Mar 14 2024 10:07:21 GMT+0100 (hora estándar de Europa central)",
-                "employee_type": "Rooms",
-                "description": "Vester triumphus tamisium cedo solvo. Sursum nisi cattus sulum statua calculus summopere. Aequitas suadeo despecto volup.",
-                "phone": "774-284-3140 x02184",
-                "status": "Active",
-                "password": "$2a$10$9.cyytxAik33GZkTdHdm8eqAfnzfwJ1/rdaNhZ5qYqQvzA32qm/AW",
-                "createdAt": "2024-04-09T16:00:23.109Z",
-                "updatedAt": "2024-04-09T16:00:23.109Z",
+                "_id": "66169740bb170df90fe6842f",
+                "photo": "https://avatars.githubusercontent.com/u/65215383",
+                "fullname": "Gabriel Jaskolski",
+                "email": "Mona_Blanda79@gmail.com",
+                "start_date": "Sun Mar 31 2024 19:42:22 GMT+0200 (hora de verano de Europa central)",
+                "employee_type": "Support",
+                "description": "Volo mollitia surgo. Caritas testimonium ubi. Delibero cenaculum fuga damnatio desparatus vereor turpis.",
+                "phone": "796.651.4543 x59854",
+                "status": "Inactive",
+                "password": "$2a$10$a2xZkH0ce1n2rlwRPx1Py.0tCby/eRzi1RASzpjeeR59D9t/B4UBW",
+                "createdAt": "2024-04-10T13:42:24.830Z",
+                "updatedAt": "2024-04-10T13:42:24.830Z",
                 "__v": 0
             }
         })
@@ -131,7 +131,7 @@ describe('Employees', () => {
         
         const response = await request(app)
             .put("/employees/6616bc6d2b7ffffdc7f4c4c3")
-            .send({...data, name: "init2"})
+            .send({...data, fullname: "init.dev"})
             .set({authorization: AUTH_KEY})
             
         expect(response.statusCode).toEqual(200);

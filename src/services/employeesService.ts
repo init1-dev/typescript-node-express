@@ -38,13 +38,15 @@ export const editEmployee = async(id: any, data: Employee): Promise<Employee | n
     try {
         const employee = await EmployeesModel.findById(id);
         const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
+        let employeeToUpdate;
         
-        if(employee?.password === hashedPasswordToChange) {
-            
+        if(employee?.password !== hashedPasswordToChange) {
+            employeeToUpdate = await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
+        } else {
+            employeeToUpdate = await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
         }
 
-        
-        return employee;
+        return employeeToUpdate;
     } catch (error) {
         throw new AppError(404, `Error editing employee #${id}`);
     }
