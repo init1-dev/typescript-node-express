@@ -17,10 +17,10 @@ employeesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction)
 employeesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await getEmployee(req.params.id);
-        if(!responseData){
+        if(responseData === null){
             throw new AppError(404, "Not found");
         }
-        parseResponse(responseData as object, res, 200);
+        parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
@@ -38,9 +38,10 @@ employeesRoutes.post('/', async(req: Request, res: Response, next: NextFunction)
 employeesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await editEmployee(req.params.id, req.body);
-        if(responseData !== null){
-            parseResponse(responseData, res, 200);
+        if(responseData === null){
+            throw new AppError(404, `Error editing employee #${req.params.id}`);
         }
+        parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
@@ -49,7 +50,10 @@ employeesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunctio
 employeesRoutes.delete('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await deleteEmployee(req.params.id);
-        parseResponse(responseData, res, 200);
+        if(responseData === null){
+            throw new AppError(404, `Error deleting employee #${req.params.id}`);
+        }
+        parseResponse("success", res, 200);
     } catch (error) {
         next(error);
     }

@@ -17,10 +17,10 @@ messagesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) 
 messagesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await getMessage(req.params.id);
-        if(!responseData){
+        if(responseData === null){
             throw new AppError(404, "Not found");
         }
-        parseResponse(responseData as object, res, 200);
+        parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
@@ -38,9 +38,10 @@ messagesRoutes.post('/', async(req: Request, res: Response, next: NextFunction) 
 messagesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await editMessage(req.params.id, req.body);
-        if(responseData !== null){
-            parseResponse(responseData, res, 200);
+        if(responseData === null){
+            throw new AppError(404, `Error editing message #${req.params.id}`);
         }
+        parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
@@ -49,7 +50,10 @@ messagesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction
 messagesRoutes.delete('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await deleteMessage(req.params.id);
-        parseResponse(responseData, res, 200);
+        if(responseData === null){
+            throw new AppError(404, `Error deleting message #${req.params.id}`);
+        }
+        parseResponse("success", res, 200);
     } catch (error) {
         next(error);
     }

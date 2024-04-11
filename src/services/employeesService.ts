@@ -6,19 +6,17 @@ import bcrypt from 'bcryptjs';
 
 export const getAllEmployees = async(): Promise<Employee[]> => {
     try {
-        const employees = await EmployeesModel.find();
-        return employees;
+        return await EmployeesModel.find();
     } catch (error) {
-        throw new AppError(404, 'Not found');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
 export const getEmployee = async(id: any): Promise<Employee | null> => {
     try {
-        const employee = await EmployeesModel.findById(id);
-        return employee;
+        return await EmployeesModel.findById(id);
     } catch (error) {
-        throw new AppError(404, 'Not found');   
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
@@ -27,10 +25,9 @@ export const newEmployee = async(data: Employee): Promise<Employee> => {
         const employeePassword = data.password;
         const hashedPassword = await bcrypt.hash(employeePassword, 10);
         
-        const employee = await EmployeesModel.create({...data, password: hashedPassword});
-        return employee;
+        return await EmployeesModel.create({...data, password: hashedPassword});
     } catch (error) {
-        throw new AppError(404, 'Error creating employee');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
@@ -38,26 +35,22 @@ export const editEmployee = async(id: any, data: Employee): Promise<Employee | n
     try {
         const employee = await EmployeesModel.findById(id);
         const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
-        let employeeToUpdate;
         
         if(employee?.password !== hashedPasswordToChange) {
-            employeeToUpdate = await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
+            return await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
         } else {
-            employeeToUpdate = await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
+            return await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
         }
-
-        return employeeToUpdate;
     } catch (error) {
-        throw new AppError(404, `Error editing employee #${id}`);
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
-export const deleteEmployee = async(id: any): Promise<string> => {
+export const deleteEmployee = async(id: any): Promise<Employee | null> => {
     try {
-        await EmployeesModel.findByIdAndDelete(id);
-        return "success";
+        return await EmployeesModel.findByIdAndDelete(id);
     } catch (error) {
-        throw new AppError(404, `Error deleting employee #${id}`);
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 

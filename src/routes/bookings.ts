@@ -17,10 +17,10 @@ bookingsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) 
 bookingsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await getBooking(req.params.id);
-        if(!responseData){
+        if(responseData === null){
             throw new AppError(404, "Not found");
         }
-        parseResponse(responseData as object, res, 200);
+        parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
@@ -38,9 +38,10 @@ bookingsRoutes.post('/', async( req: Request,  res: Response,  next: NextFunctio
 bookingsRoutes.put('/:id', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
         const responseData = await editBooking(req.params.id, req.body)
-        if(responseData !== null){
-            parseResponse(responseData, res, 200);
+        if(responseData === null){
+            throw new AppError(404, `Error editing booking #${req.params.id}`);
         }
+        parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
@@ -49,7 +50,10 @@ bookingsRoutes.put('/:id', async( req: Request,  res: Response,  next: NextFunct
 bookingsRoutes.delete('/:id', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
         const responseData = await deleteBooking(req.params.id);
-        parseResponse(responseData, res, 200);
+        if(responseData === null){
+            throw new AppError(404, `Error deleting booking #${req.params.id}`);
+        }
+        parseResponse("success", res, 200);
     } catch (error) {
         next(error);
     }

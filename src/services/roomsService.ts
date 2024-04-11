@@ -3,45 +3,40 @@ import { AppError } from '../classes/AppError';
 
 export const getAllRooms = async(): Promise<Room[]> => {
     try {
-        const rooms = await RoomsModel.find();
-        return rooms;
+        return await RoomsModel.find();
     } catch (error) {
-        throw new AppError(404, 'Not found');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
 export const getRoom = async(id: any): Promise<Room | null> => {
     try {
-        const room = await RoomsModel.findById(id);
-        return room;
+        return await RoomsModel.findById(id);
     } catch (error) {
-        throw new AppError(404, 'Not found');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
 export const newRoom = async(data: Room): Promise<Room> => {
     try {
-        const room = await RoomsModel.create(data);
-        return room;
+        return await RoomsModel.create(data);
     } catch (error) {
-        throw new AppError(404, 'Error creating room');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
 export const editRoom = async(id: any, data: Room): Promise<Room | null> => {
     try {
-        const room = await RoomsModel.findByIdAndUpdate(id, data, { new: true });
-        return room;
+        return await RoomsModel.findByIdAndUpdate(id, data, { new: true });
     } catch (error) {
-        throw new AppError(404, `Error editing room #${id}`);
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
-export const deleteRoom = async(id: any): Promise<string> => {
+export const deleteRoom = async(id: any): Promise<Room | null> => {
     try {
-        await RoomsModel.findByIdAndDelete(id);
-        return "success"
+        return await RoomsModel.findByIdAndDelete(id);
     } catch (error) {
-        throw new AppError(404, `Error deleting room #${id}`);
+        throw new AppError(500, 'Internal Server Error');
     }
 }

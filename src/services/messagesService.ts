@@ -3,45 +3,40 @@ import { Message, MessagesModel } from '../models/Messages';
 
 export const getAllMessages = async(): Promise<Message[]> => {
     try {
-        const messages = await MessagesModel.find();
-        return messages;
+        return await MessagesModel.find();
     } catch (error) {
-        throw new AppError(404, 'Not found');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
 export const getMessage = async(id: any): Promise<Message | null> => {
     try {
-        const message = MessagesModel.findById(id);
-        return message;
+        return await MessagesModel.findById(id);
     } catch (error) {
-        throw new AppError(404, 'Not found');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
 export const newMessage = async(data: Message): Promise<Message> => {
     try {
-        const message = await MessagesModel.create(data);
-        return message;
+        return await MessagesModel.create(data);
     } catch (error) {
-        throw new AppError(404, 'Error creating message');
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
 export const editMessage = async(id: any, data: Message): Promise<Message | null> => {
     try {
-        const message = await MessagesModel.findByIdAndUpdate(id, data, { new: true });
-        return message;
+        return await MessagesModel.findByIdAndUpdate(id, data, { new: true });
     } catch (error) {
-        throw new AppError(404, `Error editing message #${id}`);
+        throw new AppError(500, 'Internal Server Error');
     }
 }
 
-export const deleteMessage = async(id: any): Promise<string> => {
+export const deleteMessage = async(id: any): Promise<Message | null> => {
     try {
-        await MessagesModel.findByIdAndDelete(id);
-        return "success";
+        return await MessagesModel.findByIdAndDelete(id);
     } catch (error) {
-        throw new AppError(404, `Error deleting message #${id}`);
+        throw new AppError(500, 'Internal Server Error');
     }
 }
