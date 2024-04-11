@@ -9,6 +9,7 @@ import { loginRoutes } from './routes/login';
 import { authMiddleware } from './middleware/auth';
 import { parseResponse } from './util/parseResponse';
 import { mongooseConnect } from './util/mongoose/mongooseConnect';
+import cors from 'cors';
 
 export const app = express();
 
@@ -21,6 +22,10 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
     console.log('REQUEST LOGGER', req.method, req.url);
     next();
 });
+
+app.use(cors({
+	origin: "*"
+}))
 
 app.use('/', rootRoutes);
 
