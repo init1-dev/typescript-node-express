@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../app';
 import { generateAccessToken } from '../util/generateAccessToken';
-import { getEmployee } from '../services/employeesService';
+import { getOne } from '../services/employeesService';
 import mongoose from 'mongoose';
 
 const token = generateAccessToken("init1");
@@ -42,9 +42,9 @@ describe('Employees', () => {
                 "description": "Volo mollitia surgo. Caritas testimonium ubi. Delibero cenaculum fuga damnatio desparatus vereor turpis.",
                 "phone": "796.651.4543 x59854",
                 "status": "Inactive",
-                "password": "$2a$10$a2xZkH0ce1n2rlwRPx1Py.0tCby/eRzi1RASzpjeeR59D9t/B4UBW",
+                "password": "$2a$10$U2BoXaOYgtzbP3xPHdeyt.cHrDRDuzJKOlnKGe8mPKTzhfVcMkhjK",
                 "createdAt": "2024-04-10T13:42:24.830Z",
-                "updatedAt": "2024-04-10T13:42:24.830Z",
+                "updatedAt": "2024-04-11T10:45:43.647Z",
                 "__v": 0
             }
         })
@@ -123,7 +123,7 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             status: 200,
-            data: JSON.parse(JSON.stringify(getEmployee(data._id)))
+            data: JSON.parse(JSON.stringify(getOne(data._id)))
         });
     })
 
@@ -137,7 +137,7 @@ describe('Employees', () => {
         expect(response.statusCode).toEqual(200);
         expect(response.body).toMatchObject({
             "status": 200,
-            "data": JSON.parse(JSON.stringify(getEmployee(data._id)))
+            "data": JSON.parse(JSON.stringify(getOne(data._id)))
         })
     })
 
