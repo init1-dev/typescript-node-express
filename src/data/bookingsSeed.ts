@@ -31,7 +31,8 @@ export const insertBookingsData = async(roomsIds: Types.ObjectId[] | undefined) 
                 image: faker.image.urlPicsumPhotos(),
                 check_in: checkInDate,
                 check_out: checkOutDate,
-                special_request: faker.datatype.boolean({probability: 0.5}),
+                order_date: new Date(),
+                special_request: faker.lorem.paragraphs(2),
                 discount: Math.round(faker.number.float() * 20) * 5,
                 status: faker.helpers.arrayElement(BookingStatus_list),
                 roomInfo: getRandomId(roomsIds)

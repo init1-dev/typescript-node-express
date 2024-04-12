@@ -8,6 +8,7 @@ export interface Booking {
     image: string;
     check_in: string;
     check_out: string;
+    order_date: string;
     special_request: string;
     discount: number;
     status: string;
@@ -24,6 +25,7 @@ export const BookingModel = mongoose.model<Booking>('bookings', new mongoose.Sch
         image: {type: String, required: true},
         check_in: {type: String, required: true},
         check_out: {type: String, required: true},
+        order_date: {type: String, required: true},
         special_request: {type: String, required: true},
         discount: {type: Number, required: true},
         status: {type: String, required: true, enum: BookingStatus_list},
