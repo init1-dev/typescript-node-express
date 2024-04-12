@@ -1,13 +1,12 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { deleteBooking, editBooking, getAllBookings, getBooking, newBooking } from '../services/bookingsService';
+import { getAll, getOne, newItem, editItem, deleteItem } from '../services/bookingsService';
 import { parseResponse } from '../util/parseResponse';
-import { AppError } from '../classes/AppError';
 
 export const bookingsRoutes = express.Router();
 
 bookingsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await getAllBookings();
+        const responseData = await getAll();
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -16,10 +15,7 @@ bookingsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) 
 
 bookingsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await getBooking(req.params.id);
-        if(responseData === null){
-            throw new AppError(404, "Not found");
-        }
+        const responseData = await getOne(req.params.id);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -28,7 +24,7 @@ bookingsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction
 
 bookingsRoutes.post('/', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
-        const responseData = await newBooking(req.body);
+        const responseData = await newItem(req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -37,10 +33,7 @@ bookingsRoutes.post('/', async( req: Request,  res: Response,  next: NextFunctio
 
 bookingsRoutes.put('/:id', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
-        const responseData = await editBooking(req.params.id, req.body)
-        if(responseData === null){
-            throw new AppError(404, `Error editing booking #${req.params.id}`);
-        }
+        const responseData = await editItem(req.params.id, req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -49,10 +42,7 @@ bookingsRoutes.put('/:id', async( req: Request,  res: Response,  next: NextFunct
 
 bookingsRoutes.delete('/:id', async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
-        const responseData = await deleteBooking(req.params.id);
-        if(responseData === null){
-            throw new AppError(404, `Error deleting booking #${req.params.id}`);
-        }
+        await deleteItem(req.params.id);
         parseResponse("success", res, 200);
     } catch (error) {
         next(error);

@@ -4,60 +4,64 @@ import { Login } from '../interfaces/Login';
 import { generateAccessToken } from '../util/generateAccessToken';
 import bcrypt from 'bcryptjs';
 
-export const getAllEmployees = async(): Promise<Employee[]> => {
-    try {
-        return await EmployeesModel.find();
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
-    }
+const Model = EmployeesModel;
+const messageString = "employee";
+type ModelInterface = Employee;
+
+export const getAll = async(): Promise<ModelInterface[]> => {
+    const items = await Model.find();
+    return items;
 }
 
-export const getEmployee = async(id: any): Promise<Employee | null> => {
-    try {
-        return await EmployeesModel.findById(id);
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+export const getOne = async(id: any): Promise<ModelInterface> => {
+    const item = await Model.findById(id);
+    if(item === null){
+        throw new AppError(404, 'Not found');
     }
+    return item;
 }
 
-export const newEmployee = async(data: Employee): Promise<Employee> => {
-    try {
-        const employeePassword = data.password;
-        const hashedPassword = await bcrypt.hash(employeePassword, 10);
-        
-        return await EmployeesModel.create({...data, password: hashedPassword});
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+export const newItem = async(data: ModelInterface): Promise<ModelInterface> => {
+    const employeePassword = data.password;
+    const hashedPassword = await bcrypt.hash(employeePassword, 10);
+    
+    const item = await Model.create({...data, password: hashedPassword});
+    
+    if(item === null){
+        throw new AppError(404, `Error adding ${messageString}`);
     }
+    return item;
 }
 
-export const editEmployee = async(id: any, data: Employee): Promise<Employee | null> => {
+export const editItem = async(id: any, data: ModelInterface): Promise<ModelInterface> => {
     const employee = await EmployeesModel.findById(id);
 
     if(employee === null) {
         throw new AppError(404, "Not found");
     }
     
-    try {
-        const isPasswordMatch = await bcrypt.compare(data.password, employee?.password || "");
-        
-        if(!isPasswordMatch) {
-            const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
-            return await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
-        } else {
-            return await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
-        }
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+    const isPasswordMatch = await bcrypt.compare(data.password, employee?.password || "");
+    let item;
+    
+    if(!isPasswordMatch) {
+        const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
+        item = await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
+    } else {
+        item = await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
     }
+
+    if(item === null){
+        throw new AppError(404, `Error adding ${messageString}`);
+    }
+    return item;
 }
 
-export const deleteEmployee = async(id: any): Promise<Employee | null> => {
-    try {
-        return await EmployeesModel.findByIdAndDelete(id);
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+export const deleteItem = async(id: any): Promise<ModelInterface> => {
+    const item = await Model.findByIdAndDelete(id);
+    if(item === null){
+        throw new AppError(404, `Error deleting ${messageString}`);
     }
+    return item;
 }
 
 export const employeeLogin = async(username: string, password: string): Promise<Login | null> => {

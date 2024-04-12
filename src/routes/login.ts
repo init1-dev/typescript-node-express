@@ -10,8 +10,6 @@ loginRoutes.post('/', async(req, res) => {
         let loginAction = null;
         
         loginAction = await employeeLogin(username, password);
-        // if(username === 'init1.dev' && password === '12345'){
-        // };
     
         if(loginAction) {
             return parseResponse({

@@ -12,7 +12,7 @@ export interface Employee {
     password: string;
 }
 
-export const employee_types = ['CEO', 'Sales', 'Marketing', 'Support', 'Marketing', 'Receptionist', 'Maintenance', 'Kitchen', 'Rooms'];
+export const employee_types = ['CEO', 'Sales', 'Support', 'Marketing', 'Receptionist', 'Maintenance', 'Kitchen', 'Rooms'];
 export const employeeStatus_list = ['Active', 'Inactive'];
 
 export const EmployeesModel = mongoose.model<Employee>('employees', new mongoose.Schema(

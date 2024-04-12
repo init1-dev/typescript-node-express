@@ -1,13 +1,12 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { deleteMessage, editMessage, getAllMessages, getMessage, newMessage } from '../services/messagesService';
+import { getAll, getOne, newItem, editItem, deleteItem } from '../services/messagesService';
 import { parseResponse } from '../util/parseResponse';
-import { AppError } from '../classes/AppError';
 
 export const messagesRoutes = express.Router();
 
 messagesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await getAllMessages();
+        const responseData = await getAll();
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -16,10 +15,7 @@ messagesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) 
 
 messagesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await getMessage(req.params.id);
-        if(responseData === null){
-            throw new AppError(404, "Not found");
-        }
+        const responseData = await getOne(req.params.id);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -28,7 +24,7 @@ messagesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction
 
 messagesRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await newMessage(req.body);
+        const responseData = await newItem(req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -37,10 +33,7 @@ messagesRoutes.post('/', async(req: Request, res: Response, next: NextFunction) 
 
 messagesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await editMessage(req.params.id, req.body);
-        if(responseData === null){
-            throw new AppError(404, `Error editing message #${req.params.id}`);
-        }
+        const responseData = await editItem(req.params.id, req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -49,10 +42,7 @@ messagesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction
 
 messagesRoutes.delete('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await deleteMessage(req.params.id);
-        if(responseData === null){
-            throw new AppError(404, `Error deleting message #${req.params.id}`);
-        }
+        await deleteItem(req.params.id);
         parseResponse("success", res, 200);
     } catch (error) {
         next(error);

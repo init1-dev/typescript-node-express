@@ -1,13 +1,12 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { deleteRoom, editRoom, getAllRooms, getRoom, newRoom } from '../services/roomsService';
+import { getAll, getOne, newItem, editItem, deleteItem } from '../services/roomsService';
 import { parseResponse } from '../util/parseResponse';
-import { AppError } from '../classes/AppError';
 
 export const roomsRoutes = express.Router();
 
 roomsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await getAllRooms();
+        const responseData = await getAll();
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -16,10 +15,7 @@ roomsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => 
 
 roomsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {  
-        const responseData = await getRoom(req.params.id);
-        if(responseData === null){
-            throw new AppError(404, "Not found");
-        }
+        const responseData = await getOne(req.params.id);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -28,7 +24,7 @@ roomsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) =
 
 roomsRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await newRoom(req.body);
+        const responseData = await newItem(req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -37,10 +33,7 @@ roomsRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => 
 
 roomsRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await editRoom(req.params.id, req.body);
-        if(responseData === null){
-            throw new AppError(404, `Error editing room #${req.params.id}`);
-        }
+        const responseData = await editItem(req.params.id, req.body);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
@@ -49,10 +42,7 @@ roomsRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) =
 
 roomsRoutes.delete('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await deleteRoom(req.params.id);
-        if(responseData === null){
-            throw new AppError(404, `Error deleting room #${req.params.id}`);
-        }
+        await deleteItem(req.params.id);
         parseResponse("success", res, 200);
     } catch (error) {
         next(error);

@@ -1,42 +1,43 @@
 import { Room, RoomsModel } from '../models/Rooms';
 import { AppError } from '../classes/AppError';
 
-export const getAllRooms = async(): Promise<Room[]> => {
-    try {
-        return await RoomsModel.find();
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
-    }
+const Model = RoomsModel;
+const messageString = "room";
+type ModelInterface = Room;
+
+export const getAll = async(): Promise<ModelInterface[]> => {
+    const items = await Model.find();
+    return items;
 }
 
-export const getRoom = async(id: any): Promise<Room | null> => {
-    try {
-        return await RoomsModel.findById(id);
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+export const getOne = async(id: any): Promise<ModelInterface> => {
+    const item = await Model.findById(id);
+    if(item === null){
+        throw new AppError(404, 'Not found');
     }
+    return item;
 }
 
-export const newRoom = async(data: Room): Promise<Room> => {
-    try {
-        return await RoomsModel.create(data);
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+export const newItem = async(data: ModelInterface): Promise<ModelInterface> => {
+    const item = await Model.create(data);
+    if(item === null){
+        throw new AppError(404, `Error adding ${messageString}`);
     }
+    return item;
 }
 
-export const editRoom = async(id: any, data: Room): Promise<Room | null> => {
-    try {
-        return await RoomsModel.findByIdAndUpdate(id, data, { new: true });
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+export const editItem = async(id: any, data: ModelInterface): Promise<ModelInterface> => {
+    const item = await Model.findByIdAndUpdate(id, data, { new: true });
+    if(item === null){
+        throw new AppError(404, `Error editing ${messageString}`);
     }
+    return item;
 }
 
-export const deleteRoom = async(id: any): Promise<Room | null> => {
-    try {
-        return await RoomsModel.findByIdAndDelete(id);
-    } catch (error) {
-        throw new AppError(500, 'Internal Server Error');
+export const deleteItem = async(id: any): Promise<ModelInterface> => {
+    const item = await Model.findByIdAndDelete(id);
+    if(item === null){
+        throw new AppError(404, `Error deleting ${messageString}`);
     }
+    return item;
 }
