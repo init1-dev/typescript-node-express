@@ -6,7 +6,7 @@ export interface Room {
     room_type: string;
     room_number: number;
     description: string;
-    offer: number;
+    offer: boolean;
     price: number;
     cancellation: string;
     amenities: string[];
@@ -25,7 +25,7 @@ export const RoomsModel = mongoose.model<Room>('rooms', new mongoose.Schema(
         room_type: {type: String, required: true, enum: room_types},
         room_number: {type: Number, required: true},
         description: {type: String, required: true},
-        offer: {type: Number, required: true},
+        offer: {type: Boolean, required: true},
         price: {type: Number, required: true},
         cancellation: {type: String, required: true},
         amenities: {type: [String], required: true, enum: amenities_list},
