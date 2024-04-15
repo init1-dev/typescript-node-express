@@ -47,7 +47,7 @@ export const editItem = async(id: any, data: ModelInterface): Promise<ModelInter
         const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
         item = await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
     } else {
-        item = await EmployeesModel.findByIdAndUpdate(id, data, { new: true });
+        item = await EmployeesModel.findByIdAndUpdate(id, {...data, password: employee.password}, { new: true });
     }
 
     if(item === null){
