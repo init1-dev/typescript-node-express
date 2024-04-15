@@ -6,11 +6,11 @@ export const insertEmployeesData = async() => {
     try {
         console.log("Inserting employees data..");
         for (let i = 0; i < 30; i++) {
-            const userPassword = faker.internet.password();
+            const userPassword = "12345";
             const hashedPassword = await bcrypt.hash(userPassword, 10);
 
             const newData = new EmployeesModel({
-                photo: faker.image.avatarGitHub(),
+                photo: faker.image.avatarLegacy(),
                 fullname: faker.person.fullName(),
                 email: faker.internet.email(),
                 start_date: faker.date.recent({refDate: new Date(), days: 30}),
