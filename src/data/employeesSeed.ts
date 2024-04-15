@@ -1,4 +1,3 @@
-// import { faker } from '@faker-js/faker';
 import { faker } from '@faker-js/faker';
 import { EmployeesModel, employeeStatus_list, employee_types } from '../models/Employees';
 import bcrypt from 'bcryptjs';
