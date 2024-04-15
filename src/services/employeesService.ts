@@ -73,8 +73,10 @@ export const employeeLogin = async(username: string, password: string): Promise<
         if(isPasswordMatch){
             const token = generateAccessToken(username);
             return {
-                user: username,
-                token: token
+                user: isUserExist.fullname,
+                email: isUserExist.email,
+                token: token,
+                photo: isUserExist.photo
             };
         }
     }
