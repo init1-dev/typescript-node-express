@@ -11,7 +11,7 @@ export const insertRoomsData = async() => {
         for (let i = 0; i < 30; i++) {
             const newData = new RoomsModel({
                 name: faker.commerce.productName(),
-                photo: faker.image.urlPicsumPhotos(),
+                photo: faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
                 room_type: faker.helpers.arrayElement(room_types),
                 room_number: i + 1,
                 description: faker.lorem.paragraph(),
