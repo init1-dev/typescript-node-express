@@ -4,9 +4,10 @@ import { parseResponse } from '../util/parseResponse';
 
 export const roomsRoutes = express.Router();
 
-roomsRoutes.get('/', async(_req: Request, res: Response, next: NextFunction) => {
+roomsRoutes.get('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await getAll();
+        const { filter } = req.query;
+        const responseData =  filter === 'available' ? await getAll(true) : await getAll();
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);

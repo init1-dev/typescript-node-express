@@ -5,8 +5,12 @@ const Model = RoomsModel;
 const messageString = "room";
 type ModelInterface = Room;
 
-export const getAll = async(): Promise<ModelInterface[]> => {
-    const items = await Model.find();
+export const getAll = async(filter = false): Promise<ModelInterface[]> => {
+    let items;
+    if(filter) {
+        items = await Model.find({status: 'Available'});
+    }
+    items = await Model.find();
     return items;
 }
 
