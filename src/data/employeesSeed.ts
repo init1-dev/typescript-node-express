@@ -10,7 +10,7 @@ export const insertEmployeesData = async() => {
             const hashedPassword = await bcrypt.hash(userPassword, 10);
 
             const newData = new EmployeesModel({
-                photo: faker.image.avatarLegacy(),
+                photo: faker.image.avatarGitHub(),
                 fullname: faker.person.fullName(),
                 email: faker.internet.email(),
                 start_date: faker.date.recent({refDate: new Date(), days: 30}),
