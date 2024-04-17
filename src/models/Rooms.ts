@@ -23,7 +23,7 @@ export const RoomsModel = mongoose.model<Room>('rooms', new mongoose.Schema(
         name: {type: String, required: true},
         photo: {type: String, required: true},
         room_type: {type: String, required: true, enum: room_types},
-        room_number: {type: Number, required: true},
+        room_number: {type: Number, required: true, unique: true},
         description: {type: String, required: true},
         offer: {type: Boolean, required: true},
         price: {type: Number, required: true},

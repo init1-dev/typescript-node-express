@@ -45,3 +45,8 @@ export const deleteItem = async(id: any): Promise<ModelInterface> => {
     }
     return item;
 }
+
+export const isRoomExist = async(number: string): Promise<ModelInterface | null> => {
+    const item = await Model.findOne({room_number: number});
+    return item;
+}

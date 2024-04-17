@@ -13,7 +13,7 @@ const useConnection = (url = "cluster") => {
 }
 
 export const mongooseConnect = async() => {
-    const CONNECTION_URL = useConnection();
+    const CONNECTION_URL = useConnection("localhost");
     if(mongoose.connection.readyState === 0){
         console.log(`Connecting to database..`);
         await mongoose.connect(`${CONNECTION_URL}`).then((x) => {

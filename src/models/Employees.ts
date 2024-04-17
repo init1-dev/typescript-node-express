@@ -19,7 +19,7 @@ export const EmployeesModel = mongoose.model<Employee>('employees', new mongoose
     {
         photo: {type: String, required: true},
         fullname: {type: String, required: true},
-        email: {type: String, required: true},
+        email: {type: String, required: true, unique: true},
         start_date: {type: String, required: true},
         employee_type: {type: String, required: true, enum: employee_types},
         description: {type: String, required: true},

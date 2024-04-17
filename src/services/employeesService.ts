@@ -34,20 +34,20 @@ export const newItem = async(data: ModelInterface): Promise<ModelInterface> => {
 }
 
 export const editItem = async(id: any, data: ModelInterface): Promise<ModelInterface> => {
-    const employee = await EmployeesModel.findById(id);
+    const employee = await Model.findById(id);
 
     if(employee === null) {
         throw new AppError(404, "Not found");
     }
     
-    const isPasswordMatch = await bcrypt.compare(data.password, employee?.password || "");
+    const isPasswordMatch = await bcrypt.compare(data.password, employee?.password);
     let item;
     
-    if(!isPasswordMatch) {
+    if(!isPasswordMatch && data.password !== "") {
         const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
-        item = await EmployeesModel.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
+        item = await Model.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
     } else {
-        item = await EmployeesModel.findByIdAndUpdate(id, {...data, password: employee.password}, { new: true });
+        item = await Model.findByIdAndUpdate(id, {...data, password: employee.password}, { new: true });
     }
 
     if(item === null){
@@ -65,7 +65,7 @@ export const deleteItem = async(id: any): Promise<ModelInterface> => {
 }
 
 export const employeeLogin = async(username: string, password: string): Promise<Login | null> => {
-    const isUserExist = await EmployeesModel.findOne({email: username});
+    const isUserExist = await Model.findOne({email: username});
 
     if(isUserExist) {
         const isPasswordMatch = await bcrypt.compare(password, isUserExist.password);
@@ -82,4 +82,9 @@ export const employeeLogin = async(username: string, password: string): Promise<
     }
 
     return null;
+}
+
+export const isUserExist = async(username: string): Promise<ModelInterface | null> => {
+    const item = await Model.findOne({email: username});
+    return item;
 }

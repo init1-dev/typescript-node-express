@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { getAll, getOne, newItem, editItem, deleteItem } from '../services/employeesService';
+import { getAll, getOne, newItem, editItem, deleteItem, isUserExist } from '../services/employeesService';
 import { parseResponse } from '../util/parseResponse';
 
 export const employeesRoutes = express.Router();
@@ -16,6 +16,15 @@ employeesRoutes.get('/', async(_req: Request, res: Response, next: NextFunction)
 employeesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await getOne(req.params.id);
+        parseResponse(responseData, res, 200);
+    } catch (error) {
+        next(error);
+    }
+})
+
+employeesRoutes.get('/getUser/:email', async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const responseData = await isUserExist(req.params.email);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);

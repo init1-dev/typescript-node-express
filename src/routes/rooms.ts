@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { getAll, getOne, newItem, editItem, deleteItem } from '../services/roomsService';
+import { getAll, getOne, newItem, editItem, deleteItem, isRoomExist } from '../services/roomsService';
 import { parseResponse } from '../util/parseResponse';
 
 export const roomsRoutes = express.Router();
@@ -17,6 +17,15 @@ roomsRoutes.get('/', async(req: Request, res: Response, next: NextFunction) => {
 roomsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
     try {  
         const responseData = await getOne(req.params.id);
+        parseResponse(responseData, res, 200);
+    } catch (error) {
+        next(error);
+    }
+})
+
+roomsRoutes.get('/getRoom/:room', async(req: Request, res: Response, next: NextFunction) => {
+    try {  
+        const responseData = await isRoomExist(req.params.room);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
