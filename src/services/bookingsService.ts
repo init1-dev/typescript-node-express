@@ -41,3 +41,11 @@ export const deleteItem = async(id: any): Promise<ModelInterface> => {
     }
     return item;
 }
+
+export const doesAnyBookingContainRoom = async(roomId: string) => {
+    const check = await Model.findOne({roomInfo: {_id: roomId}});
+    if(check){
+        return true;
+    }
+    return false;
+}

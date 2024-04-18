@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { getAll, getOne, newItem, editItem, deleteItem } from '../services/bookingsService';
+import { getAll, getOne, newItem, editItem, deleteItem, doesAnyBookingContainRoom } from '../services/bookingsService';
 import { parseResponse } from '../util/parseResponse';
 
 export const bookingsRoutes = express.Router();
@@ -44,6 +44,15 @@ bookingsRoutes.delete('/:id', async( req: Request,  res: Response,  next: NextFu
     try {   
         await deleteItem(req.params.id);
         parseResponse("success", res, 200);
+    } catch (error) {
+        next(error);
+    }
+})
+
+bookingsRoutes.get('/checkRoomInBookings/:id', async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const responseData = await doesAnyBookingContainRoom(req.params.id);
+        parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
