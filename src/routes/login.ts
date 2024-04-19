@@ -15,6 +15,7 @@ loginRoutes.post('/', async(req, res) => {
             return parseResponse({
                 user: loginAction.user,
                 email: loginAction.email,
+                id: loginAction.id,
                 token: loginAction.token,
                 photo: loginAction.photo
             }, res, 200);

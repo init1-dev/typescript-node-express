@@ -75,6 +75,7 @@ export const employeeLogin = async(username: string, password: string): Promise<
             return {
                 user: isUserExist.fullname,
                 email: isUserExist.email,
+                id: String(isUserExist._id),
                 token: token,
                 photo: isUserExist.photo
             };
