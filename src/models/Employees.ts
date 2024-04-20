@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
 export interface Employee {
     photo: string;
@@ -15,19 +15,19 @@ export interface Employee {
 export const employee_types = ['CEO', 'Sales', 'Support', 'Marketing', 'Receptionist', 'Maintenance', 'Kitchen', 'Rooms'];
 export const employeeStatus_list = ['Active', 'Inactive'];
 
-export const EmployeesModel = mongoose.model<Employee>('employees', new mongoose.Schema(
-    {
-        photo: {type: String, required: true},
-        fullname: {type: String, required: true},
-        email: {type: String, required: true, unique: true},
-        start_date: {type: String, required: true},
-        employee_type: {type: String, required: true, enum: employee_types},
-        description: {type: String, required: true},
-        phone: {type: String, required: true},
-        status: {type: String, required: true, enum: employeeStatus_list},
-        password: {type: String, required: true}
-    },
-    {
-        timestamps: true
-    }
-))
+// export const EmployeesModel = mongoose.model<Employee>('employees', new mongoose.Schema(
+//     {
+//         photo: {type: String, required: true},
+//         fullname: {type: String, required: true},
+//         email: {type: String, required: true, unique: true},
+//         start_date: {type: String, required: true},
+//         employee_type: {type: String, required: true, enum: employee_types},
+//         description: {type: String, required: true},
+//         phone: {type: String, required: true},
+//         status: {type: String, required: true, enum: employeeStatus_list},
+//         password: {type: String, required: true}
+//     },
+//     {
+//         timestamps: true
+//     }
+// ))
