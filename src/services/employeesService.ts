@@ -1,7 +1,5 @@
 import { AppError } from '../classes/AppError';
 import { Employee, EmployeesModel } from '../models/Employees';
-import { Login } from '../interfaces/Login';
-import { generateAccessToken } from '../util/generateAccessToken';
 import bcrypt from 'bcryptjs';
 
 const Model = EmployeesModel;
@@ -64,25 +62,12 @@ export const deleteItem = async(id: any): Promise<ModelInterface> => {
     return item;
 }
 
-export const employeeLogin = async(username: string, password: string): Promise<Login | null> => {
+export const employeeLogin = async(username: string): Promise<ModelInterface | null> => {
     const isUserExist = await Model.findOne({email: username});
-
-    if(isUserExist) {
-        const isPasswordMatch = await bcrypt.compare(password, isUserExist.password);
-
-        if(isPasswordMatch){
-            const token = generateAccessToken(username);
-            return {
-                user: isUserExist.fullname,
-                email: isUserExist.email,
-                id: String(isUserExist._id),
-                token: token,
-                photo: isUserExist.photo
-            };
-        }
+    if(isUserExist === null) {
+        throw new AppError(404, `Error getting ${messageString}`);
     }
-
-    return null;
+    return isUserExist;
 }
 
 export const isUserExist = async(username: string): Promise<ModelInterface | null> => {

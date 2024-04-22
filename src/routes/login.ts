@@ -1,29 +1,36 @@
 import express from "express";
 import { parseResponse } from "../util/parseResponse";
 import { employeeLogin } from "../services/employeesService";
+import bcrypt from 'bcryptjs';
+import { generateAccessToken } from "../util/generateAccessToken";
 
 export const loginRoutes = express.Router();
 
-loginRoutes.post('/', async(req, res) => {
+loginRoutes.post('/', async(req, res, next) => {
     try {
         const { username, password } = req.body;
-        let loginAction = null;
-        
-        loginAction = await employeeLogin(username, password);
+        const loginAction = await employeeLogin(username);
     
         if(loginAction) {
-            return parseResponse({
-                user: loginAction.user,
-                email: loginAction.email,
-                id: loginAction.id,
-                token: loginAction.token,
-                photo: loginAction.photo
-            }, res, 200);
+            const isPasswordMatch = await bcrypt.compare(password, loginAction.password);
+
+            if(isPasswordMatch){
+                const token = generateAccessToken(username);
+                
+                return parseResponse({
+                    user: loginAction.fullname,
+                    email: loginAction.email,
+                    id: loginAction._id,
+                    token: token,
+                    photo: loginAction.photo
+                }, res, 200);
+            } else {
+                return parseResponse("Invalid password", res, 401);
+            }
+        } else {
+            return parseResponse("Invalid username", res, 401);
         };
-
     } catch (error) {
-        parseResponse("Internal Server Error", res, 500);
+        next(error);
     }
-
-    return parseResponse("Invalid username/password", res, 401);
 })

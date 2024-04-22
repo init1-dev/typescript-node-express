@@ -1,6 +1,7 @@
 // import mongoose from "mongoose";
 
 export interface Employee {
+    _id?: string,
     photo: string;
     fullname: string;
     email: string;
