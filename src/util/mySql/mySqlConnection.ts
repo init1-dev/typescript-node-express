@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
+import mysql from "mysql2/promise";
 import { CLUSTER_CONNECTION } from "../getKeys";
+import mongoose from "mongoose";
 
 const useConnection = (url = "cluster") => {
     if(url !== 'cluster'){
@@ -23,5 +24,25 @@ export const mongooseConnect = async() => {
             console.error("Error connecting to mongo: ", err);
         });
         return mongoose.connection;
+    }
+}
+
+export const mySqlConnection = async(): Promise<mysql.Connection> => {
+    const mirandaSQLDb = 'hotel_miranda_SQL';
+    console.log(`Connecting to database..`);
+    try {
+        const connection = await mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: 'As7£68?=xU&JwCq5~c5V3]zJ',
+            database: mirandaSQLDb
+        });
+        // console.log(connection);
+        
+        console.log(`Connected to: "${connection.config.database}"\n`);
+        return connection;
+    } catch (error) {
+        console.error("Error connecting to db: ", error);
+        throw error;
     }
 }
