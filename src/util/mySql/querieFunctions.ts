@@ -1,12 +1,15 @@
 import { Connection } from "mysql2/promise";
-import { dropQuery } from "./queries";
 
-export const dropQueryFunction = async(
-    currentConnection: Connection
+export const executeQuery = async(
+    query: string,
+    currentConnection: Connection,
+    message?: string
 ): Promise<void> => {
-    const queries = dropQuery.split(";").filter(query => query.trim() !== '');
+    const queries = query.split(";").filter(query => query.trim() !== '');
 
-    console.log(`Dropping database...`);
+    if(message){
+        console.log(message);
+    }
 
     for (const query of queries){
         await currentConnection.query(query + ";");
@@ -53,7 +56,7 @@ const stringFromArrayReduce = (array: Array<any>, format = false) => {
 
 const formatValue = (value: any): string | number | boolean => {
     return typeof value === 'string'
-        ? `'${value}'` 
+        ? `"${value}"`
         : `${value}`;
 };
 
@@ -67,14 +70,19 @@ export const insertIntoTable = async(
     console.log(`Inserting ${number} entries into ${table} table...`);
 
     const queryColumns = await stringFromArrayReduce(columns);
-    const queryValues = Array.from({ length: number }, () => {
-        return `(${stringFromArrayReduce(values, true)})`;
-    }).join(',\n');
 
-    currentConnection.query(`INSERT INTO ${table}(
+    const queryValues = values.map((value) => {
+        return `(${stringFromArrayReduce(value, true)})`;
+    }).join(',')
+
+    await currentConnection.query(`INSERT INTO ${table}(
         ${queryColumns}
     ) VALUES ${queryValues};`);
 
     // console.log(`${table} data:\n` + queryValues + "\n");
     console.log('Done!\n');
 };
+
+export const formatDateToSql = (date: Date) => {
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+}

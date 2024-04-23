@@ -1,29 +1,55 @@
 import { faker } from '@faker-js/faker';
-import { EmployeesModel, employeeStatus_list, employee_types } from '../models/Employees';
+import { Connection } from "mysql2/promise";
+import { employeeStatus_list, employee_types } from '../models/Employees';
 import bcrypt from 'bcryptjs';
+import { formatDateToSql, insertIntoTable, insertIntoTableFromArray } from '../util/mySql/querieFunctions';
 
-export const insertEmployeesData = async() => {
+export const insertEmployeesData = async(currentConnection: Connection) => {
+    const ROWS_TO_INSERT = 10;
+    const HASH_SALT = 10;
+    const DEFAULT_PASSWORD = '12345';
+
+    const columns = [
+        'photo',
+        'fullname',
+        'email',
+        'start_date',
+        'employee_type_id',
+        'description',
+        'phone',
+        'employee_status',
+        'password'
+    ];
+
+    const values = [];
+
+    for (let i = 0; i < ROWS_TO_INSERT; i++) {
+        const startDate = formatDateToSql(faker.date.recent({refDate: new Date(), days: 30}));
+
+        values.push([
+            faker.image.avatarGitHub(),
+            faker.person.fullName(),
+            faker.internet.email(),
+            startDate,
+            faker.number.int({min: 1, max: employee_types.length}),
+            faker.lorem.paragraph(),
+            faker.phone.number(),
+            faker.helpers.arrayElement(employeeStatus_list),
+            bcrypt.hashSync(DEFAULT_PASSWORD, HASH_SALT)
+        ])
+    };
+
     try {
-        console.log("Inserting employees data..");
-        for (let i = 0; i < 30; i++) {
-            const userPassword = "12345";
-            const hashedPassword = await bcrypt.hash(userPassword, 10);
+        await insertIntoTableFromArray('employee_type', employee_types, currentConnection);
 
-            const newData = new EmployeesModel({
-                photo: faker.image.avatarGitHub(),
-                fullname: faker.person.fullName(),
-                email: faker.internet.email(),
-                start_date: faker.date.recent({refDate: new Date(), days: 30}),
-                employee_type: faker.helpers.arrayElement(employee_types),
-                description: faker.lorem.paragraph(),
-                phone: faker.phone.number(),
-                status: faker.helpers.arrayElement(employeeStatus_list),
-                password: hashedPassword
-            })
-            await newData.save();
-        }
-        console.log("Employees data inserted successfully\n");
+        await insertIntoTable(
+            'employee', 
+            columns, 
+            values, 
+            ROWS_TO_INSERT, 
+            currentConnection
+        );
     } catch (error) {
         console.error('Error during insertion:', error);
-    }
+    };
 }

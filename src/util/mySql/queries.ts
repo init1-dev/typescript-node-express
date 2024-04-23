@@ -1,10 +1,14 @@
 // import { faker } from "@faker-js/faker";
 // import { employee_types } from "../../models/Employees";
 
+import { mySqlConfig } from "./mySqlConfig";
+
+const DB_NAME = mySqlConfig.database;
+
 export const dropQuery = `
-    drop DATABASE IF EXISTS hotel_miranda_SQL;
-    create DATABASE hotel_miranda_SQL;
-    use hotel_miranda_SQL;
+    drop DATABASE IF EXISTS ${DB_NAME};
+    create DATABASE ${DB_NAME};
+    use ${DB_NAME};
 
     create TABLE employee_type(
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -22,8 +26,8 @@ export const dropQuery = `
         phone VARCHAR(255) not null,
         employee_status ENUM('Active', 'Inactive') default 'Inactive',
         password VARCHAR(255) not null,
-        createdAt DATETIME default CURRENT_TIMESTAMP,
-        updatedAt DATETIME default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+        createdAt TIMESTAMP default CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
         CONSTRAINT fk_employee_type
             FOREIGN KEY (employee_type_id) REFERENCES employee_type(id)
     );
@@ -39,8 +43,8 @@ export const dropQuery = `
         read_status BOOLEAN default false,
         archived BOOLEAN default false,
         photo VARCHAR(1000) default "photourl",
-        createdAt DATETIME default CURRENT_TIMESTAMP,
-        updatedAt DATETIME default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+        createdAt TIMESTAMP default CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
     );
 
     create TABLE room_type(
@@ -65,8 +69,8 @@ export const dropQuery = `
         cancellation VARCHAR(3000) default 'Cancelation policy',
         discount TINYINT default 0,
         status ENUM('Available', 'Booked') default 'Available',
-        createdAt DATETIME default CURRENT_TIMESTAMP,
-        updatedAt DATETIME default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+        createdAt TIMESTAMP default CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
         CONSTRAINT fk_room_type
             FOREIGN KEY (room_type_id) REFERENCES room_type(id)
     );
@@ -78,10 +82,6 @@ export const dropQuery = `
         FOREIGN KEY (room_id) REFERENCES room(id),
         FOREIGN KEY (amenity_id) REFERENCES amenity(id)
     );
-
-    CREATE TRIGGER set_default_name BEFORE INSERT ON room -- is this correct?
-    FOR EACH ROW
-    SET NEW.name = CONCAT('Room', NEW.id);
 
     create TABLE booking(
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -95,11 +95,125 @@ export const dropQuery = `
         discount TINYINT default 0,
         status ENUM('In Progress', 'Check In', 'Check Out') default 'In Progress',
         room_id INT UNSIGNED not null,
-        createdAt DATETIME default CURRENT_TIMESTAMP,
-        updatedAt DATETIME default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+        createdAt TIMESTAMP default CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
         CONSTRAINT fk_booking_room_info_id
             FOREIGN KEY (room_id) REFERENCES room(id)
     );
 `;
 
-// employee, room, room_amenities, booking
+export const selectRoomsQuery = `
+    SELECT
+        room.id as _id,
+        room.name,
+        room.photo,
+        room_type.name AS room_type,
+        room.room_number,
+        room.description,
+        room.offer,
+        room.price,
+        room.cancellation,
+        group_concat(amenity.name) as amenities,
+        room.discount,
+        room.status,
+        room.createdAt,
+        room.updatedAt
+        FROM
+        room
+    INNER JOIN
+        room_type ON room.room_type_id = room_type.id
+    LEFT JOIN
+        room_amenities ON room.id = room_amenities.room_id
+    LEFT JOIN
+        amenity ON room_amenities.amenity_id = amenity.id
+    GROUP BY
+        room.id;
+`;
+
+export const selectBookingsQuery = `
+    SELECT
+        booking.id as _id,
+        booking.full_name,
+        booking.email,
+        booking.phone,
+        booking.check_in,
+        booking.check_out,
+        booking.order_date,
+        booking.special_request,
+        booking.discount,
+        booking.status,
+        JSON_OBJECT(
+            '_id', room.id,
+            'name', room.name,
+            'photo', room.photo,
+            'room_type', room_type.name,
+            'room_number', room.room_number,
+            'description', room.description,
+            'offer', room.offer,
+            'price', room.price,
+            'cancellation', room.cancellation,
+            'amenities', group_concat(amenity.name),
+            'discount', room.discount,
+            'status', room.status,
+            'createdAt', room.createdAt,
+            'updatedAt', room.updatedAt
+        ) as roomInfo
+    FROM
+        booking
+    INNER JOIN
+        room ON booking.room_id = room.id
+    LEFT JOIN room_type ON room.room_type_id = room_type.id
+    LEFT JOIN room_amenities ON room.id = room_amenities.room_id
+    LEFT JOIN amenity ON room_amenities.amenity_id = amenity.id
+    GROUP BY booking.id;
+`;
+
+export const selectEmployeesQuery = `
+    SELECT
+        employee.id as _id,
+        employee.photo,
+        employee.fullname,
+        employee.email,
+        employee.start_date,
+        employee_type.name as employee_type,
+        employee.description,
+        employee.phone,
+        employee.employee_status as status,
+        employee.password,
+        employee.createdAt,
+        employee.updatedAt
+    FROM
+        employee
+    INNER JOIN
+        employee_type ON employee.employee_type_id = employee_type.id;
+`;
+
+export const selectMessagesQuery = `
+    SELECT
+        id as _id,
+        full_name,
+        email,
+        phone,
+        subject,
+        message,
+        stars,
+        read_status as status,
+        archived,
+        photo,
+        createdAt,
+        updatedAt
+    FROM 
+        message;
+`;
+
+export const selectAmenitiesList = `
+    SELECT * FROM amenity;
+`;
+
+export const selectRoomTypesList = `
+    SELECT * FROM room_type;
+`;
+
+export const selectEmployeeTypesList = `
+    SELECT * FROM employee_type;
+`;
