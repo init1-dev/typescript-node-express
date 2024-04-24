@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker';
-// import { RoomsModel, amenities_list, roomStatus_list, room_types } from "../models/Rooms";
 import { Connection } from 'mysql2/promise';
-import { insertIntoTable, insertIntoTableFromArray } from '../util/mySql/querieFunctions';
+import { insertMultipleIntoTable, insertIntoTableFromArray } from '../util/mySql/querieFunctions';
 import { amenities_list, roomStatus_list, room_types } from '../models/Rooms';
 
 export const ROWS_TO_INSERT = 10;
@@ -61,7 +60,7 @@ export const insertRoomsData = async(currentConnection: Connection) => {
         await insertIntoTableFromArray('room_type', room_types, currentConnection);
         await insertIntoTableFromArray('amenity', amenities_list, currentConnection);
 
-        await insertIntoTable(
+        await insertMultipleIntoTable(
             'room', 
             roomColumns, 
             roomValues, 
@@ -69,7 +68,7 @@ export const insertRoomsData = async(currentConnection: Connection) => {
             currentConnection
         );
 
-        await insertIntoTable(
+        await insertMultipleIntoTable(
             'room_amenities',
             room_amenities_columns,
             room_amenities_values,

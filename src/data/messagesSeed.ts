@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Connection } from "mysql2/promise";
-import { insertIntoTable } from '../util/mySql/querieFunctions';
+import { insertMultipleIntoTable } from '../util/mySql/querieFunctions';
 
 export const insertMessagesData = async(currentConnection: Connection) => {
     const ROWS_TO_INSERT = 10;
@@ -34,7 +34,7 @@ export const insertMessagesData = async(currentConnection: Connection) => {
     };
 
     try {
-        await insertIntoTable(
+        await insertMultipleIntoTable(
             'message', 
             columns, 
             values, 

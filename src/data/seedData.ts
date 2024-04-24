@@ -1,4 +1,3 @@
-// import { insertBookingsData } from "./bookingsSeed";
 import { mySqlConnection, mySqlDisconnect } from "../util/mySql/mySqlConnection";
 import { executeQuery } from "../util/mySql/querieFunctions";
 import { dropQuery } from "../util/mySql/queries";

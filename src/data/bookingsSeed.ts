@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { BookingStatus_list } from "../models/Bookings";
 import { Connection } from 'mysql2/promise';
 import { ROWS_TO_INSERT } from './roomsSeed';
-import { formatDateToSql, insertIntoTable } from '../util/mySql/querieFunctions';
+import { formatDateToSql, insertMultipleIntoTable } from '../util/mySql/querieFunctions';
 
 
 const generateCheckInDate = (): Date => {
@@ -52,7 +52,7 @@ export const insertBookingsData = async(currentConnection: Connection) => {
     };
 
     try {
-        await insertIntoTable(
+        await insertMultipleIntoTable(
             'booking',
             bookingColumns,
             bookingValues,

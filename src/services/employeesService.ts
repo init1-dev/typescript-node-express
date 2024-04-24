@@ -1,7 +1,6 @@
 import { AppError } from '../classes/AppError';
 import { Employee, EmployeesModel } from '../models/Employees';
 import bcrypt from 'bcryptjs';
-// import { mySqlConnection } from '../util/mySql/mySqlConnection';
 
 const Model = EmployeesModel;
 const messageString = "employee";
@@ -64,8 +63,6 @@ export const deleteItem = async(id: any): Promise<ModelInterface> => {
 }
 
 export const employeeLogin = async(username: string): Promise<ModelInterface | null> => {
-    // const connection = mySqlConnection();
-
     const isUserExist = await Model.findOne({email: username});
     if(isUserExist === null) {
         throw new AppError(404, `Error getting ${messageString}`);

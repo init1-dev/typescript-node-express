@@ -1,6 +1,3 @@
-// import { faker } from "@faker-js/faker";
-// import { employee_types } from "../../models/Employees";
-
 import { mySqlConfig } from "./mySqlConfig";
 
 const DB_NAME = mySqlConfig.database;
@@ -102,6 +99,8 @@ export const dropQuery = `
     );
 `;
 
+// rooms
+
 export const selectRoomsQuery = `
     SELECT
         room.id as _id,
@@ -131,7 +130,34 @@ export const selectRoomsQuery = `
 `;
 
 export const selectOneRoomQuery = `
-
+    SELECT
+        room.id as _id,
+        room.name,
+        room.photo,
+        room_type.name AS room_type,
+        room.room_number,
+        room.description,
+        room.offer,
+        room.price,
+        room.cancellation,
+        group_concat(amenity.name) as amenities,
+        room.discount,
+        room.status,
+        room.createdAt,
+        room.updatedAt
+        FROM
+        room
+    INNER JOIN
+        room_type ON room.room_type_id = room_type.id
+    LEFT JOIN
+        room_amenities ON room.id = room_amenities.room_id
+    LEFT JOIN
+        amenity ON room_amenities.amenity_id = amenity.id
+    WHERE
+        id = ?
+    GROUP BY
+        room.id
+    LIMIT 1;
 `;
 
 export const AddRoomQuery = `
@@ -143,8 +169,10 @@ export const EditRoomQuery = `
 `;
 
 export const DeleteRoomQuery = `
-
+    DELETE FROM room WHERE id = ?;
 `;
+
+// bookings
 
 export const selectBookingsQuery = `
     SELECT
@@ -185,7 +213,45 @@ export const selectBookingsQuery = `
 `;
 
 export const selectOneBookingQuery = `
-
+    SELECT
+        booking.id as _id,
+        booking.full_name,
+        booking.email,
+        booking.phone,
+        booking.check_in,
+        booking.check_out,
+        booking.order_date,
+        booking.special_request,
+        booking.discount,
+        booking.status,
+        JSON_OBJECT(
+            '_id', room.id,
+            'name', room.name,
+            'photo', room.photo,
+            'room_type', room_type.name,
+            'room_number', room.room_number,
+            'description', room.description,
+            'offer', room.offer,
+            'price', room.price,
+            'cancellation', room.cancellation,
+            'amenities', group_concat(amenity.name),
+            'discount', room.discount,
+            'status', room.status,
+            'createdAt', room.createdAt,
+            'updatedAt', room.updatedAt
+        ) as roomInfo
+    FROM
+        booking
+    INNER JOIN
+        room ON booking.room_id = room.id
+    LEFT JOIN room_type ON room.room_type_id = room_type.id
+    LEFT JOIN room_amenities ON room.id = room_amenities.room_id
+    LEFT JOIN amenity ON room_amenities.amenity_id = amenity.id
+    WHERE
+        id = ?
+    GROUP BY
+        booking.id
+    LIMIT 1;
 `;
 
 export const AddBookingQuery = `
@@ -197,8 +263,10 @@ export const EditBookingQuery = `
 `;
 
 export const DeleteBookingQuery = `
-
+    DELETE FROM booking WHERE id = ?;
 `;
+
+// employees
 
 export const selectEmployeesQuery = `
     SELECT
@@ -221,11 +289,47 @@ export const selectEmployeesQuery = `
 `;
 
 export const selectOneEmployeeQuery = `
-
+    SELECT
+        employee.id as _id,
+        employee.photo,
+        employee.fullname,
+        employee.email,
+        employee.start_date,
+        employee_type.name as employee_type,
+        employee.description,
+        employee.phone,
+        employee.employee_status as status,
+        employee.password,
+        employee.createdAt,
+        employee.updatedAt
+    FROM
+        employee
+    INNER JOIN
+        employee_type ON employee.employee_type_id = employee_type.id
+    WHERE
+        id = ?
+    LIMIT 1;
 `;
 
 export const AddEmployeeQuery = `
-
+    INSERT INTO employee (
+        photo, 
+        fullname, 
+        email, 
+        employee_type_id, 
+        description, 
+        phone, 
+        password
+    )
+    VALUES (
+        ?, 
+        ?, 
+        ?, 
+        ?, 
+        ?, 
+        ?, 
+        ?
+    );
 `;
 
 export const EditEmployeeQuery = `
@@ -233,8 +337,10 @@ export const EditEmployeeQuery = `
 `;
 
 export const DeleteEmployeeQuery = `
-
+    DELETE FROM employee WHERE id = ?;
 `;
+
+// messages
 
 export const selectMessagesQuery = `
     SELECT
@@ -255,7 +361,24 @@ export const selectMessagesQuery = `
 `;
 
 export const selectOneMessageQuery = `
-
+    SELECT
+        id as _id,
+        full_name,
+        email,
+        phone,
+        subject,
+        message,
+        stars,
+        read_status as status,
+        archived,
+        photo,
+        createdAt,
+        updatedAt
+    FROM
+        message
+    WHERE
+        id = ?
+    LIMIT 1;
 `;
 
 export const AddMessageQuery = `
@@ -267,8 +390,10 @@ export const EditMessageQuery = `
 `;
 
 export const DeleteMessageQuery = `
-
+    DELETE FROM message WHERE id = ?;
 `;
+
+// others
 
 export const selectAmenitiesList = `
     SELECT * FROM amenity;

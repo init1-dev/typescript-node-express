@@ -1,4 +1,4 @@
-import { Connection } from "mysql2/promise";
+import { Connection, OkPacket, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 export const executeQuery = async(
     query: string,
@@ -60,7 +60,7 @@ const formatValue = (value: any): string | number | boolean => {
         : `${value}`;
 };
 
-export const insertIntoTable = async(
+export const insertMultipleIntoTable = async(
     table: string,
     columns: Array<string>,
     values: Array<any>,
@@ -79,8 +79,22 @@ export const insertIntoTable = async(
         ${queryColumns}
     ) VALUES ${queryValues};`);
 
-    // console.log(`${table} data:\n` + queryValues + "\n");
     console.log('Done!\n');
+};
+
+export const insertIntoTable = async(
+    values: Array<any>,
+    query: string,
+    currentConnection: Connection
+): Promise<OkPacket | ResultSetHeader | RowDataPacket[] | RowDataPacket[][] | OkPacket[]> => {
+
+    const prepareConnection = await currentConnection.prepare(query);
+    const [ results ] = await prepareConnection.execute(values);
+
+    prepareConnection.close();
+    currentConnection.unprepare(query);
+
+    return results;
 };
 
 export const formatDateToSql = (date: Date | number) => {
