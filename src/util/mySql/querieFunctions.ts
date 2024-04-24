@@ -83,6 +83,6 @@ export const insertIntoTable = async(
     console.log('Done!\n');
 };
 
-export const formatDateToSql = (date: Date) => {
-    return date.toISOString().slice(0, 19).replace('T', ' ');
+export const formatDateToSql = (date: Date | number) => {
+    return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
 }

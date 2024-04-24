@@ -130,6 +130,22 @@ export const selectRoomsQuery = `
         room.id;
 `;
 
+export const selectOneRoomQuery = `
+
+`;
+
+export const AddRoomQuery = `
+
+`;
+
+export const EditRoomQuery = `
+
+`;
+
+export const DeleteRoomQuery = `
+
+`;
+
 export const selectBookingsQuery = `
     SELECT
         booking.id as _id,
@@ -168,6 +184,22 @@ export const selectBookingsQuery = `
     GROUP BY booking.id;
 `;
 
+export const selectOneBookingQuery = `
+
+`;
+
+export const AddBookingQuery = `
+
+`;
+
+export const EditBookingQuery = `
+
+`;
+
+export const DeleteBookingQuery = `
+
+`;
+
 export const selectEmployeesQuery = `
     SELECT
         employee.id as _id,
@@ -188,6 +220,22 @@ export const selectEmployeesQuery = `
         employee_type ON employee.employee_type_id = employee_type.id;
 `;
 
+export const selectOneEmployeeQuery = `
+
+`;
+
+export const AddEmployeeQuery = `
+
+`;
+
+export const EditEmployeeQuery = `
+
+`;
+
+export const DeleteEmployeeQuery = `
+
+`;
+
 export const selectMessagesQuery = `
     SELECT
         id as _id,
@@ -204,6 +252,22 @@ export const selectMessagesQuery = `
         updatedAt
     FROM 
         message;
+`;
+
+export const selectOneMessageQuery = `
+
+`;
+
+export const AddMessageQuery = `
+
+`;
+
+export const EditMessageQuery = `
+
+`;
+
+export const DeleteMessageQuery = `
+
 `;
 
 export const selectAmenitiesList = `

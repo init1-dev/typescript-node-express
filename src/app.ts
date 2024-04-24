@@ -8,10 +8,9 @@ import { messagesRoutes } from './routes/messages';
 import { loginRoutes } from './routes/login';
 import { authMiddleware } from './middleware/auth';
 import { parseResponse } from './util/parseResponse';
-// import { mongooseConnect } from './util/mongoose/mongooseConnect';
 import cors from 'cors';
 import { origins } from './util/cors/origins';
-// import { mongooseConnect } from './util/mySql/mySqlConnection';
+import { mySqlConnection } from './util/mySql/mySqlConnection';
 
 export const app = express();
 
@@ -31,7 +30,7 @@ app.use(cors({
 
 app.use('/', rootRoutes);
 
-// mongooseConnect();
+mySqlConnection();
 
 app.use('/login', loginRoutes);
 

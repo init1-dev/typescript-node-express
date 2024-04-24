@@ -3,7 +3,7 @@ import { BookingStatus_list } from "../models/Bookings";
 import { Connection } from 'mysql2/promise';
 import { ROWS_TO_INSERT } from './roomsSeed';
 import { formatDateToSql, insertIntoTable } from '../util/mySql/querieFunctions';
-import { now } from 'mongoose';
+
 
 const generateCheckInDate = (): Date => {
     return faker.date.recent({refDate: new Date(), days: 30});
@@ -43,7 +43,7 @@ export const insertBookingsData = async(currentConnection: Connection) => {
             faker.phone.number(),
             formatDateToSql(checkInDate),
             formatDateToSql(checkOutDate),
-            formatDateToSql(new Date(now())),
+            formatDateToSql(Date.now()),
             faker.lorem.paragraphs(2),
             Math.round(faker.number.float() * 20) * 5,
             faker.helpers.arrayElement(BookingStatus_list),
