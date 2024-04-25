@@ -394,6 +394,28 @@ export const DeleteEmployeeQuery = `
     DELETE FROM employee WHERE id = ?;
 `;
 
+export const LoginUser = `
+    SELECT
+        employee.id as _id,
+        employee.photo,
+        employee.fullname,
+        employee.email,
+        employee.start_date,
+        employee_type.name as employee_type,
+        employee.description,
+        employee.phone,
+        employee.employee_status as status,
+        employee.password,
+        employee.createdAt,
+        employee.updatedAt
+    FROM employee
+    INNER JOIN
+        employee_type ON employee.employee_type_id = employee_type.id
+    WHERE
+        employee.email = ?
+    LIMIT 1;
+`;
+
 // messages
 
 export const selectMessagesQuery = `

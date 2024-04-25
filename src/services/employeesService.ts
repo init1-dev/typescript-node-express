@@ -2,7 +2,7 @@
 import { AppError } from '../classes/AppError';
 import { Employee } from '../models/Employees';
 // import bcrypt from 'bcryptjs';
-import { DeleteEmployeeQuery, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries';
+import { DeleteEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries';
 import { mySqlConnection } from '../util/mySql/mySqlConnection';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
 import { RowDataPacket } from 'mysql2';
@@ -76,13 +76,15 @@ export const deleteItem = async(id: any) => {
     return results;
 };
 
-export const employeeLogin = async(username: string) => {
-    // const isUserExist = await Model.findOne({email: username});
-    // if(isUserExist === null) {
-    //     throw new AppError(404, `Error getting ${messageString}`);
-    // }
-    // return isUserExist;
-    return {};
+export const employeeLogin = async(username: string): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = LoginUser;
+    const results = await runQuery(query, currentConnection, [username]);
+    
+    if(results.length === 0){
+        throw new AppError(404, 'Not found');
+    }
+    return results;
 };
 
 export const isUserExist = async(username: string) => {
