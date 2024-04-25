@@ -112,7 +112,7 @@ export const selectRoomsQuery = `
         room.offer,
         room.price,
         room.cancellation,
-        group_concat(amenity.name) as amenities,
+        json_arrayagg(amenity.name) as amenities,
         room.discount,
         room.status,
         room.createdAt,
@@ -140,7 +140,7 @@ export const selectOneRoomQuery = `
         room.offer,
         room.price,
         room.cancellation,
-        group_concat(amenity.name) as amenities,
+        json_arrayagg(amenity.name) as amenities,
         room.discount,
         room.status,
         room.createdAt,
@@ -160,9 +160,41 @@ export const selectOneRoomQuery = `
     LIMIT 1;
 `;
 
-export const AddRoomQuery = `
+export const addRoomAmenities = (id: number, amenities: number[]) => {
+    let amenity_list = "";
+    const lastIndex = amenities.length - 1;
+    for (let i = 0; i <= lastIndex; i++) {
+        if(i < lastIndex){
+            amenity_list += `(${id}, ${amenities[i]}),`;
+        } else {
+            amenity_list += `(${id}, ${amenities[i]})`;
+        };
+    };
 
-`;
+    console.log(amenity_list);
+    
+
+    return `
+        INSERT INTO room_amenities(room_id, amenity_id)
+        VALUES ${amenity_list};
+    `;
+};
+
+export const AddRoomQuery = `
+        INSERT INTO room(
+            name, 
+            photo, 
+            room_type_id, 
+            room_number, 
+            description, 
+            offer, 
+            price, 
+            cancellation, 
+            discount, 
+            status
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
 
 export const EditRoomQuery = `
 
@@ -255,11 +287,30 @@ export const selectOneBookingQuery = `
 `;
 
 export const AddBookingQuery = `
-
+    INSERT INTO booking (
+        full_name, 
+        email, 
+        phone, 
+        check_in, 
+        check_out, 
+        special_request, 
+        discount,
+        room_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 `;
 
 export const EditBookingQuery = `
-
+    UPDATE booking
+    SET 
+        full_name = ?,
+        email = ?,
+        phone = ?,
+        check_in = ?,
+        check_out = ?,
+        special_request = ?,
+        discount = ?,
+        room_id = ?
+    WHERE id = ?;
 `;
 
 export const DeleteBookingQuery = `
@@ -316,24 +367,27 @@ export const AddEmployeeQuery = `
         photo, 
         fullname, 
         email, 
+        start_date,
         employee_type_id, 
         description, 
         phone, 
         password
-    )
-    VALUES (
-        ?, 
-        ?, 
-        ?, 
-        ?, 
-        ?, 
-        ?, 
-        ?
-    );
+    ) VALUES (?, ?, ?, ?, ?, ?, ?,?);
 `;
 
 export const EditEmployeeQuery = `
-
+    UPDATE employee
+    SET 
+        photo = ?,
+        fullname = ?,
+        email = ?,
+        start_date = ?,
+        employee_type_id = ?,
+        description = ?,
+        phone = ?,
+        employee_status = ?,
+        password = ?
+    WHERE id = ?;
 `;
 
 export const DeleteEmployeeQuery = `
@@ -382,11 +436,26 @@ export const selectOneMessageQuery = `
 `;
 
 export const AddMessageQuery = `
-
+    INSERT INTO message (
+        full_name, 
+        email, 
+        phone, 
+        subject, 
+        message, 
+        stars
+    ) VALUES (?, ?, ?, ?, ?, ?);
 `;
 
 export const EditMessageQuery = `
-
+    UPDATE message
+    SET 
+        full_name = ?, 
+        email = ?, 
+        phone = ?, 
+        subject = ?, 
+        message = ?, 
+        stars = ?
+    WHERE id = ?;
 `;
 
 export const DeleteMessageQuery = `

@@ -1,4 +1,4 @@
-import { Connection, PreparedStatementInfo, ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { mySqlDisconnect } from "./mySqlConnection";
 
 export const executeQuery = async(
@@ -83,16 +83,6 @@ export const insertMultipleIntoTable = async(
     console.log('Done!\n');
 };
 
-export const closeAndDisconnect = async(
-    prepareConnection: PreparedStatementInfo,
-    currentConnection: Connection,
-    query: string
-) => {
-    prepareConnection.close();
-    currentConnection.unprepare(query);
-    await mySqlDisconnect(currentConnection);
-};
-
 export const selectQuery = async(
     query: string, 
     currentConnection: Connection, 
@@ -101,19 +91,29 @@ export const selectQuery = async(
     const prepareConnection = await currentConnection.prepare(query);
     let [ results ] = await prepareConnection.execute(id? [id] : null);
 
-    closeAndDisconnect(prepareConnection, currentConnection, query);
+    prepareConnection.close();
+    currentConnection.unprepare(query);
+
+    await mySqlDisconnect(currentConnection);
     return results as RowDataPacket[];
 };
 
 export const runQuery = async(
     query: string, 
     currentConnection: Connection, 
-    values: String[]
-): Promise<ResultSetHeader> => {
+    values: any[],
+    close = true
+): Promise<ResultSetHeader> => {    
     const prepareConnection = await currentConnection.prepare(query);
+    
     let [ results ] = await prepareConnection.execute(values);
 
-    closeAndDisconnect(prepareConnection, currentConnection, query);
+    prepareConnection.close();
+    currentConnection.unprepare(query);
+
+    if(close){
+        await mySqlDisconnect(currentConnection);
+    }
     return results as ResultSetHeader;
 };
 

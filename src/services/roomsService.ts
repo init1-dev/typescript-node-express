@@ -3,7 +3,7 @@ import { Room } from '../models/Rooms';
 import { AppError } from '../classes/AppError';
 import { mySqlConnection } from '../util/mySql/mySqlConnection';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
-import { DeleteRoomQuery, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries';
+import { AddRoomQuery, DeleteRoomQuery, addRoomAmenities, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries';
 import { RowDataPacket } from 'mysql2';
 
 type ModelInterface = Room;
@@ -27,12 +27,14 @@ export const getOne = async(id: any): Promise<RowDataPacket[]> => {
 };
 
 export const newItem = async(data: ModelInterface) => {
-    // const item = await Model.create(data);
-    // if(item === null){
-    //     throw new AppError(404, `Error adding ${messageString}`);
-    // }
-    // return item;
-    return {};
+    const currentConnection = await mySqlConnection();
+    const {amenities, ...formData} = data;
+    const roomQuery = AddRoomQuery;
+    const values = Object.values(formData);
+    const headers = await runQuery(roomQuery, currentConnection, values, false);
+    await runQuery(addRoomAmenities(headers.insertId, amenities), currentConnection, values, false);
+    const results = await runQuery(selectOneRoomQuery, currentConnection, [headers.insertId]);
+    return results;
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {

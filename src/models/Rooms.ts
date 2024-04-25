@@ -7,7 +7,7 @@ export interface Room {
     offer: boolean;
     price: number;
     cancellation: string;
-    amenities: string[];
+    amenities: number[];
     discount: number;
     status: string;
 }
