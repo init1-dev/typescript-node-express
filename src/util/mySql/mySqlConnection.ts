@@ -37,7 +37,7 @@ export const mySqlConnection = async(
 export const mySqlDisconnect = async(currentConnection: Connection): Promise<void> => {
     try {
         await currentConnection.end();
-        console.log('Disconnected from MySQL');
+        console.log('Disconnected from MySQL\n');
     } catch (error) {
         console.error("Error disconnecting from MySQL: ", error);
         throw error;

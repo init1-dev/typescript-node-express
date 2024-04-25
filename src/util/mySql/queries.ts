@@ -26,7 +26,7 @@ export const dropQuery = `
         createdAt TIMESTAMP default CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
         CONSTRAINT fk_employee_type
-            FOREIGN KEY (employee_type_id) REFERENCES employee_type(id)
+            FOREIGN KEY (employee_type_id) REFERENCES employee_type(id) ON UPDATE CASCADE
     );
 
     create TABLE message(
@@ -69,15 +69,15 @@ export const dropQuery = `
         createdAt TIMESTAMP default CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
         CONSTRAINT fk_room_type
-            FOREIGN KEY (room_type_id) REFERENCES room_type(id)
+            FOREIGN KEY (room_type_id) REFERENCES room_type(id) ON UPDATE CASCADE
     );
 
     create TABLE room_amenities(
         room_id INT UNSIGNED,
         amenity_id INT UNSIGNED,
         PRIMARY KEY (room_id, amenity_id),
-        FOREIGN KEY (room_id) REFERENCES room(id),
-        FOREIGN KEY (amenity_id) REFERENCES amenity(id)
+        FOREIGN KEY (room_id) REFERENCES room(id) ON DELETE CASCADE,
+        FOREIGN KEY (amenity_id) REFERENCES amenity(id) ON DELETE CASCADE
     );
 
     create TABLE booking(
@@ -154,7 +154,7 @@ export const selectOneRoomQuery = `
     LEFT JOIN
         amenity ON room_amenities.amenity_id = amenity.id
     WHERE
-        id = ?
+        room.id = ?
     GROUP BY
         room.id
     LIMIT 1;
@@ -196,7 +196,7 @@ export const selectBookingsQuery = `
             'offer', room.offer,
             'price', room.price,
             'cancellation', room.cancellation,
-            'amenities', group_concat(amenity.name),
+            'amenities', json_arrayagg(amenity.name),
             'discount', room.discount,
             'status', room.status,
             'createdAt', room.createdAt,
@@ -234,7 +234,7 @@ export const selectOneBookingQuery = `
             'offer', room.offer,
             'price', room.price,
             'cancellation', room.cancellation,
-            'amenities', group_concat(amenity.name),
+            'amenities', json_arrayagg(amenity.name),
             'discount', room.discount,
             'status', room.status,
             'createdAt', room.createdAt,
@@ -248,7 +248,7 @@ export const selectOneBookingQuery = `
     LEFT JOIN room_amenities ON room.id = room_amenities.room_id
     LEFT JOIN amenity ON room_amenities.amenity_id = amenity.id
     WHERE
-        id = ?
+        booking.id = ?
     GROUP BY
         booking.id
     LIMIT 1;
@@ -307,7 +307,7 @@ export const selectOneEmployeeQuery = `
     INNER JOIN
         employee_type ON employee.employee_type_id = employee_type.id
     WHERE
-        id = ?
+        employee.id = ?
     LIMIT 1;
 `;
 

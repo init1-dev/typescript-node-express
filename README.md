@@ -52,6 +52,7 @@ $npm run dev
 
 ### TODO:
 - improve docs
+- if try to delete room with associated bookings handle error in dashboard instead using doesAnyBookingContainRoom in bookings service
 
 ## Project Urls
 

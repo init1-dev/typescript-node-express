@@ -1,4 +1,5 @@
-import { Connection, OkPacket, ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { Connection, PreparedStatementInfo, ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { mySqlDisconnect } from "./mySqlConnection";
 
 export const executeQuery = async(
     query: string,
@@ -82,11 +83,45 @@ export const insertMultipleIntoTable = async(
     console.log('Done!\n');
 };
 
+export const closeAndDisconnect = async(
+    prepareConnection: PreparedStatementInfo,
+    currentConnection: Connection,
+    query: string
+) => {
+    prepareConnection.close();
+    currentConnection.unprepare(query);
+    await mySqlDisconnect(currentConnection);
+};
+
+export const selectQuery = async(
+    query: string, 
+    currentConnection: Connection, 
+    id?: string
+): Promise<RowDataPacket[]> => {
+    const prepareConnection = await currentConnection.prepare(query);
+    let [ results ] = await prepareConnection.execute(id? [id] : null);
+
+    closeAndDisconnect(prepareConnection, currentConnection, query);
+    return results as RowDataPacket[];
+};
+
+export const runQuery = async(
+    query: string, 
+    currentConnection: Connection, 
+    values: String[]
+): Promise<ResultSetHeader> => {
+    const prepareConnection = await currentConnection.prepare(query);
+    let [ results ] = await prepareConnection.execute(values);
+
+    closeAndDisconnect(prepareConnection, currentConnection, query);
+    return results as ResultSetHeader;
+};
+
 export const insertIntoTable = async(
     values: Array<any>,
     query: string,
     currentConnection: Connection
-): Promise<OkPacket | ResultSetHeader | RowDataPacket[] | RowDataPacket[][] | OkPacket[]> => {
+): Promise<ResultSetHeader> => {
 
     const prepareConnection = await currentConnection.prepare(query);
     const [ results ] = await prepareConnection.execute(values);
@@ -94,9 +129,9 @@ export const insertIntoTable = async(
     prepareConnection.close();
     currentConnection.unprepare(query);
 
-    return results;
+    return results as ResultSetHeader;
 };
 
 export const formatDateToSql = (date: Date | number) => {
     return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-}
+};

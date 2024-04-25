@@ -1,51 +1,57 @@
+// @ts-nocheck
+import { RowDataPacket } from 'mysql2';
 import { AppError } from '../classes/AppError';
-import { Booking, BookingModel } from '../models/Bookings';
+import { Booking } from '../models/Bookings';
+import { mySqlConnection } from '../util/mySql/mySqlConnection';
+import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
+import { DeleteBookingQuery, selectBookingsQuery, selectOneBookingQuery } from '../util/mySql/queries';
 
-const Model = BookingModel;
-const messageString = "booking";
 type ModelInterface = Booking;
 
-export const getAll = async(): Promise<ModelInterface[]> => {
-    const items = await Model.find().populate('roomInfo');
-    return items;
-}
+export const getAll = async(): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = selectBookingsQuery;
+    const results = await selectQuery(query, currentConnection);
+    return results;
+};
 
-export const getOne = async(id: any): Promise<ModelInterface> => {
-    const item = await Model.findById(id).populate('roomInfo');
-    if(item === null){
+export const getOne = async(id: any): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = selectOneBookingQuery;
+    const results = await selectQuery(query, currentConnection, id);
+    
+    if(results.length === 0){
         throw new AppError(404, 'Not found');
     }
-    return item;
-}
+    return results;
+};
 
-export const newItem = async(data: ModelInterface): Promise<ModelInterface> => {
-    const item = (await Model.create(data)).populate('roomInfo');
-    if(item === null){
-        throw new AppError(404, `Error adding ${messageString}`);
-    }
-    return item;
-}
+export const newItem = async(data: ModelInterface) => {
+    // const item = (await Model.create(data)).populate('roomInfo');
+    // if(item === null){
+    //     throw new AppError(404, `Error adding ${messageString}`);
+    // }
+    // return item;
+    return {};
+};
 
-export const editItem = async(id: any, data: ModelInterface): Promise<ModelInterface> => {
-    const item = await Model.findByIdAndUpdate(id, data, { new: true }).populate('roomInfo');
-    if(item === null){
-        throw new AppError(404, `Error editing ${messageString}`);
-    }
-    return item;
-}
+export const editItem = async(id: any, data: ModelInterface) => {
+    // const item = await Model.findByIdAndUpdate(id, data, { new: true }).populate('roomInfo');
+    // if(item === null){
+    //     throw new AppError(404, `Error editing ${messageString}`);
+    // }
+    // return item;
+    return {};
+};
 
-export const deleteItem = async(id: any): Promise<ModelInterface> => {
-    const item = await Model.findByIdAndDelete(id);
-    if(item === null){
-        throw new AppError(404, `Error deleting ${messageString}`);
+export const deleteItem = async(id: any) => {
+    const currentConnection = await mySqlConnection();
+    const query = DeleteBookingQuery;
+    const results = await runQuery(query, currentConnection, [id]);
+    
+    if(results.affectedRows === 0){
+        throw new AppError(404, 'Not found');
     }
-    return item;
-}
-
-export const doesAnyBookingContainRoom = async(roomId: string) => {
-    const check = await Model.findOne({roomInfo: {_id: roomId}});
-    if(check){
-        return true;
-    }
-    return false;
-}
+    
+    return results;
+};

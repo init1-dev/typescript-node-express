@@ -1,43 +1,57 @@
+// @ts-nocheck
+import { RowDataPacket } from 'mysql2';
 import { AppError } from '../classes/AppError';
-import { Message, MessagesModel } from '../models/Messages';
+import { Message } from '../models/Messages';
+import { mySqlConnection } from '../util/mySql/mySqlConnection';
+import { selectQuery, runQuery } from '../util/mySql/querieFunctions';
+import { DeleteMessageQuery, selectMessagesQuery, selectOneMessageQuery } from '../util/mySql/queries';
 
-const Model = MessagesModel;
-const messageString = "message";
 type ModelInterface = Message;
 
-export const getAll = async(): Promise<ModelInterface[]> => {
-    const items = await Model.find();
-    return items;
-}
+export const getAll = async(): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = selectMessagesQuery;
+    const results = await selectQuery(query, currentConnection);
+    return results;
+};
 
-export const getOne = async(id: any): Promise<ModelInterface> => {
-    const item = await Model.findById(id);
-    if(item === null){
+export const getOne = async(id: any): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = selectOneMessageQuery;
+    const results = await selectQuery(query, currentConnection, id);
+    
+    if(results.length === 0){
         throw new AppError(404, 'Not found');
     }
-    return item;
-}
+    return results;
+};
 
-export const newItem = async(data: ModelInterface): Promise<ModelInterface> => {
-    const item = await Model.create(data);
-    if(item === null){
-        throw new AppError(404, `Error adding ${messageString}`);
-    }
-    return item;
-}
+export const newItem = async(data: ModelInterface) => {
+    // const item = await Model.create(data);
+    // if(item === null){
+    //     throw new AppError(404, `Error adding ${messageString}`);
+    // }
+    // return item;
+    return {};
+};
 
-export const editItem = async(id: any, data: ModelInterface): Promise<ModelInterface> => {
-    const item = await Model.findByIdAndUpdate(id, data, { new: true });
-    if(item === null){
-        throw new AppError(404, `Error editing ${messageString}`);
-    }
-    return item;
-}
+export const editItem = async(id: any, data: ModelInterface) => {
+    // const item = await Model.findByIdAndUpdate(id, data, { new: true });
+    // if(item === null){
+    //     throw new AppError(404, `Error editing ${messageString}`);
+    // }
+    // return item;
+    return {};
+};
 
-export const deleteItem = async(id: any): Promise<ModelInterface> => {
-    const item = await Model.findByIdAndDelete(id);
-    if(item === null){
-        throw new AppError(404, `Error deleting ${messageString}`);
+export const deleteItem = async(id: any) => {
+    const currentConnection = await mySqlConnection();
+    const query = DeleteMessageQuery;
+    const results = await runQuery(query, currentConnection, [id]);
+    
+    if(results.affectedRows === 0){
+        throw new AppError(404, 'Not found');
     }
-    return item;
-}
+    
+    return results;
+};

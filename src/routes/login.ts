@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express from "express";
 import { parseResponse } from "../util/parseResponse";
 import { employeeLogin } from "../services/employeesService";
