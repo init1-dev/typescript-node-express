@@ -11,9 +11,6 @@ loginRoutes.post('/', async(req, res, next) => {
         const { username, password } = req.body;
         const loginAction = await employeeLogin(username);
         const user = loginAction[0];
-
-        console.log(loginAction);
-        
     
         if(user) {
             const isPasswordMatch = await bcrypt.compare(password, user.password);
