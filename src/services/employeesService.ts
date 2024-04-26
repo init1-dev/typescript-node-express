@@ -1,10 +1,10 @@
 import { AppError } from '../classes/AppError';
 import { Employee } from '../models/Employees';
-// import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import { mySqlConnection } from '../util/mySql/connectionFunctions';
-import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
+import { runQuery, runQueryAsPacket, selectQuery } from '../util/mySql/querieFunctions';
 import { RowDataPacket } from 'mysql2';
-import { AddEmployeeQuery, DeleteEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries/employeeQueries';
+import { AddEmployeeQuery, DeleteEmployeeQuery, EditEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries/employeeQueries';
 
 type ModelInterface = Employee;
 
@@ -29,36 +29,49 @@ export const getOne = async(id: any): Promise<RowDataPacket[]> => {
 export const newItem = async(data: ModelInterface) => {
     const currentConnection = await mySqlConnection();
     const query = AddEmployeeQuery;
-    const values = Object.values(data);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const values = Object.values({
+        ...data,
+        password: hashedPassword
+    });
     const headers = await runQuery(query, currentConnection, values, false);
     const results = await runQuery(selectOneEmployeeQuery, currentConnection, [headers.insertId]);
     return results;
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
-    console.log(id, data);
-    
-    // const employee = await Model.findById(id);
+    const currentConnection = await mySqlConnection();
+    const employee = await runQueryAsPacket(selectOneEmployeeQuery, currentConnection, [id], false);
 
-    // if(employee === null) {
-    //     throw new AppError(404, "Not found");
-    // }
-    
-    // const isPasswordMatch = await bcrypt.compare(data.password, employee?.password);
-    // let item;
-    
-    // if(!isPasswordMatch && data.password !== "") {
-    //     const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
-    //     item = await Model.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
-    // } else {
-    //     item = await Model.findByIdAndUpdate(id, {...data, password: employee.password}, { new: true });
-    // }
+    if(employee.length === 0) {
+        throw new AppError(404, "Not found");
+    }
 
-    // if(item === null){
-    //     throw new AppError(404, `Error adding ${messageString}`);
-    // }
-    // return item;
-    return {};
+    const isPasswordMatch = await bcrypt.compare(data.password, employee[0]?.password);
+    let item;
+    
+    if(!isPasswordMatch && data.password !== "") {
+        const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
+        const object = Object.values({
+            ...data,
+            password: hashedPasswordToChange
+        });
+        item = await runQuery(EditEmployeeQuery, currentConnection, [...object, id], false);
+    } else {
+        const object = Object.values({
+            ...data,
+            password: employee[0].password
+        });
+        item = await runQuery(EditEmployeeQuery, currentConnection, [...object, id], false);
+    }
+
+    if(item.affectedRows === 0){
+        throw new AppError(404, 'Not found');
+    }
+
+    const results = await runQuery(selectOneEmployeeQuery, currentConnection, [id]);
+
+    return results;
 };
 
 export const deleteItem = async(id: any) => {

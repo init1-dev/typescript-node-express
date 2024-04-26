@@ -65,8 +65,8 @@ export const EditEmployeeQuery = `
         employee_type_id = ?,
         description = ?,
         phone = ?,
-        employee_status = ?,
-        password = ?
+        password = ?,
+        employee_status = ?
     WHERE id = ?;
 `;
 

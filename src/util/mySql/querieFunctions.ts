@@ -54,6 +54,24 @@ export const runQuery = async(
     return results as ResultSetHeader;
 };
 
+export const runQueryAsPacket = async(
+    query: string, 
+    currentConnection: Connection, 
+    values: any[],
+    close = true
+): Promise<RowDataPacket[]> => {
+    const prepareConnection = await currentConnection.prepare(query);
+    let [ results ] = await prepareConnection.execute(values);
+
+    prepareConnection.close();
+    currentConnection.unprepare(query);
+
+    if(close){
+        await mySqlDisconnect(currentConnection);
+    }
+    return results as RowDataPacket[];
+};
+
 export const insertIntoTable = async(
     values: Array<any>,
     query: string,

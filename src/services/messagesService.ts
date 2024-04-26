@@ -3,7 +3,7 @@ import { AppError } from '../classes/AppError';
 import { Message } from '../models/Messages';
 import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { selectQuery, runQuery } from '../util/mySql/querieFunctions';
-import { AddMessageQuery, DeleteMessageQuery, selectMessagesQuery, selectOneMessageQuery } from '../util/mySql/queries/messageQueries';
+import { AddMessageQuery, DeleteMessageQuery, EditMessageQuery, selectMessagesQuery, selectOneMessageQuery } from '../util/mySql/queries/messageQueries';
 
 type ModelInterface = Message;
 
@@ -35,13 +35,12 @@ export const newItem = async(data: ModelInterface) => {
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
-    console.log(id, data);
-    // const item = await Model.findByIdAndUpdate(id, data, { new: true });
-    // if(item === null){
-    //     throw new AppError(404, `Error editing ${messageString}`);
-    // }
-    // return item;
-    return {};
+    const currentConnection = await mySqlConnection();
+    const query = EditMessageQuery;
+    const values = Object.values(data);
+    await runQuery(query, currentConnection, [...values, id], false);
+    const results = await runQuery(selectOneMessageQuery, currentConnection, [id]);
+    return results;
 };
 
 export const deleteItem = async(id: any) => {
