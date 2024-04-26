@@ -38,9 +38,7 @@ export const editItem = async(id: any, data: ModelInterface) => {
     const currentConnection = await mySqlConnection();
     const query = EditBookingQuery;
     const values = Object.values(data);
-    const headers = await runQuery(query, currentConnection, [...values, id], false);
-    console.log(headers);
-    
+    await runQuery(query, currentConnection, [...values, id], false);
     const results = await runQuery(selectOneBookingQuery, currentConnection, [id]);
     return results;
 };

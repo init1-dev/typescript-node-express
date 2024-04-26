@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { getAll, getOne, newItem, editItem, deleteItem } from '../services/bookingsService';
 import { parseResponse } from '../util/parseResponse';
+import { validateBooking } from '../util/validations/joiValidationMiddlewares';
 
 export const bookingsRoutes = express.Router();
 
@@ -22,7 +23,7 @@ bookingsRoutes.get('/:id', async(req: Request, res: Response, next: NextFunction
     }
 })
 
-bookingsRoutes.post('/', async( req: Request,  res: Response,  next: NextFunction ) => {
+bookingsRoutes.post('/', validateBooking, async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
         const responseData = await newItem(req.body);
         parseResponse(responseData, res, 200);
@@ -31,7 +32,7 @@ bookingsRoutes.post('/', async( req: Request,  res: Response,  next: NextFunctio
     }
 })
 
-bookingsRoutes.put('/:id', async( req: Request,  res: Response,  next: NextFunction ) => {
+bookingsRoutes.put('/:id', validateBooking, async( req: Request,  res: Response,  next: NextFunction ) => {
     try {   
         const responseData = await editItem(req.params.id, req.body);
         parseResponse(responseData, res, 200);
