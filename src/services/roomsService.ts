@@ -3,7 +3,7 @@ import { AppError } from '../classes/AppError';
 import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
 import { RowDataPacket } from 'mysql2';
-import { AddRoomQuery, DeleteRoomQuery, addRoomAmenities, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries/roomQueries';
+import { AddRoomQuery, DeleteRoomQuery, addRoomAmenities, selectOneRoomByNumberQuery, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries/roomQueries';
 
 type ModelInterface = Room;
 
@@ -62,9 +62,12 @@ export const deleteItem = async(id: any) => {
 };
 
 export const isRoomExist = async(number: string) => {
-    console.log(number);
+    const currentConnection = await mySqlConnection();
+    const query = selectOneRoomByNumberQuery;
+    const results = await selectQuery(query, currentConnection, number);
     
-    // const item = await Model.findOne({room_number: number});
-    // return item;
-    return {};
+    if(results.length === 0){
+        throw new AppError(404, 'Not found');
+    }
+    return results[0].name;
 };

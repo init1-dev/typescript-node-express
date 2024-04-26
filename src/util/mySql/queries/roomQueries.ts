@@ -57,6 +57,24 @@ export const selectOneRoomQuery = `
     LIMIT 1;
 `;
 
+export const selectOneRoomByNumberQuery = `
+    SELECT
+        room.name
+        FROM
+        room
+    INNER JOIN
+        room_type ON room.room_type_id = room_type.id
+    LEFT JOIN
+        room_amenities ON room.id = room_amenities.room_id
+    LEFT JOIN
+        amenity ON room_amenities.amenity_id = amenity.id
+    WHERE
+        room.room_number = ?
+    GROUP BY
+        room.id
+    LIMIT 1;
+`;
+
 export const addRoomAmenities = (id: number, amenities: number[]) => {
     let amenity_list = "";
     const lastIndex = amenities.length - 1;
