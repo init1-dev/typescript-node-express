@@ -1,11 +1,10 @@
-// @ts-nocheck
 import { AppError } from '../classes/AppError';
 import { Employee } from '../models/Employees';
 // import bcrypt from 'bcryptjs';
-import { DeleteEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries';
-import { mySqlConnection } from '../util/mySql/mySqlConnection';
+import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
 import { RowDataPacket } from 'mysql2';
+import { DeleteEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries/employeeQueries';
 
 type ModelInterface = Employee;
 
@@ -28,6 +27,8 @@ export const getOne = async(id: any): Promise<RowDataPacket[]> => {
 };
 
 export const newItem = async(data: ModelInterface) => {
+    console.log(data);
+    
     // const employeePassword = data.password;
     // const hashedPassword = await bcrypt.hash(employeePassword, 10);
     
@@ -41,6 +42,8 @@ export const newItem = async(data: ModelInterface) => {
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
+    console.log(id, data);
+    
     // const employee = await Model.findById(id);
 
     // if(employee === null) {
@@ -79,7 +82,8 @@ export const deleteItem = async(id: any) => {
 export const employeeLogin = async(username: string): Promise<RowDataPacket[]> => {
     const currentConnection = await mySqlConnection();
     const query = LoginUser;
-    const results = await runQuery(query, currentConnection, [username]);
+    const results = await selectQuery(query, currentConnection, username);
+    console.log(results);
     
     if(results.length === 0){
         throw new AppError(404, 'Not found');
@@ -88,6 +92,8 @@ export const employeeLogin = async(username: string): Promise<RowDataPacket[]> =
 };
 
 export const isUserExist = async(username: string) => {
+    console.log(username);
+    
     // const item = await Model.findOne({email: username});
     // return item;
     return {};

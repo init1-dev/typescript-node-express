@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { Connection } from 'mysql2/promise';
-import { insertMultipleIntoTable, insertIntoTableFromArray } from '../util/mySql/querieFunctions';
+import { insertIntoTableFromArray } from '../util/mySql/querieFunctions';
 import { amenities_list, roomStatus_list, room_types } from '../models/Rooms';
+import { insertMultipleIntoTable } from '../util/mySql/seedDataFunctions';
 
 export const ROWS_TO_INSERT = 10;
 

@@ -2,7 +2,8 @@ import { faker } from '@faker-js/faker';
 import { BookingStatus_list } from "../models/Bookings";
 import { Connection } from 'mysql2/promise';
 import { ROWS_TO_INSERT } from './roomsSeed';
-import { formatDateToSql, insertMultipleIntoTable } from '../util/mySql/querieFunctions';
+import { formatDateToSql } from '../util/mySql/querieFunctions';
+import { insertMultipleIntoTable } from '../util/mySql/seedDataFunctions';
 
 
 const generateCheckInDate = (): Date => {

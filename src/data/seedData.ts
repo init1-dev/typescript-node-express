@@ -1,6 +1,6 @@
-import { mySqlConnection, mySqlDisconnect } from "../util/mySql/mySqlConnection";
-import { executeQuery } from "../util/mySql/querieFunctions";
-import { dropQuery } from "../util/mySql/queries";
+import { mySqlConnection, mySqlDisconnect } from "../util/mySql/connectionFunctions";
+import { dropAndCreateDatabase } from "../util/mySql/dropAndCreateDatabase";
+import { runMultipleQueries } from "../util/mySql/seedDataFunctions";
 import { insertBookingsData } from "./bookingsSeed";
 import { insertEmployeesData } from "./employeesSeed";
 import { insertMessagesData } from "./messagesSeed";
@@ -10,7 +10,7 @@ import { exit } from 'process';
 const seedData = async() => {
     const currentConnection = await mySqlConnection({database: false});
     try {
-        await executeQuery(dropQuery, currentConnection, `Dropping database...`);
+        await runMultipleQueries(dropAndCreateDatabase, currentConnection, `Dropping database...`);
 
         console.log(`Inserting data...\n`);
 

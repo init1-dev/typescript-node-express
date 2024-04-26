@@ -1,6 +1,6 @@
 import mysql, { Connection } from "mysql2/promise";
 
-import { connectionBase, mySqlConfig } from "./mySqlConfig";
+import { connectionBase, mySqlConfig } from "../../../mySqlConfig";
 
 interface mySqlConnectionInterface {
     database: boolean;

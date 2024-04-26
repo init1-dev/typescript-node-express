@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { RowDataPacket } from 'mysql2';
 import { AppError } from '../classes/AppError';
 import { Booking } from '../models/Bookings';
-import { mySqlConnection } from '../util/mySql/mySqlConnection';
+import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
-import { DeleteBookingQuery, selectBookingsQuery, selectOneBookingQuery } from '../util/mySql/queries';
+import { DeleteBookingQuery, selectBookingsQuery, selectOneBookingQuery } from '../util/mySql/queries/bookingQueries';
 
 type ModelInterface = Booking;
 
@@ -27,6 +26,8 @@ export const getOne = async(id: any): Promise<RowDataPacket[]> => {
 };
 
 export const newItem = async(data: ModelInterface) => {
+    console.log(data);
+    
     // const item = (await Model.create(data)).populate('roomInfo');
     // if(item === null){
     //     throw new AppError(404, `Error adding ${messageString}`);
@@ -36,6 +37,8 @@ export const newItem = async(data: ModelInterface) => {
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
+    console.log(id, data);
+    
     // const item = await Model.findByIdAndUpdate(id, data, { new: true }).populate('roomInfo');
     // if(item === null){
     //     throw new AppError(404, `Error editing ${messageString}`);

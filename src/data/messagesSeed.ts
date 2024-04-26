@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Connection } from "mysql2/promise";
-import { insertMultipleIntoTable } from '../util/mySql/querieFunctions';
+import { insertMultipleIntoTable } from '../util/mySql/seedDataFunctions';
 
 export const insertMessagesData = async(currentConnection: Connection) => {
     const ROWS_TO_INSERT = 10;

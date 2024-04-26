@@ -1,14 +1,15 @@
-// @ts-nocheck
 import { Room } from '../models/Rooms';
 import { AppError } from '../classes/AppError';
-import { mySqlConnection } from '../util/mySql/mySqlConnection';
+import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
-import { AddRoomQuery, DeleteRoomQuery, addRoomAmenities, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries';
 import { RowDataPacket } from 'mysql2';
+import { AddRoomQuery, DeleteRoomQuery, addRoomAmenities, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries/roomQueries';
 
 type ModelInterface = Room;
 
 export const getAll = async(filter = false): Promise<RowDataPacket[]> => {
+    console.log(filter);
+    
     const currentConnection = await mySqlConnection();
     const query = selectRoomsQuery;
     const results = await selectQuery(query, currentConnection);
@@ -38,6 +39,8 @@ export const newItem = async(data: ModelInterface) => {
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
+    console.log(id, data);
+    
     // const item = await Model.findByIdAndUpdate(id, data, { new: true });
     // if(item === null){
     //     throw new AppError(404, `Error editing ${messageString}`);
@@ -59,6 +62,8 @@ export const deleteItem = async(id: any) => {
 };
 
 export const isRoomExist = async(number: string) => {
+    console.log(number);
+    
     // const item = await Model.findOne({room_number: number});
     // return item;
     return {};

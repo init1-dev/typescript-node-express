@@ -1,23 +1,5 @@
 import { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise";
-import { mySqlDisconnect } from "./mySqlConnection";
-
-export const executeQuery = async(
-    query: string,
-    currentConnection: Connection,
-    message?: string
-): Promise<void> => {
-    const queries = query.split(";").filter(query => query.trim() !== '');
-
-    if(message){
-        console.log(message);
-    }
-
-    for (const query of queries){
-        await currentConnection.query(query + ";");
-    }
-
-    console.log(`Done!\n`);
-}
+import { mySqlDisconnect } from "./connectionFunctions";
 
 export const insertIntoTableFromArray = async(
     table: string,
@@ -39,57 +21,13 @@ export const insertIntoTableFromArray = async(
     console.log('Done!\n');
 };
 
-const stringFromArrayReduce = (array: Array<any>, format = false) => {
-    const result = array.reduce((previousValue, currentValue, currentIndex) => {
-        let isLastIndex = currentIndex === (array.length - 1);
-        if(isLastIndex){
-            return format
-                ? previousValue + `${formatValue(currentValue)}`
-                : previousValue + `${currentValue}`
-        } else {
-            return format
-                ? previousValue + `${formatValue(currentValue)}, `
-                : previousValue + `${currentValue}, `
-        }
-    }, '')
-    return result;
-};
-
-const formatValue = (value: any): string | number | boolean => {
-    return typeof value === 'string'
-        ? `"${value}"`
-        : `${value}`;
-};
-
-export const insertMultipleIntoTable = async(
-    table: string,
-    columns: Array<string>,
-    values: Array<any>,
-    number: number,
-    currentConnection: Connection
-): Promise<void> => {
-    console.log(`Inserting ${number} entries into ${table} table...`);
-
-    const queryColumns = await stringFromArrayReduce(columns);
-
-    const queryValues = values.map((value) => {
-        return `(${stringFromArrayReduce(value, true)})`;
-    }).join(',')
-
-    await currentConnection.query(`INSERT INTO ${table}(
-        ${queryColumns}
-    ) VALUES ${queryValues};`);
-
-    console.log('Done!\n');
-};
-
 export const selectQuery = async(
     query: string, 
     currentConnection: Connection, 
-    id?: string
+    param?: string
 ): Promise<RowDataPacket[]> => {
     const prepareConnection = await currentConnection.prepare(query);
-    let [ results ] = await prepareConnection.execute(id? [id] : null);
+    let [ results ] = await prepareConnection.execute(param? [param] : null);
 
     prepareConnection.close();
     currentConnection.unprepare(query);
@@ -103,9 +41,8 @@ export const runQuery = async(
     currentConnection: Connection, 
     values: any[],
     close = true
-): Promise<ResultSetHeader> => {    
+): Promise<ResultSetHeader> => {
     const prepareConnection = await currentConnection.prepare(query);
-    
     let [ results ] = await prepareConnection.execute(values);
 
     prepareConnection.close();

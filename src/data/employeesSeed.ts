@@ -2,7 +2,8 @@ import { faker } from '@faker-js/faker';
 import { Connection } from "mysql2/promise";
 import { employeeStatus_list, employee_types } from '../models/Employees';
 import bcrypt from 'bcryptjs';
-import { formatDateToSql, insertMultipleIntoTable, insertIntoTableFromArray } from '../util/mySql/querieFunctions';
+import { formatDateToSql, insertIntoTableFromArray } from '../util/mySql/querieFunctions';
+import { insertMultipleIntoTable } from '../util/mySql/seedDataFunctions';
 
 export const insertEmployeesData = async(currentConnection: Connection) => {
     const ROWS_TO_INSERT = 10;

@@ -10,7 +10,7 @@ import { authMiddleware } from './middleware/auth';
 import { parseResponse } from './util/parseResponse';
 import cors from 'cors';
 import { origins } from './util/cors/origins';
-import { mySqlConnection } from './util/mySql/mySqlConnection';
+import { mySqlConnection } from './util/mySql/connectionFunctions';
 
 export const app = express();
 
