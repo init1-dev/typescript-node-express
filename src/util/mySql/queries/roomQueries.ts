@@ -86,9 +86,6 @@ export const addRoomAmenities = (id: number, amenities: number[]) => {
         };
     };
 
-    console.log(amenity_list);
-    
-
     return `
         INSERT INTO room_amenities(room_id, amenity_id)
         VALUES ${amenity_list};

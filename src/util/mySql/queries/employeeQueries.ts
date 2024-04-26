@@ -50,8 +50,9 @@ export const AddEmployeeQuery = `
         employee_type_id, 
         description, 
         phone, 
-        password
-    ) VALUES (?, ?, ?, ?, ?, ?, ?,?);
+        password,
+        employee_status
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 `;
 
 export const EditEmployeeQuery = `

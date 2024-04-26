@@ -4,7 +4,7 @@ import { Employee } from '../models/Employees';
 import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
 import { RowDataPacket } from 'mysql2';
-import { DeleteEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries/employeeQueries';
+import { AddEmployeeQuery, DeleteEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries/employeeQueries';
 
 type ModelInterface = Employee;
 
@@ -27,18 +27,12 @@ export const getOne = async(id: any): Promise<RowDataPacket[]> => {
 };
 
 export const newItem = async(data: ModelInterface) => {
-    console.log(data);
-    
-    // const employeePassword = data.password;
-    // const hashedPassword = await bcrypt.hash(employeePassword, 10);
-    
-    // const item = await Model.create({...data, password: hashedPassword});
-    
-    // if(item === null){
-    //     throw new AppError(404, `Error adding ${messageString}`);
-    // }
-    // return item;
-    return {};
+    const currentConnection = await mySqlConnection();
+    const query = AddEmployeeQuery;
+    const values = Object.values(data);
+    const headers = await runQuery(query, currentConnection, values, false);
+    const results = await runQuery(selectOneEmployeeQuery, currentConnection, [headers.insertId]);
+    return results;
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {

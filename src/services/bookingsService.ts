@@ -3,7 +3,7 @@ import { AppError } from '../classes/AppError';
 import { Booking } from '../models/Bookings';
 import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
-import { DeleteBookingQuery, selectBookingsQuery, selectOneBookingQuery } from '../util/mySql/queries/bookingQueries';
+import { AddBookingQuery, DeleteBookingQuery, selectBookingsQuery, selectOneBookingQuery } from '../util/mySql/queries/bookingQueries';
 
 type ModelInterface = Booking;
 
@@ -26,14 +26,12 @@ export const getOne = async(id: any): Promise<RowDataPacket[]> => {
 };
 
 export const newItem = async(data: ModelInterface) => {
-    console.log(data);
-    
-    // const item = (await Model.create(data)).populate('roomInfo');
-    // if(item === null){
-    //     throw new AppError(404, `Error adding ${messageString}`);
-    // }
-    // return item;
-    return {};
+    const currentConnection = await mySqlConnection();
+    const query = AddBookingQuery;
+    const values = Object.values(data);
+    const headers = await runQuery(query, currentConnection, values, false);
+    const results = await runQuery(selectOneBookingQuery, currentConnection, [headers.insertId]);
+    return results;
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
