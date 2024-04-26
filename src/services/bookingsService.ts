@@ -3,7 +3,7 @@ import { AppError } from '../classes/AppError';
 import { Booking } from '../models/Bookings';
 import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
-import { AddBookingQuery, DeleteBookingQuery, selectBookingsQuery, selectOneBookingQuery } from '../util/mySql/queries/bookingQueries';
+import { AddBookingQuery, DeleteBookingQuery, EditBookingQuery, selectBookingsQuery, selectOneBookingQuery } from '../util/mySql/queries/bookingQueries';
 
 type ModelInterface = Booking;
 
@@ -35,14 +35,14 @@ export const newItem = async(data: ModelInterface) => {
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
-    console.log(id, data);
+    const currentConnection = await mySqlConnection();
+    const query = EditBookingQuery;
+    const values = Object.values(data);
+    const headers = await runQuery(query, currentConnection, [...values, id], false);
+    console.log(headers);
     
-    // const item = await Model.findByIdAndUpdate(id, data, { new: true }).populate('roomInfo');
-    // if(item === null){
-    //     throw new AppError(404, `Error editing ${messageString}`);
-    // }
-    // return item;
-    return {};
+    const results = await runQuery(selectOneBookingQuery, currentConnection, [id]);
+    return results;
 };
 
 export const deleteItem = async(id: any) => {

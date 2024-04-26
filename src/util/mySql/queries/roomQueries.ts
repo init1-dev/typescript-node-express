@@ -93,23 +93,35 @@ export const addRoomAmenities = (id: number, amenities: number[]) => {
 };
 
 export const AddRoomQuery = `
-        INSERT INTO room(
-            name, 
-            photo, 
-            room_type_id, 
-            room_number, 
-            description, 
-            offer, 
-            price, 
-            cancellation, 
-            discount, 
-            status
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-    `;
+    INSERT INTO room(
+        name, 
+        photo, 
+        room_type_id, 
+        room_number, 
+        description, 
+        offer, 
+        price, 
+        cancellation, 
+        discount, 
+        status
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+`;
 
 export const EditRoomQuery = `
-
+    UPDATE room
+    SET 
+        name = ?,
+        photo = ?,
+        room_type_id = ?,
+        room_number = ?,
+        description = ?,
+        offer = ?,
+        price = ?,
+        cancellation = ?,
+        discount = ?,
+        status = ?
+    WHERE id = ?;
 `;
 
 export const DeleteRoomQuery = `

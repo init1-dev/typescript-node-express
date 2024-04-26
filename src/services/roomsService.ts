@@ -3,7 +3,7 @@ import { AppError } from '../classes/AppError';
 import { mySqlConnection } from '../util/mySql/connectionFunctions';
 import { runQuery, selectQuery } from '../util/mySql/querieFunctions';
 import { RowDataPacket } from 'mysql2';
-import { AddRoomQuery, DeleteRoomQuery, addRoomAmenities, selectOneRoomByNumberQuery, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries/roomQueries';
+import { AddRoomQuery, DeleteRoomQuery, EditRoomQuery, addRoomAmenities, selectOneRoomByNumberQuery, selectOneRoomQuery, selectRoomsQuery } from '../util/mySql/queries/roomQueries';
 
 type ModelInterface = Room;
 
@@ -39,14 +39,15 @@ export const newItem = async(data: ModelInterface) => {
 };
 
 export const editItem = async(id: any, data: ModelInterface) => {
-    console.log(id, data);
-    
-    // const item = await Model.findByIdAndUpdate(id, data, { new: true });
-    // if(item === null){
-    //     throw new AppError(404, `Error editing ${messageString}`);
-    // }
-    // return item;
-    return {};
+    const currentConnection = await mySqlConnection();
+    const {amenities, ...formData} = data;
+    const roomQuery = EditRoomQuery;
+    const values = Object.values(formData);
+    await runQuery(roomQuery, currentConnection, [...values, id], false);
+    await runQuery('DELETE FROM room_amenities WHERE room_id = ?', currentConnection, [id], false);
+    await runQuery(addRoomAmenities(id, amenities), currentConnection, values, false);
+    const results = await runQuery(selectOneRoomQuery, currentConnection, [id]);
+    return results;
 };
 
 export const deleteItem = async(id: any) => {
