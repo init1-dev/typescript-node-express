@@ -22,9 +22,10 @@ employeesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunctio
     }
 })
 
-employeesRoutes.get('/getUser/:email', async(req: Request, res: Response, next: NextFunction) => {
+employeesRoutes.post('/getUser', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await isUserExist(req.params.email);
+        const { username } = req.body;
+        const responseData = await isUserExist(username);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);

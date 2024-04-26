@@ -83,7 +83,6 @@ export const employeeLogin = async(username: string): Promise<RowDataPacket[]> =
     const currentConnection = await mySqlConnection();
     const query = LoginUser;
     const results = await selectQuery(query, currentConnection, username);
-    console.log(results);
     
     if(results.length === 0){
         throw new AppError(404, 'Not found');
@@ -92,9 +91,12 @@ export const employeeLogin = async(username: string): Promise<RowDataPacket[]> =
 };
 
 export const isUserExist = async(username: string) => {
-    console.log(username);
+    const currentConnection = await mySqlConnection();
+    const query = LoginUser;
+    const results = await selectQuery(query, currentConnection, username);
     
-    // const item = await Model.findOne({email: username});
-    // return item;
-    return {};
+    if(results.length === 0){
+        throw new AppError(404, 'Not found');
+    }
+    return results[0].email;
 };
