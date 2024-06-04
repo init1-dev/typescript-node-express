@@ -10,19 +10,20 @@ loginRoutes.post('/', async(req, res, next) => {
     try {
         const { username, password } = req.body;
         const loginAction = await employeeLogin(username);
+        const user = loginAction[0];
     
-        if(loginAction) {
-            const isPasswordMatch = await bcrypt.compare(password, loginAction.password);
+        if(user) {
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
 
             if(isPasswordMatch){
                 const token = generateAccessToken(username);
                 
                 return parseResponse({
-                    user: loginAction.fullname,
-                    email: loginAction.email,
-                    id: loginAction._id,
+                    user: user.fullname,
+                    email: user.email,
+                    id: user._id,
                     token: token,
-                    photo: loginAction.photo
+                    photo: user.photo
                 }, res, 200);
             } else {
                 return parseResponse("Invalid password", res, 401);

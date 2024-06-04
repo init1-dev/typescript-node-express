@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { getAll, getOne, newItem, editItem, deleteItem, isUserExist } from '../services/employeesService';
 import { parseResponse } from '../util/parseResponse';
+import { validateEmployee } from '../util/validations/joiValidationMiddlewares';
 
 export const employeesRoutes = express.Router();
 
@@ -22,16 +23,17 @@ employeesRoutes.get('/:id', async(req: Request, res: Response, next: NextFunctio
     }
 })
 
-employeesRoutes.get('/getUser/:email', async(req: Request, res: Response, next: NextFunction) => {
+employeesRoutes.post('/getUser', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const responseData = await isUserExist(req.params.email);
+        const { username } = req.body;
+        const responseData = await isUserExist(username);
         parseResponse(responseData, res, 200);
     } catch (error) {
         next(error);
     }
 })
 
-employeesRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => {
+employeesRoutes.post('/', validateEmployee, async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await newItem(req.body);
         parseResponse(responseData, res, 200);
@@ -40,7 +42,7 @@ employeesRoutes.post('/', async(req: Request, res: Response, next: NextFunction)
     }
 })
 
-employeesRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
+employeesRoutes.put('/:id', validateEmployee, async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await editItem(req.params.id, req.body);
         parseResponse(responseData, res, 200);

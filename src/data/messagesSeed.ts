@@ -1,25 +1,47 @@
 import { faker } from '@faker-js/faker';
-import { MessagesModel } from '../models/Messages';
+import { Connection } from "mysql2/promise";
+import { insertMultipleIntoTable } from '../util/mySql/seedDataFunctions';
 
-export const insertMessagesData = async() => {
+export const insertMessagesData = async(currentConnection: Connection) => {
+    const ROWS_TO_INSERT = 10;
+
+    const columns = [
+        'full_name',
+        'email',
+        'phone',
+        'subject',
+        'message',
+        'stars',
+        'read_status',
+        'archived',
+        'photo'
+    ];
+
+    const values = [];
+
+    for (let i = 0; i < ROWS_TO_INSERT; i++) {
+        values.push([
+            faker.person.fullName(),
+            faker.internet.email(),
+            faker.phone.number(),
+            faker.lorem.paragraph(),
+            faker.lorem.paragraphs(2),
+            faker.number.int({min: 1, max: 5}),
+            faker.datatype.boolean({probability: 0.5}),
+            faker.datatype.boolean({probability: 0.5}),
+            faker.image.avatar()
+        ])
+    };
+
     try {
-        console.log("Inserting messages data..");
-        for (let i = 0; i < 30; i++) {
-            const newData = new MessagesModel({
-                full_name: faker.person.fullName(),
-                email: faker.internet.email(),
-                phone: faker.phone.number(),
-                subject: faker.lorem.paragraph(),
-                message: faker.lorem.paragraphs(2),
-                stars: faker.number.int({min: 1, max: 5}),
-                read: faker.datatype.boolean({probability: 0.5}),
-                archived: faker.datatype.boolean({probability: 0.5}),
-                foto: faker.image.avatar()
-            })
-            await newData.save();
-        }
-        console.log("Messages data inserted successfully\n");
+        await insertMultipleIntoTable(
+            'message', 
+            columns, 
+            values, 
+            ROWS_TO_INSERT, 
+            currentConnection
+        );
     } catch (error) {
         console.error('Error during insertion:', error);
-    }
+    };
 }

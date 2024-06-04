@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { getAll, getOne, newItem, editItem, deleteItem, isRoomExist } from '../services/roomsService';
 import { parseResponse } from '../util/parseResponse';
+import { validateRoom } from '../util/validations/joiValidationMiddlewares';
 
 export const roomsRoutes = express.Router();
 
@@ -32,7 +33,7 @@ roomsRoutes.get('/getRoom/:room', async(req: Request, res: Response, next: NextF
     }
 })
 
-roomsRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => {
+roomsRoutes.post('/', validateRoom, async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await newItem(req.body);
         parseResponse(responseData, res, 200);
@@ -41,7 +42,7 @@ roomsRoutes.post('/', async(req: Request, res: Response, next: NextFunction) => 
     }
 })
 
-roomsRoutes.put('/:id', async(req: Request, res: Response, next: NextFunction) => {
+roomsRoutes.put('/:id', validateRoom, async(req: Request, res: Response, next: NextFunction) => {
     try {
         const responseData = await editItem(req.params.id, req.body);
         parseResponse(responseData, res, 200);

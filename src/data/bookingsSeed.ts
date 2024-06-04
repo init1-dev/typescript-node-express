@@ -1,6 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { Types } from "mongoose";
-import { BookingModel, BookingStatus_list } from "../models/Bookings";
+import { BookingStatus_list } from "../models/Bookings";
+import { Connection } from 'mysql2/promise';
+import { ROWS_TO_INSERT } from './roomsSeed';
+import { formatDateToSql } from '../util/mySql/querieFunctions';
+import { insertMultipleIntoTable } from '../util/mySql/seedDataFunctions';
+
 
 const generateCheckInDate = (): Date => {
     return faker.date.recent({refDate: new Date(), days: 30});
@@ -11,36 +15,53 @@ const generateCheckOutDate = (checkInDate: Date): Date => {
     return faker.date.between({from: checkInDate, to:endDate});
 }
 
-const getRandomId = (idList: Types.ObjectId[] | undefined) => {
-    if(idList){
-        return idList[faker.number.int({min: 0, max: idList.length - 1})]
-    }
-}
+export const insertBookingsData = async(currentConnection: Connection) => {
+    const ROOMS_TO_INSERT = ROWS_TO_INSERT;
+    const BOOKINGS_TO_INSERT = 10;
+    
+    const bookingColumns = [
+        'full_name',
+        'email',
+        'phone',
+        'check_in',
+        'check_out',
+        'order_date',
+        'special_request',
+        'discount',
+        'status',
+        'room_id'
+    ];
 
-export const insertBookingsData = async(roomsIds: Types.ObjectId[] | undefined) => {
+    const bookingValues = [];
+
+    for (let i = 0; i < ROOMS_TO_INSERT; i++) {
+        const checkInDate = generateCheckInDate();
+        const checkOutDate = generateCheckOutDate(checkInDate);
+
+        bookingValues.push([
+            faker.person.fullName(),
+            faker.internet.email(),
+            faker.phone.number(),
+            formatDateToSql(checkInDate),
+            formatDateToSql(checkOutDate),
+            formatDateToSql(Date.now()),
+            faker.lorem.paragraphs(2),
+            Math.round(faker.number.float() * 20) * 5,
+            faker.helpers.arrayElement(BookingStatus_list),
+            faker.number.int({min: 1, max: ROOMS_TO_INSERT})
+        ])
+    };
+
     try {
-        console.log("Inserting bookings data..");
-        for (let i = 0; i < 50; i++) {
-            const checkInDate = generateCheckInDate();
-            const checkOutDate = generateCheckOutDate(checkInDate);
-
-            const newData = new BookingModel({
-                full_name: faker.person.fullName(),
-                email: faker.internet.email(),
-                phone: faker.phone.number(),
-                image: faker.image.urlPicsumPhotos(),
-                check_in: checkInDate,
-                check_out: checkOutDate,
-                order_date: new Date(),
-                special_request: faker.lorem.paragraphs(2),
-                discount: Math.round(faker.number.float() * 20) * 5,
-                status: faker.helpers.arrayElement(BookingStatus_list),
-                roomInfo: getRandomId(roomsIds)
-            })
-            await newData.save();
-        }
-        console.log("Bookings data inserted successfully\n");
+        await insertMultipleIntoTable(
+            'booking',
+            bookingColumns,
+            bookingValues,
+            BOOKINGS_TO_INSERT,
+            currentConnection
+        );
+        
     } catch (error) {
         console.error('Error during insertion:', error);
-    }
+    };
 }

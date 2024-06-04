@@ -1,39 +1,33 @@
-
-import { Types } from "mongoose";
+import { mySqlConnection, mySqlDisconnect } from "../util/mySql/connectionFunctions";
+import { dropAndCreateDatabase } from "../util/mySql/dropAndCreateDatabase";
+import { runMultipleQueries } from "../util/mySql/seedDataFunctions";
 import { insertBookingsData } from "./bookingsSeed";
-import { insertRoomsData } from "./roomsSeed";
-import { mongooseConnect } from "../util/mongoose/mongooseConnect";
-import { dropAndCreateCollection } from "../util/mongoose/dropAndCreateCollectin";
 import { insertEmployeesData } from "./employeesSeed";
 import { insertMessagesData } from "./messagesSeed";
-
-const appCollections = ['rooms', 'bookings', 'employees', 'messages'];
+import { insertRoomsData } from "./roomsSeed";
+import { exit } from 'process';
 
 const seedData = async() => {
-    const currentConnection = await mongooseConnect();
-
+    const currentConnection = await mySqlConnection({database: false});
     try {
-        for (const element of appCollections) {
-            await dropAndCreateCollection(element, currentConnection);
-        };
+        await runMultipleQueries(dropAndCreateDatabase, currentConnection, `Dropping database...`);
 
-        const roomsData: Types.ObjectId[] | undefined = await insertRoomsData();
+        console.log(`Inserting data...\n`);
 
-        if(roomsData) {
-            await insertBookingsData(roomsData);
-        }
-        
-        await insertEmployeesData();
-        await insertMessagesData();
+        await insertMessagesData(currentConnection);
+        await insertEmployeesData(currentConnection);
+        await insertRoomsData(currentConnection);
+        await insertBookingsData(currentConnection);
 
-        console.log("\nSeed completed");
-        console.log("Connection closed");
+        console.log(`\nAll seed completed successfully.`);
         
     } catch (error) {
+        currentConnection.rollback();
         console.error('Error during insertion:', error);
     } finally {
-        currentConnection?.close();
-    }
+        mySqlDisconnect(currentConnection);
+        exit(1);
+    };
 }
 
 seedData();

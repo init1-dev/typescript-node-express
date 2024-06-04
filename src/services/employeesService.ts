@@ -1,76 +1,109 @@
 import { AppError } from '../classes/AppError';
-import { Employee, EmployeesModel } from '../models/Employees';
+import { Employee } from '../models/Employees';
 import bcrypt from 'bcryptjs';
+import { mySqlConnection } from '../util/mySql/connectionFunctions';
+import { runQuery, runQueryAsPacket, selectQuery } from '../util/mySql/querieFunctions';
+import { RowDataPacket } from 'mysql2';
+import { AddEmployeeQuery, DeleteEmployeeQuery, EditEmployeeQuery, LoginUser, selectEmployeesQuery, selectOneEmployeeQuery } from '../util/mySql/queries/employeeQueries';
 
-const Model = EmployeesModel;
-const messageString = "employee";
 type ModelInterface = Employee;
 
-export const getAll = async(): Promise<ModelInterface[]> => {
-    const items = await Model.find();
-    return items;
-}
+export const getAll = async(): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = selectEmployeesQuery;
+    const results = await selectQuery(query, currentConnection);
+    return results;
+};
 
-export const getOne = async(id: any): Promise<ModelInterface> => {
-    const item = await Model.findById(id);
-    if(item === null){
+export const getOne = async(id: any): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = selectOneEmployeeQuery;
+    const results = await selectQuery(query, currentConnection, id);
+    
+    if(results.length === 0){
         throw new AppError(404, 'Not found');
     }
-    return item;
-}
+    return results;
+};
 
-export const newItem = async(data: ModelInterface): Promise<ModelInterface> => {
-    const employeePassword = data.password;
-    const hashedPassword = await bcrypt.hash(employeePassword, 10);
-    
-    const item = await Model.create({...data, password: hashedPassword});
-    
-    if(item === null){
-        throw new AppError(404, `Error adding ${messageString}`);
-    }
-    return item;
-}
+export const newItem = async(data: ModelInterface) => {
+    const currentConnection = await mySqlConnection();
+    const query = AddEmployeeQuery;
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const values = Object.values({
+        ...data,
+        password: hashedPassword
+    });
+    const headers = await runQuery(query, currentConnection, values, false);
+    const results = await runQuery(selectOneEmployeeQuery, currentConnection, [headers.insertId]);
+    return results;
+};
 
-export const editItem = async(id: any, data: ModelInterface): Promise<ModelInterface> => {
-    const employee = await Model.findById(id);
+export const editItem = async(id: any, data: ModelInterface) => {
+    const currentConnection = await mySqlConnection();
+    const employee = await runQueryAsPacket(selectOneEmployeeQuery, currentConnection, [id], false);
 
-    if(employee === null) {
+    if(employee.length === 0) {
         throw new AppError(404, "Not found");
     }
-    
-    const isPasswordMatch = await bcrypt.compare(data.password, employee?.password);
+
+    const isPasswordMatch = await bcrypt.compare(data.password, employee[0]?.password);
     let item;
     
     if(!isPasswordMatch && data.password !== "") {
         const hashedPasswordToChange = await bcrypt.hash(data.password, 10);
-        item = await Model.findByIdAndUpdate(id, {...data, password: hashedPasswordToChange}, { new: true });
+        const object = Object.values({
+            ...data,
+            password: hashedPasswordToChange
+        });
+        item = await runQuery(EditEmployeeQuery, currentConnection, [...object, id], false);
     } else {
-        item = await Model.findByIdAndUpdate(id, {...data, password: employee.password}, { new: true });
+        const object = Object.values({
+            ...data,
+            password: employee[0].password
+        });
+        item = await runQuery(EditEmployeeQuery, currentConnection, [...object, id], false);
     }
 
-    if(item === null){
-        throw new AppError(404, `Error adding ${messageString}`);
+    if(item.affectedRows === 0){
+        throw new AppError(404, 'Not found');
     }
-    return item;
-}
 
-export const deleteItem = async(id: any): Promise<ModelInterface> => {
-    const item = await Model.findByIdAndDelete(id);
-    if(item === null){
-        throw new AppError(404, `Error deleting ${messageString}`);
+    const results = await runQuery(selectOneEmployeeQuery, currentConnection, [id]);
+
+    return results;
+};
+
+export const deleteItem = async(id: any) => {
+    const currentConnection = await mySqlConnection();
+    const query = DeleteEmployeeQuery;
+    const results = await runQuery(query, currentConnection, [id]);
+    
+    if(results.affectedRows === 0){
+        throw new AppError(404, 'Not found');
     }
-    return item;
-}
+    
+    return results;
+};
 
-export const employeeLogin = async(username: string): Promise<ModelInterface | null> => {
-    const isUserExist = await Model.findOne({email: username});
-    if(isUserExist === null) {
-        throw new AppError(404, `Error getting ${messageString}`);
+export const employeeLogin = async(username: string): Promise<RowDataPacket[]> => {
+    const currentConnection = await mySqlConnection();
+    const query = LoginUser;
+    const results = await selectQuery(query, currentConnection, username);
+    
+    if(results.length === 0){
+        throw new AppError(404, 'Not found');
     }
-    return isUserExist;
-}
+    return results;
+};
 
-export const isUserExist = async(username: string): Promise<ModelInterface | null> => {
-    const item = await Model.findOne({email: username});
-    return item;
-}
+export const isUserExist = async(username: string) => {
+    const currentConnection = await mySqlConnection();
+    const query = LoginUser;
+    const results = await selectQuery(query, currentConnection, username);
+    
+    if(results.length === 0){
+        throw new AppError(404, 'Not found');
+    }
+    return results[0].email;
+};
